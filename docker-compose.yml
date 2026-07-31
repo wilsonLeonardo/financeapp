@@ -1,0 +1,95 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: financeapp-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-financeapp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-financeapp123}
+      POSTGRES_DB: ${POSTGRES_DB:-financeapp}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-financeapp}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - financeapp-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: financeapp-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis123}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - financeapp-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: financeapp-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      SERVER_PORT: ${SERVER_PORT:-8080}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-financeapp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-financeapp123}
+      POSTGRES_DB: ${POSTGRES_DB:-financeapp}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis123}
+      JWT_SECRET: ${JWT_SECRET:-super-secret-jwt-key-change-in-production}
+      JWT_EXPIRY_HOURS: ${JWT_EXPIRY_HOURS:-24}
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - financeapp-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8080/api/v1}
+    container_name: financeapp-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - financeapp-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:
+
+networks:
+  financeapp-network:
+    driver: bridge

@@ -1,0 +1,19 @@
+# Compiled binaries
+/server
+/bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test and coverage output
+*.test
+*.out
+coverage.html
+
+# Go workspace files
+go.work
+go.work.sum
+
+# Vendored dependencies — we rely on the module cache
+/vendor/
