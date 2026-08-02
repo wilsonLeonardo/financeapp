@@ -31,7 +31,9 @@ type UpdateRequest struct {
 
 // ListRequest holds pagination and filter params.
 type ListRequest struct {
-	CategoryID *uuid.UUID              `form:"category_id"`
+	// CategoryID is bound as a string because gin cannot map a query param onto
+	// uuid.UUID (it is a [16]byte array); it is parsed in List.
+	CategoryID string                  `form:"category_id"`
 	Type       *domain.TransactionType `form:"type"`
 	StartDate  string                  `form:"start_date"`
 	EndDate    string                  `form:"end_date"`
@@ -107,11 +109,18 @@ func (s *service) List(userID uuid.UUID, req ListRequest) (*PaginatedResponse, e
 	}
 
 	filter := ListFilter{
-		UserID:     userID,
-		CategoryID: req.CategoryID,
-		Type:       req.Type,
-		Page:       req.Page,
-		PageSize:   req.PageSize,
+		UserID:   userID,
+		Type:     req.Type,
+		Page:     req.Page,
+		PageSize: req.PageSize,
+	}
+
+	if req.CategoryID != "" {
+		categoryID, err := uuid.Parse(req.CategoryID)
+		if err != nil {
+			return nil, apperrors.New(400, "invalid category_id")
+		}
+		filter.CategoryID = &categoryID
 	}
 
 	if req.StartDate != "" {
