@@ -101,3 +101,28 @@ func TestList_RejectsMalformedCategoryID(t *testing.T) {
 		t.Errorf("status = %d, want %d", appErr.Code, http.StatusBadRequest)
 	}
 }
+
+func TestList_UncategorizedFilterSelectsNullCategory(t *testing.T) {
+	repo := &stubRepo{}
+	svc := expense.NewService(repo)
+
+	if _, err := svc.List(uuid.New(), expense.ListRequest{CategoryID: expense.UncategorizedFilter}); err != nil {
+		t.Fatalf("List returned error: %v", err)
+	}
+
+	if !repo.lastFilter.Uncategorized {
+		t.Error("filter.Uncategorized = false, want true")
+	}
+	if repo.lastFilter.CategoryID != nil {
+		t.Errorf("filter.CategoryID = %v, want nil", repo.lastFilter.CategoryID)
+	}
+}
+
+// The sentinel must never be mistaken for a malformed uuid.
+func TestList_UncategorizedFilterIsNotRejected(t *testing.T) {
+	svc := expense.NewService(&stubRepo{})
+
+	if _, err := svc.List(uuid.New(), expense.ListRequest{CategoryID: expense.UncategorizedFilter}); err != nil {
+		t.Fatalf("List rejected the uncategorized sentinel: %v", err)
+	}
+}

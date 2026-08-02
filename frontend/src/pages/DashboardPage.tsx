@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown, DollarSign, BarCha
 import { StatCard } from '@/components/common'
 import { MonthlyAreaChart, CategoryPieChart, MonthlyBarChart } from '@/components/charts/Charts'
 import { useMonthlyReport, useCategoryReport, useExpenses } from '@/hooks/useFinance'
-import { formatCurrency } from '@/utils'
+import { categoryLabel, formatCurrency } from '@/utils'
 import { useAuthStore } from '@/store/authStore'
 
 export default function DashboardPage() {
@@ -138,7 +138,7 @@ export default function DashboardPage() {
               return (
                 <div key={idx} className="flex items-center gap-3">
                   <span className="text-sm text-slate-400 w-32 truncate flex-shrink-0">
-                    {cat.category_name}
+                    {categoryLabel(cat)}
                   </span>
                   <div className="flex-1 bg-surface rounded-full h-2 overflow-hidden">
                     <div

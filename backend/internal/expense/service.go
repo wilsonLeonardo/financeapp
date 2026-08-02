@@ -29,6 +29,10 @@ type UpdateRequest struct {
 	Tags        string                 `json:"tags"`
 }
 
+// UncategorizedFilter is the category_id value that selects transactions with
+// no category. It is not a valid UUID, so it cannot collide with a real id.
+const UncategorizedFilter = "none"
+
 // ListRequest holds pagination and filter params.
 type ListRequest struct {
 	// CategoryID is bound as a string because gin cannot map a query param onto
@@ -115,7 +119,10 @@ func (s *service) List(userID uuid.UUID, req ListRequest) (*PaginatedResponse, e
 		PageSize: req.PageSize,
 	}
 
-	if req.CategoryID != "" {
+	switch {
+	case req.CategoryID == UncategorizedFilter:
+		filter.Uncategorized = true
+	case req.CategoryID != "":
 		categoryID, err := uuid.Parse(req.CategoryID)
 		if err != nil {
 			return nil, apperrors.New(400, "invalid category_id")

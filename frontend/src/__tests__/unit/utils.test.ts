@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatCurrency, formatDate, formatDateTime, formatMonth, currentMonthRange, getErrorMessage, toDateInputValue } from '@/utils'
+import { categoryLabel, formatCurrency, formatDate, formatDateTime, formatMonth, currentMonthRange, getErrorMessage, toDateInputValue } from '@/utils'
 
 describe('formatCurrency', () => {
   it('formats positive numbers as USD', () => {
@@ -99,5 +99,17 @@ describe('getErrorMessage', () => {
 
   it('returns fallback for unknown errors', () => {
     expect(getErrorMessage(null)).toBe('Ocorreu um erro inesperado')
+  })
+})
+
+describe('categoryLabel', () => {
+  it('uses the category name when the row has a category', () => {
+    expect(categoryLabel({ category_id: 'e8b5c1a0-1111-2222-3333-444455556666', category_name: 'Mercado' }))
+      .toBe('Mercado')
+  })
+
+  it('labels rows with no category in Portuguese', () => {
+    // The API sends a null category_id and an English placeholder name here.
+    expect(categoryLabel({ category_name: 'Uncategorized' })).toBe('Sem categoria')
   })
 })

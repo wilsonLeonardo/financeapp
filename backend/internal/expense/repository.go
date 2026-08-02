@@ -11,13 +11,16 @@ import (
 
 // ListFilter holds query filters for listing expenses.
 type ListFilter struct {
-	UserID     uuid.UUID
-	CategoryID *uuid.UUID
-	Type       *domain.TransactionType
-	StartDate  *time.Time
-	EndDate    *time.Time
-	Page       int
-	PageSize   int
+	UserID uuid.UUID
+	// CategoryID filters by one category; Uncategorized instead selects the
+	// transactions that have no category at all. Uncategorized wins if both set.
+	CategoryID    *uuid.UUID
+	Uncategorized bool
+	Type          *domain.TransactionType
+	StartDate     *time.Time
+	EndDate       *time.Time
+	Page          int
+	PageSize      int
 }
 
 // MonthlySummary holds aggregated data for a month.
@@ -80,7 +83,9 @@ func (r *postgresRepository) List(f ListFilter) ([]*domain.Expense, int64, error
 		Preload("Category").
 		Where("user_id = ?", f.UserID)
 
-	if f.CategoryID != nil {
+	if f.Uncategorized {
+		query = query.Where("category_id IS NULL")
+	} else if f.CategoryID != nil {
 		query = query.Where("category_id = ?", *f.CategoryID)
 	}
 	if f.Type != nil {

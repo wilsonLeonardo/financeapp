@@ -81,6 +81,17 @@ export function getErrorMessage(err: unknown): string {
   return 'Ocorreu um erro inesperado'
 }
 
+// Value used by the category filter to mean "transactions with no category".
+// It is not a UUID, so the API can tell it apart from a real category id.
+export const UNCATEGORIZED = 'none'
+
+// Rows in the category report carry a null category_id when the transactions
+// have no category; their category_name is a backend placeholder, not user
+// data, so the label shown comes from here.
+export function categoryLabel(row: { category_id?: string; category_name: string }): string {
+  return row.category_id ? row.category_name : 'Sem categoria'
+}
+
 export const CATEGORY_COLORS = [
   '#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6',
   '#06b6d4', '#ec4899', '#f97316', '#84cc16', '#6366f1',

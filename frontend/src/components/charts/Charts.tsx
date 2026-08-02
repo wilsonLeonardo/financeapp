@@ -2,7 +2,7 @@ import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts'
-import { formatCurrency, formatMonth } from '@/utils'
+import { categoryLabel, formatCurrency, formatMonth } from '@/utils'
 import type { CategorySummary, MonthlySummary } from '@/types'
 import { PageLoader } from '@/components/common'
 
@@ -70,11 +70,13 @@ export function CategoryPieChart({ data, isLoading }: CategoryChartProps) {
   if (isLoading) return <PageLoader />
   if (!data?.length) return <p className="text-slate-500 text-sm text-center py-10">Sem dados para exibir</p>
 
+  const chartData = data.map((row) => ({ ...row, category_name: categoryLabel(row) }))
+
   return (
     <ResponsiveContainer width="100%" height={240}>
       <PieChart>
         <Pie
-          data={data}
+          data={chartData}
           dataKey="total"
           nameKey="category_name"
           cx="50%"
@@ -83,7 +85,7 @@ export function CategoryPieChart({ data, isLoading }: CategoryChartProps) {
           innerRadius={55}
           paddingAngle={3}
         >
-          {data.map((_, idx) => (
+          {chartData.map((_, idx) => (
             <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
           ))}
         </Pie>

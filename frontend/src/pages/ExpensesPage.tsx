@@ -4,7 +4,7 @@ import { useExpenses, useCategories } from '@/hooks/useFinance'
 import ExpenseTable from '@/components/expenses/ExpenseTable'
 import ExpenseFormModal from '@/components/expenses/ExpenseFormModal'
 import type { ListExpensesParams, TransactionType } from '@/types'
-import { currentMonthRange } from '@/utils'
+import { currentMonthRange, UNCATEGORIZED } from '@/utils'
 
 export default function ExpensesPage() {
   const { start, end } = currentMonthRange()
@@ -106,6 +106,7 @@ export default function ExpensesPage() {
                 className="input"
               >
                 <option value="">Todas</option>
+                <option value={UNCATEGORIZED}>Sem categoria</option>
                 {categories?.map((c) => (
                   <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
                 ))}
