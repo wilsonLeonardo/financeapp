@@ -26,7 +26,7 @@ const tooltipStyle = {
 const tooltipItemStyle = { color: '#e2e8f0' }
 const tooltipLabelStyle = { color: '#94a3b8', marginBottom: '4px' }
 
-// ── Monthly Area Chart ────────────────────────────────────────────────────────
+// Monthly Area Chart
 interface MonthlyChartProps { data?: MonthlySummary[]; isLoading: boolean }
 
 export function MonthlyAreaChart({ data, isLoading }: MonthlyChartProps) {
@@ -63,7 +63,7 @@ export function MonthlyAreaChart({ data, isLoading }: MonthlyChartProps) {
   )
 }
 
-// ── Category Pie Chart ────────────────────────────────────────────────────────
+// Category Pie Chart
 interface CategoryChartProps { data?: CategorySummary[]; isLoading: boolean }
 
 export function CategoryPieChart({ data, isLoading }: CategoryChartProps) {
@@ -100,7 +100,7 @@ export function CategoryPieChart({ data, isLoading }: CategoryChartProps) {
   )
 }
 
-// ── Monthly Bar Chart ─────────────────────────────────────────────────────────
+// Monthly Bar Chart
 export function MonthlyBarChart({ data, isLoading }: MonthlyChartProps) {
   if (isLoading) return <PageLoader />
 

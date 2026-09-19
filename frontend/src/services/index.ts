@@ -11,8 +11,7 @@ import type {
 } from '@/types'
 import { api } from './api'
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
-
+// Auth
 export const authService = {
   register: (data: { name: string; email: string; password: string }) =>
     api.post<AuthResponse>('/auth/register', data).then((r) => r.data),
@@ -23,8 +22,7 @@ export const authService = {
   logout: () => api.post('/auth/logout').then(() => localStorage.removeItem('token')),
 }
 
-// ── Expenses ──────────────────────────────────────────────────────────────────
-
+// Expenses
 export const expenseService = {
   create: (data: CreateExpenseDTO) =>
     api.post<Expense>('/expenses', data).then((r) => r.data),
@@ -41,8 +39,7 @@ export const expenseService = {
   delete: (id: string) => api.delete(`/expenses/${id}`),
 }
 
-// ── Categories ────────────────────────────────────────────────────────────────
-
+// Categories
 export const categoryService = {
   list: () => api.get<Category[]>('/categories').then((r) => r.data),
 
@@ -55,8 +52,7 @@ export const categoryService = {
   delete: (id: string) => api.delete(`/categories/${id}`),
 }
 
-// ── Reports ───────────────────────────────────────────────────────────────────
-
+// Reports
 export const reportService = {
   monthly: (months = 12) =>
     api.get<MonthlySummary[]>('/reports/monthly', { params: { months } }).then((r) => r.data),
@@ -67,8 +63,7 @@ export const reportService = {
       .then((r) => r.data),
 }
 
-// ── Imports ───────────────────────────────────────────────────────────────────
-
+// Imports
 export const importService = {
   upload: (file: File) => {
     const form = new FormData()

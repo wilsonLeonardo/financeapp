@@ -2,8 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { categoryService, expenseService, importService, reportService } from '@/services'
 import type { CreateExpenseDTO, ListExpensesParams } from '@/types'
 
-// ── Expenses ──────────────────────────────────────────────────────────────────
-
+// Expenses
 export const EXPENSE_KEYS = {
   all: ['expenses'] as const,
   list: (params: ListExpensesParams) => [...EXPENSE_KEYS.all, 'list', params] as const,
@@ -41,8 +40,7 @@ export function useDeleteExpense() {
   })
 }
 
-// ── Categories ────────────────────────────────────────────────────────────────
-
+// Categories
 export const CATEGORY_KEYS = { all: ['categories'] as const }
 
 export function useCategories() {
@@ -65,8 +63,7 @@ export function useDeleteCategory() {
   })
 }
 
-// ── Reports ───────────────────────────────────────────────────────────────────
-
+// Reports
 export const REPORT_KEYS = {
   monthly: (months: number) => ['reports', 'monthly', months] as const,
   categories: (start?: string, end?: string) => ['reports', 'categories', start, end] as const,
@@ -80,8 +77,7 @@ export function useCategoryReport(start?: string, end?: string) {
   return useQuery({ queryKey: REPORT_KEYS.categories(start, end), queryFn: () => reportService.categories(start, end) })
 }
 
-// ── Imports ───────────────────────────────────────────────────────────────────
-
+// Imports
 export const IMPORT_KEYS = { all: ['imports'] as const }
 
 export function useImports() {

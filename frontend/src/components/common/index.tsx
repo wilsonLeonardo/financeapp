@@ -2,7 +2,7 @@ import { cn } from '@/utils'
 import { Loader2, AlertCircle, X } from 'lucide-react'
 import { useState } from 'react'
 
-// ── Spinner ───────────────────────────────────────────────────────────────────
+// Spinner
 export function Spinner({ className }: { className?: string }) {
   return <Loader2 className={cn('animate-spin text-brand-500', className)} size={20} />
 }
@@ -15,7 +15,7 @@ export function PageLoader() {
   )
 }
 
-// ── Empty State ───────────────────────────────────────────────────────────────
+// Empty State
 export function EmptyState({ message, icon }: { message: string; icon?: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center justify-center h-48 gap-3 text-slate-500">
@@ -25,7 +25,7 @@ export function EmptyState({ message, icon }: { message: string; icon?: React.Re
   )
 }
 
-// ── Alert ─────────────────────────────────────────────────────────────────────
+// Alert
 interface AlertProps { message: string; type?: 'error' | 'success' | 'info'; onClose?: () => void }
 
 export function Alert({ message, type = 'error', onClose }: AlertProps) {
@@ -47,7 +47,7 @@ export function Alert({ message, type = 'error', onClose }: AlertProps) {
   )
 }
 
-// ── Modal ─────────────────────────────────────────────────────────────────────
+// Modal
 interface ModalProps { open: boolean; onClose: () => void; title: string; children: React.ReactNode }
 
 export function Modal({ open, onClose, title, children }: ModalProps) {
@@ -68,7 +68,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
   )
 }
 
-// ── Stat Card ─────────────────────────────────────────────────────────────────
+// Stat Card
 interface StatCardProps {
   label: string
   value: string
@@ -93,7 +93,7 @@ export function StatCard({ label, value, sub, icon, trend }: StatCardProps) {
   )
 }
 
-// ── Confirm Dialog ────────────────────────────────────────────────────────────
+// Confirm Dialog
 interface ConfirmProps {
   open: boolean
   title: string
@@ -123,7 +123,7 @@ export function ConfirmDialog({ open, title, description, onConfirm, onCancel, l
   )
 }
 
-// ── Toast ─────────────────────────────────────────────────────────────────────
+// Toast
 interface ToastState { message: string; type: 'success' | 'error' }
 
 export function useToast() {
