@@ -9,11 +9,12 @@ import (
 	"gorm.io/gorm"
 )
 
-// ListFilter holds query filters for listing expenses.
+//go:generate go tool mockgen -source=repository.go -destination=../testutils/mocks/expense/repository_mock.go -package mocks
+
+// ListFilter holds query filters for listing expenses. Uncategorized selects
+// the expenses with no category at all and takes precedence over CategoryID.
 type ListFilter struct {
-	UserID uuid.UUID
-	// CategoryID filters by one category; Uncategorized instead selects the
-	// transactions that have no category at all. Uncategorized wins if both set.
+	UserID        uuid.UUID
 	CategoryID    *uuid.UUID
 	Uncategorized bool
 	Type          *domain.TransactionType

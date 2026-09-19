@@ -2,15 +2,18 @@ package auth
 
 import (
 	"context"
+	"log/slog"
 	"time"
 
-	"github.com/financeapp/backend/internal/config"
 	"github.com/financeapp/backend/internal/domain"
-	"github.com/financeapp/backend/internal/middleware"
+	"github.com/financeapp/backend/pkg/config"
 	apperrors "github.com/financeapp/backend/pkg/errors"
+	"github.com/financeapp/backend/pkg/security"
+	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
-	"golang.org/x/crypto/bcrypt"
 )
+
+//go:generate go tool mockgen -source=service.go -destination=../testutils/mocks/auth/service_mock.go -package mocks
 
 // RegisterRequest is the payload for user registration.
 type RegisterRequest struct {
@@ -31,8 +34,6 @@ type AuthResponse struct {
 	User  *domain.User `json:"user"`
 }
 
-//go:generate mockgen -source=service.go -destination=mocks/service_mock.go
-
 // Service defines the business logic interface for auth.
 type Service interface {
 	Register(req *RegisterRequest) (*AuthResponse, error)
@@ -44,32 +45,33 @@ type service struct {
 	repo Repository
 	rdb  *redis.Client
 	cfg  *config.JWTConfig
+	log  *slog.Logger
 }
 
 // NewService creates a new auth service.
-func NewService(repo Repository, rdb *redis.Client, cfg *config.JWTConfig) Service {
-	return &service{repo: repo, rdb: rdb, cfg: cfg}
+func NewService(repo Repository, rdb *redis.Client, cfg *config.JWTConfig, log *slog.Logger) Service {
+	return &service{repo: repo, rdb: rdb, cfg: cfg, log: log}
 }
 
 func (s *service) Register(req *RegisterRequest) (*AuthResponse, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	hashedPassword, err := security.HashPassword(req.Password)
 	if err != nil {
-		return nil, apperrors.Wrap(500, "failed to hash password", err)
+		return nil, apperrors.WrapLogged(s.log, "failed to hash password", err)
 	}
 
 	user := &domain.User{
 		Name:     req.Name,
 		Email:    req.Email,
-		Password: string(hashedPassword),
+		Password: hashedPassword,
 	}
 
 	if err := s.repo.CreateUser(user); err != nil {
 		return nil, err
 	}
 
-	token, err := middleware.GenerateToken(user.ID, s.cfg)
+	token, err := s.issueToken(user.ID)
 	if err != nil {
-		return nil, apperrors.Wrap(500, "failed to generate token", err)
+		return nil, apperrors.WrapLogged(s.log, "failed to generate token", err)
 	}
 
 	return &AuthResponse{Token: token, User: user}, nil
@@ -81,27 +83,36 @@ func (s *service) Login(req *LoginRequest) (*AuthResponse, error) {
 		return nil, apperrors.New(401, "invalid credentials")
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+	if err := security.CheckPassword(user.Password, req.Password); err != nil {
 		return nil, apperrors.New(401, "invalid credentials")
 	}
 
-	token, err := middleware.GenerateToken(user.ID, s.cfg)
+	token, err := s.issueToken(user.ID)
 	if err != nil {
-		return nil, apperrors.Wrap(500, "failed to generate token", err)
+		return nil, apperrors.WrapLogged(s.log, "failed to generate token", err)
 	}
 
 	return &AuthResponse{Token: token, User: user}, nil
 }
 
 func (s *service) Logout(token string) error {
-	claims, err := middleware.ParseToken(token, s.cfg)
+	claims, err := security.ParseToken(token, s.cfg.Secret)
 	if err != nil {
 		return nil // already invalid
 	}
 
 	ttl := time.Until(claims.ExpiresAt.Time)
 	if ttl > 0 {
-		s.rdb.Set(context.Background(), "blacklist:"+token, 1, ttl)
+		if err := s.rdb.Set(context.Background(), "blacklist:"+token, 1, ttl).Err(); err != nil {
+			// The caller is told the logout worked either way, so a token that
+			// stays valid until it expires must at least be visible here.
+			s.log.Error("failed to revoke token", "error", err, "user_id", claims.UserID)
+		}
 	}
 	return nil
+}
+
+// issueToken signs an access token using the configured secret and expiry.
+func (s *service) issueToken(userID uuid.UUID) (string, error) {
+	return security.GenerateToken(userID, s.cfg.Secret, time.Duration(s.cfg.ExpiryHours)*time.Hour)
 }

@@ -16,7 +16,8 @@ type Config struct {
 }
 
 type AppConfig struct {
-	Env string
+	Env      string
+	LogLevel string
 }
 
 type ServerConfig struct {
@@ -47,7 +48,8 @@ type JWTConfig struct {
 func Load() *Config {
 	return &Config{
 		App: AppConfig{
-			Env: getEnv("APP_ENV", "development"),
+			Env:      getEnv("APP_ENV", "development"),
+			LogLevel: getEnv("LOG_LEVEL", "info"),
 		},
 		Server: ServerConfig{
 			Port: getEnv("SERVER_PORT", "8080"),

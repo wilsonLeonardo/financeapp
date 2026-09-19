@@ -2,14 +2,14 @@ package database
 
 import (
 	"context"
-	"log"
+	"log/slog"
 
-	"github.com/financeapp/backend/internal/config"
+	"github.com/financeapp/backend/pkg/config"
 	"github.com/redis/go-redis/v9"
 )
 
 // NewRedis creates and validates a new Redis client connection.
-func NewRedis(cfg *config.Config) (*redis.Client, error) {
+func NewRedis(cfg *config.Config, log *slog.Logger) (*redis.Client, error) {
 	client := redis.NewClient(&redis.Options{
 		Addr:     cfg.Redis.Addr(),
 		Password: cfg.Redis.Password,
@@ -21,6 +21,6 @@ func NewRedis(cfg *config.Config) (*redis.Client, error) {
 		return nil, err
 	}
 
-	log.Println("✅ Redis connected")
+	log.Info("redis connected", "addr", cfg.Redis.Addr())
 	return client, nil
 }

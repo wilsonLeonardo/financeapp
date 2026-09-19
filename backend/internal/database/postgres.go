@@ -1,18 +1,18 @@
 package database
 
 import (
-	"log"
+	"log/slog"
 	"time"
 
-	"github.com/financeapp/backend/internal/config"
 	"github.com/financeapp/backend/internal/domain"
+	"github.com/financeapp/backend/pkg/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 // NewPostgres creates a new PostgreSQL connection with GORM.
-func NewPostgres(cfg *config.Config) (*gorm.DB, error) {
+func NewPostgres(cfg *config.Config, log *slog.Logger) (*gorm.DB, error) {
 	gormLogger := logger.Default.LogMode(logger.Silent)
 	if cfg.App.Env == "development" {
 		gormLogger = logger.Default.LogMode(logger.Info)
@@ -39,7 +39,7 @@ func NewPostgres(cfg *config.Config) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	log.Println("✅ PostgreSQL connected and migrated")
+	log.Info("postgres connected and migrated", "host", cfg.Postgres.Host, "database", cfg.Postgres.DBName)
 	return db, nil
 }
 

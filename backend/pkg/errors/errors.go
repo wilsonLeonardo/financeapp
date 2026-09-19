@@ -2,6 +2,7 @@ package errors
 
 import (
 	"errors"
+	"log/slog"
 	"net/http"
 )
 
@@ -59,4 +60,11 @@ func IsUnauthorized(err error) bool {
 		return e.Code == http.StatusUnauthorized
 	}
 	return false
+}
+
+// WrapLogged records the cause and returns it as a 500. The client only sees
+// message, so without the log the real failure would be lost for good.
+func WrapLogged(log *slog.Logger, message string, err error) *AppError {
+	log.Error(message, "error", err)
+	return Wrap(http.StatusInternalServerError, message, err)
 }

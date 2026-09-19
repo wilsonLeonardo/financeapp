@@ -1,6 +1,7 @@
 package expense
 
 import (
+	"log/slog"
 	"time"
 
 	"github.com/financeapp/backend/internal/domain"
@@ -8,6 +9,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
+
+//go:generate go tool mockgen -source=service.go -destination=../testutils/mocks/expense/service_mock.go -package mocks
 
 // CreateRequest is the payload for creating an expense.
 type CreateRequest struct {
@@ -33,10 +36,10 @@ type UpdateRequest struct {
 // no category. It is not a valid UUID, so it cannot collide with a real id.
 const UncategorizedFilter = "none"
 
-// ListRequest holds pagination and filter params.
+// ListRequest holds pagination and filter params. CategoryID is a string
+// because gin cannot bind a query param onto uuid.UUID, a [16]byte array; it
+// is parsed in List.
 type ListRequest struct {
-	// CategoryID is bound as a string because gin cannot map a query param onto
-	// uuid.UUID (it is a [16]byte array); it is parsed in List.
 	CategoryID string                  `form:"category_id"`
 	Type       *domain.TransactionType `form:"type"`
 	StartDate  string                  `form:"start_date"`
@@ -66,11 +69,12 @@ type Service interface {
 
 type service struct {
 	repo Repository
+	log  *slog.Logger
 }
 
 // NewService creates a new expense service.
-func NewService(repo Repository) Service {
-	return &service{repo: repo}
+func NewService(repo Repository, log *slog.Logger) Service {
+	return &service{repo: repo, log: log}
 }
 
 func (s *service) Create(userID uuid.UUID, req *CreateRequest) (*domain.Expense, error) {
@@ -94,7 +98,7 @@ func (s *service) Create(userID uuid.UUID, req *CreateRequest) (*domain.Expense,
 	}
 
 	if err := s.repo.Create(expense); err != nil {
-		return nil, apperrors.Wrap(500, "failed to create expense", err)
+		return nil, apperrors.WrapLogged(s.log, "failed to create expense", err)
 	}
 
 	return s.repo.FindByID(expense.ID, userID)
@@ -143,7 +147,7 @@ func (s *service) List(userID uuid.UUID, req ListRequest) (*PaginatedResponse, e
 
 	expenses, total, err := s.repo.List(filter)
 	if err != nil {
-		return nil, apperrors.Wrap(500, "failed to list expenses", err)
+		return nil, apperrors.WrapLogged(s.log, "failed to list expenses", err)
 	}
 
 	return &PaginatedResponse{
@@ -183,7 +187,7 @@ func (s *service) Update(id, userID uuid.UUID, req *UpdateRequest) (*domain.Expe
 	expense.Tags = req.Tags
 
 	if err := s.repo.Update(expense); err != nil {
-		return nil, apperrors.Wrap(500, "failed to update expense", err)
+		return nil, apperrors.WrapLogged(s.log, "failed to update expense", err)
 	}
 	return expense, nil
 }
