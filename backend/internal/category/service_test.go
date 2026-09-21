@@ -1,6 +1,7 @@
 package category_test
 
 import (
+	"context"
 	"errors"
 	"github.com/financeapp/backend/pkg/logger"
 	"net/http"
@@ -37,12 +38,12 @@ func TestCreate_PersistsTheRequestFieldsForTheUser(t *testing.T) {
 	userID := uuid.New()
 	var saved *domain.Category
 
-	repo.EXPECT().Create(gomock.Any()).DoAndReturn(func(c *domain.Category) error {
+	repo.EXPECT().Create(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, c *domain.Category) error {
 		saved = c
 		return nil
 	})
 
-	got, err := svc.Create(userID, &category.UpsertRequest{Name: "Mercado", Icon: "🛒", Color: "#22c55e"})
+	got, err := svc.Create(t.Context(), userID, &category.UpsertRequest{Name: "Mercado", Icon: "🛒", Color: "#22c55e"})
 	require.NoError(t, err)
 
 	require.NotNil(t, saved)
@@ -55,9 +56,9 @@ func TestCreate_PersistsTheRequestFieldsForTheUser(t *testing.T) {
 
 func TestCreate_WrapsRepositoryFailureAs500(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().Create(gomock.Any()).Return(errDB)
+	repo.EXPECT().Create(t.Context(), gomock.Any()).Return(errDB)
 
-	_, err := svc.Create(uuid.New(), &category.UpsertRequest{Name: "Casa"})
+	_, err := svc.Create(t.Context(), uuid.New(), &category.UpsertRequest{Name: "Casa"})
 	assert.Equal(t, http.StatusInternalServerError, requireAppError(t, err).Code)
 	assert.ErrorIs(t, err, errDB, "the underlying error must stay wrapped for logging")
 }
@@ -65,18 +66,18 @@ func TestCreate_WrapsRepositoryFailureAs500(t *testing.T) {
 func TestGetAll_ScopesToTheUser(t *testing.T) {
 	svc, repo := newService(t)
 	userID := uuid.New()
-	repo.EXPECT().FindAll(userID).Return([]*domain.Category{{Name: "Casa"}, {Name: "Mercado"}}, nil)
+	repo.EXPECT().FindAll(t.Context(), userID).Return([]*domain.Category{{Name: "Casa"}, {Name: "Mercado"}}, nil)
 
-	got, err := svc.GetAll(userID)
+	got, err := svc.GetAll(t.Context(), userID)
 	require.NoError(t, err)
 	assert.Len(t, got, 2)
 }
 
 func TestGetAll_PropagatesRepositoryError(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().FindAll(gomock.Any()).Return(nil, errDB)
+	repo.EXPECT().FindAll(t.Context(), gomock.Any()).Return(nil, errDB)
 
-	_, err := svc.GetAll(uuid.New())
+	_, err := svc.GetAll(t.Context(), uuid.New())
 	assert.ErrorIs(t, err, errDB)
 }
 
@@ -85,10 +86,10 @@ func TestUpdate_OverwritesTheEditableFields(t *testing.T) {
 	id, userID := uuid.New(), uuid.New()
 	existing := &domain.Category{ID: id, UserID: userID, Name: "Antigo", Icon: "📦", Color: "#000000"}
 
-	repo.EXPECT().FindByID(id, userID).Return(existing, nil)
-	repo.EXPECT().Update(existing).Return(nil)
+	repo.EXPECT().FindByID(t.Context(), id, userID).Return(existing, nil)
+	repo.EXPECT().Update(t.Context(), existing).Return(nil)
 
-	got, err := svc.Update(id, userID, &category.UpsertRequest{Name: "Novo", Icon: "🏠", Color: "#ffffff"})
+	got, err := svc.Update(t.Context(), id, userID, &category.UpsertRequest{Name: "Novo", Icon: "🏠", Color: "#ffffff"})
 	require.NoError(t, err)
 	assert.Equal(t, "Novo", got.Name)
 	assert.Equal(t, "🏠", got.Icon)
@@ -100,34 +101,34 @@ func TestUpdate_OverwritesTheEditableFields(t *testing.T) {
 // A category that is missing, or belongs to someone else, must not be written.
 func TestUpdate_UnknownCategoryDoesNotWrite(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().FindByID(gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
+	repo.EXPECT().FindByID(t.Context(), gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
 	// No Update expectation: gomock fails the test if the service writes anyway.
 
-	_, err := svc.Update(uuid.New(), uuid.New(), &category.UpsertRequest{Name: "X"})
+	_, err := svc.Update(t.Context(), uuid.New(), uuid.New(), &category.UpsertRequest{Name: "X"})
 	assert.Equal(t, http.StatusNotFound, requireAppError(t, err).Code)
 }
 
 func TestUpdate_WrapsWriteFailureAs500(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().FindByID(gomock.Any(), gomock.Any()).Return(&domain.Category{}, nil)
-	repo.EXPECT().Update(gomock.Any()).Return(errDB)
+	repo.EXPECT().FindByID(t.Context(), gomock.Any(), gomock.Any()).Return(&domain.Category{}, nil)
+	repo.EXPECT().Update(t.Context(), gomock.Any()).Return(errDB)
 
-	_, err := svc.Update(uuid.New(), uuid.New(), &category.UpsertRequest{Name: "X"})
+	_, err := svc.Update(t.Context(), uuid.New(), uuid.New(), &category.UpsertRequest{Name: "X"})
 	assert.Equal(t, http.StatusInternalServerError, requireAppError(t, err).Code)
 }
 
 func TestDelete_ForwardsBothIDs(t *testing.T) {
 	svc, repo := newService(t)
 	id, userID := uuid.New(), uuid.New()
-	repo.EXPECT().Delete(id, userID).Return(nil)
+	repo.EXPECT().Delete(t.Context(), id, userID).Return(nil)
 
-	assert.NoError(t, svc.Delete(id, userID))
+	assert.NoError(t, svc.Delete(t.Context(), id, userID))
 }
 
 func TestDelete_PropagatesNotFound(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().Delete(gomock.Any(), gomock.Any()).Return(apperrors.ErrNotFound)
+	repo.EXPECT().Delete(t.Context(), gomock.Any(), gomock.Any()).Return(apperrors.ErrNotFound)
 
-	err := svc.Delete(uuid.New(), uuid.New())
+	err := svc.Delete(t.Context(), uuid.New(), uuid.New())
 	assert.Equal(t, http.StatusNotFound, requireAppError(t, err).Code)
 }

@@ -1,6 +1,7 @@
 package expense_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 	"time"
@@ -32,7 +33,7 @@ func validCreateBody() map[string]any {
 func TestHandlerCreate_Created(t *testing.T) {
 	h, svc := newHandler(t)
 	userID := uuid.New()
-	svc.EXPECT().Create(userID, gomock.Any()).Return(&domain.Expense{Description: "Compras"}, nil)
+	svc.EXPECT().Create(gomock.Any(), userID, gomock.Any()).Return(&domain.Expense{Description: "Compras"}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/expenses", UserID: &userID, Body: validCreateBody(),
@@ -77,8 +78,8 @@ func TestHandlerCreate_AmountIsValidatedByTheServiceNotTheBinder(t *testing.T) {
 	for name, body := range cases {
 		t.Run(name, func(t *testing.T) {
 			h, svc := newHandler(t)
-			svc.EXPECT().Create(gomock.Any(), gomock.Any()).DoAndReturn(
-				func(_ uuid.UUID, req *expense.CreateRequest) (*domain.Expense, error) {
+			svc.EXPECT().Create(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
+				func(_ context.Context, _ uuid.UUID, req *expense.CreateRequest) (*domain.Expense, error) {
 					assert.True(t, req.Amount.IsZero(), "the binder let a zero amount through")
 					return nil, apperrors.New(http.StatusBadRequest, "amount must be greater than zero")
 				})
@@ -96,7 +97,7 @@ func TestHandlerCreate_AmountIsValidatedByTheServiceNotTheBinder(t *testing.T) {
 
 func TestHandlerCreate_MapsServiceError(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Create(gomock.Any(), gomock.Any()).
+	svc.EXPECT().Create(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(nil, apperrors.New(http.StatusBadRequest, "amount must be greater than zero"))
 
 	c, rec := testutils.NewContext(t, testutils.Request{
@@ -113,8 +114,8 @@ func TestHandlerList_PassesQueryFiltersThrough(t *testing.T) {
 	userID := uuid.New()
 	categoryID := uuid.New()
 
-	svc.EXPECT().List(userID, gomock.Any()).DoAndReturn(
-		func(_ uuid.UUID, req expense.ListRequest) (*expense.PaginatedResponse, error) {
+	svc.EXPECT().List(gomock.Any(), userID, gomock.Any()).DoAndReturn(
+		func(_ context.Context, _ uuid.UUID, req expense.ListRequest) (*expense.PaginatedResponse, error) {
 			assert.Equal(t, categoryID.String(), req.CategoryID)
 			assert.Equal(t, "2026-09-01", req.StartDate)
 			assert.Equal(t, "2026-09-30", req.EndDate)
@@ -137,8 +138,8 @@ func TestHandlerList_PassesQueryFiltersThrough(t *testing.T) {
 // The "no category" filter travels as a sentinel that is not a valid uuid.
 func TestHandlerList_AcceptsUncategorizedSentinel(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().List(gomock.Any(), gomock.Any()).DoAndReturn(
-		func(_ uuid.UUID, req expense.ListRequest) (*expense.PaginatedResponse, error) {
+	svc.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
+		func(_ context.Context, _ uuid.UUID, req expense.ListRequest) (*expense.PaginatedResponse, error) {
 			assert.Equal(t, expense.UncategorizedFilter, req.CategoryID)
 			return &expense.PaginatedResponse{}, nil
 		})
@@ -159,7 +160,7 @@ func TestHandlerList_RejectsUnbindableQuery(t *testing.T) {
 
 func TestHandlerList_MapsServiceError(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().List(gomock.Any(), gomock.Any()).
+	svc.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(nil, apperrors.New(http.StatusBadRequest, "invalid category_id"))
 
 	c, rec := testutils.NewContext(t, testutils.Request{Target: "/expenses?category_id=nope"})
@@ -172,7 +173,7 @@ func TestHandlerList_MapsServiceError(t *testing.T) {
 func TestHandlerGetByID_OK(t *testing.T) {
 	h, svc := newHandler(t)
 	id, userID := uuid.New(), uuid.New()
-	svc.EXPECT().GetByID(id, userID).Return(&domain.Expense{ID: id}, nil)
+	svc.EXPECT().GetByID(gomock.Any(), id, userID).Return(&domain.Expense{ID: id}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Target: "/expenses/" + id.String(), UserID: &userID,
@@ -213,7 +214,7 @@ func TestHandler_MalformedIDIsRejectedBeforeTheService(t *testing.T) {
 func TestHandlerUpdate_OK(t *testing.T) {
 	h, svc := newHandler(t)
 	id, userID := uuid.New(), uuid.New()
-	svc.EXPECT().Update(id, userID, gomock.Any()).Return(&domain.Expense{ID: id}, nil)
+	svc.EXPECT().Update(gomock.Any(), id, userID, gomock.Any()).Return(&domain.Expense{ID: id}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPut, Target: "/expenses/" + id.String(), UserID: &userID,
@@ -239,7 +240,7 @@ func TestHandlerUpdate_RejectsUnknownType(t *testing.T) {
 func TestHandlerDelete_NoContent(t *testing.T) {
 	h, svc := newHandler(t)
 	id, userID := uuid.New(), uuid.New()
-	svc.EXPECT().Delete(id, userID).Return(nil)
+	svc.EXPECT().Delete(gomock.Any(), id, userID).Return(nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodDelete, Target: "/expenses/" + id.String(), UserID: &userID,
@@ -254,7 +255,7 @@ func TestHandlerDelete_NoContent(t *testing.T) {
 func TestHandlerDelete_NotFound(t *testing.T) {
 	h, svc := newHandler(t)
 	id := uuid.New()
-	svc.EXPECT().Delete(id, gomock.Any()).Return(apperrors.ErrNotFound)
+	svc.EXPECT().Delete(gomock.Any(), id, gomock.Any()).Return(apperrors.ErrNotFound)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodDelete, Target: "/expenses/" + id.String(),
@@ -272,7 +273,7 @@ func TestHandlerMonthlySummary_IgnoresTheMonthsQueryParam(t *testing.T) {
 	for _, query := range []string{"", "?months=3", "?months=24", "?months=garbage"} {
 		t.Run("query="+query, func(t *testing.T) {
 			h, svc := newHandler(t)
-			svc.EXPECT().GetMonthlySummary(gomock.Any(), 12).Return(nil, nil)
+			svc.EXPECT().GetMonthlySummary(gomock.Any(), gomock.Any(), 12).Return(nil, nil)
 
 			c, rec := testutils.NewContext(t, testutils.Request{Target: "/reports/monthly" + query})
 			h.MonthlySummary(c)
@@ -284,7 +285,7 @@ func TestHandlerMonthlySummary_IgnoresTheMonthsQueryParam(t *testing.T) {
 func TestHandlerCategorySummary_ParsesTheDateRange(t *testing.T) {
 	h, svc := newHandler(t)
 	userID := uuid.New()
-	svc.EXPECT().GetCategorySummary(userID,
+	svc.EXPECT().GetCategorySummary(gomock.Any(), userID,
 		time.Date(2026, 3, 1, 0, 0, 0, 0, time.UTC),
 		time.Date(2026, 3, 31, 0, 0, 0, 0, time.UTC),
 	).Return(nil, nil)
@@ -302,7 +303,7 @@ func TestHandlerCategorySummary_DefaultsToCurrentMonth(t *testing.T) {
 	now := time.Now()
 	wantStart := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, time.UTC)
 
-	svc.EXPECT().GetCategorySummary(gomock.Any(), wantStart, wantStart.AddDate(0, 1, -1)).Return(nil, nil)
+	svc.EXPECT().GetCategorySummary(gomock.Any(), gomock.Any(), wantStart, wantStart.AddDate(0, 1, -1)).Return(nil, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{Target: "/reports/categories"})
 	h.CategorySummary(c)
@@ -315,11 +316,38 @@ func TestHandlerCategorySummary_IgnoresUnparseableDates(t *testing.T) {
 	now := time.Now()
 	wantStart := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, time.UTC)
 
-	svc.EXPECT().GetCategorySummary(gomock.Any(), wantStart, gomock.Any()).Return(nil, nil)
+	svc.EXPECT().GetCategorySummary(gomock.Any(), gomock.Any(), wantStart, gomock.Any()).Return(nil, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Target: "/reports/categories?start_date=01-03-2026",
 	})
 	h.CategorySummary(c)
 	testutils.AssertStatus(t, rec, http.StatusOK)
+}
+
+// The handler must hand the request's own context to the service, so a client
+// that gives up cancels the work downstream instead of leaving the query running.
+func TestHandlerList_PassesTheRequestContextDownstream(t *testing.T) {
+	h, svc := newHandler(t)
+
+	var seen context.Context
+	svc.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
+		func(ctx context.Context, _ uuid.UUID, _ expense.ListRequest) (*expense.PaginatedResponse, error) {
+			seen = ctx
+			return &expense.PaginatedResponse{}, nil
+		})
+
+	c, _ := testutils.NewContext(t, testutils.Request{Target: "/expenses"})
+	ctx, cancel := context.WithCancel(c.Request.Context())
+	c.Request = c.Request.WithContext(ctx)
+
+	h.List(c)
+
+	require.NotNil(t, seen, "the service never received a context")
+	require.NoError(t, seen.Err(), "the context should still be live during the call")
+
+	// Cancelling the request must be visible to whatever the service kept.
+	cancel()
+	assert.ErrorIs(t, seen.Err(), context.Canceled,
+		"the service got a detached context; cancellation would not reach the database")
 }

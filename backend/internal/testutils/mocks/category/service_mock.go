@@ -10,6 +10,7 @@
 package mocks
 
 import (
+	context "context"
 	reflect "reflect"
 
 	category "github.com/financeapp/backend/internal/category"
@@ -43,60 +44,60 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockService) Create(userID uuid.UUID, req *category.UpsertRequest) (*domain.Category, error) {
+func (m *MockService) Create(ctx context.Context, userID uuid.UUID, req *category.UpsertRequest) (*domain.Category, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", userID, req)
+	ret := m.ctrl.Call(m, "Create", ctx, userID, req)
 	ret0, _ := ret[0].(*domain.Category)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockServiceMockRecorder) Create(userID, req any) *gomock.Call {
+func (mr *MockServiceMockRecorder) Create(ctx, userID, req any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockService)(nil).Create), userID, req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockService)(nil).Create), ctx, userID, req)
 }
 
 // Delete mocks base method.
-func (m *MockService) Delete(id, userID uuid.UUID) error {
+func (m *MockService) Delete(ctx context.Context, id, userID uuid.UUID) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", id, userID)
+	ret := m.ctrl.Call(m, "Delete", ctx, id, userID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockServiceMockRecorder) Delete(id, userID any) *gomock.Call {
+func (mr *MockServiceMockRecorder) Delete(ctx, id, userID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockService)(nil).Delete), id, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockService)(nil).Delete), ctx, id, userID)
 }
 
 // GetAll mocks base method.
-func (m *MockService) GetAll(userID uuid.UUID) ([]*domain.Category, error) {
+func (m *MockService) GetAll(ctx context.Context, userID uuid.UUID) ([]*domain.Category, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll", userID)
+	ret := m.ctrl.Call(m, "GetAll", ctx, userID)
 	ret0, _ := ret[0].([]*domain.Category)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAll indicates an expected call of GetAll.
-func (mr *MockServiceMockRecorder) GetAll(userID any) *gomock.Call {
+func (mr *MockServiceMockRecorder) GetAll(ctx, userID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockService)(nil).GetAll), userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockService)(nil).GetAll), ctx, userID)
 }
 
 // Update mocks base method.
-func (m *MockService) Update(id, userID uuid.UUID, req *category.UpsertRequest) (*domain.Category, error) {
+func (m *MockService) Update(ctx context.Context, id, userID uuid.UUID, req *category.UpsertRequest) (*domain.Category, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", id, userID, req)
+	ret := m.ctrl.Call(m, "Update", ctx, id, userID, req)
 	ret0, _ := ret[0].(*domain.Category)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Update indicates an expected call of Update.
-func (mr *MockServiceMockRecorder) Update(id, userID, req any) *gomock.Call {
+func (mr *MockServiceMockRecorder) Update(ctx, id, userID, req any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockService)(nil).Update), id, userID, req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockService)(nil).Update), ctx, id, userID, req)
 }

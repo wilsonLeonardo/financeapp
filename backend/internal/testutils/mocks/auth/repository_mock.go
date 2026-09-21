@@ -10,6 +10,7 @@
 package mocks
 
 import (
+	context "context"
 	reflect "reflect"
 
 	domain "github.com/financeapp/backend/internal/domain"
@@ -41,45 +42,45 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // CreateUser mocks base method.
-func (m *MockRepository) CreateUser(user *domain.User) error {
+func (m *MockRepository) CreateUser(ctx context.Context, user *domain.User) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateUser", user)
+	ret := m.ctrl.Call(m, "CreateUser", ctx, user)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // CreateUser indicates an expected call of CreateUser.
-func (mr *MockRepositoryMockRecorder) CreateUser(user any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) CreateUser(ctx, user any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockRepository)(nil).CreateUser), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockRepository)(nil).CreateUser), ctx, user)
 }
 
 // FindUserByEmail mocks base method.
-func (m *MockRepository) FindUserByEmail(email string) (*domain.User, error) {
+func (m *MockRepository) FindUserByEmail(ctx context.Context, email string) (*domain.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUserByEmail", email)
+	ret := m.ctrl.Call(m, "FindUserByEmail", ctx, email)
 	ret0, _ := ret[0].(*domain.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindUserByEmail indicates an expected call of FindUserByEmail.
-func (mr *MockRepositoryMockRecorder) FindUserByEmail(email any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) FindUserByEmail(ctx, email any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByEmail", reflect.TypeOf((*MockRepository)(nil).FindUserByEmail), email)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByEmail", reflect.TypeOf((*MockRepository)(nil).FindUserByEmail), ctx, email)
 }
 
 // FindUserByID mocks base method.
-func (m *MockRepository) FindUserByID(id string) (*domain.User, error) {
+func (m *MockRepository) FindUserByID(ctx context.Context, id string) (*domain.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUserByID", id)
+	ret := m.ctrl.Call(m, "FindUserByID", ctx, id)
 	ret0, _ := ret[0].(*domain.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindUserByID indicates an expected call of FindUserByID.
-func (mr *MockRepositoryMockRecorder) FindUserByID(id any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) FindUserByID(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByID", reflect.TypeOf((*MockRepository)(nil).FindUserByID), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByID", reflect.TypeOf((*MockRepository)(nil).FindUserByID), ctx, id)
 }

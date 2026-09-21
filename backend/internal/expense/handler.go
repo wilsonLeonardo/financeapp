@@ -39,7 +39,7 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 
-	expense, err := h.service.Create(userID, &req)
+	expense, err := h.service.Create(c.Request.Context(), userID, &req)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -65,7 +65,7 @@ func (h *Handler) GetByID(c *gin.Context) {
 		return
 	}
 
-	expense, err := h.service.GetByID(id, userID)
+	expense, err := h.service.GetByID(c.Request.Context(), id, userID)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -97,7 +97,7 @@ func (h *Handler) List(c *gin.Context) {
 		return
 	}
 
-	result, err := h.service.List(userID, req)
+	result, err := h.service.List(c.Request.Context(), userID, req)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -132,7 +132,7 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 
-	expense, err := h.service.Update(id, userID, &req)
+	expense, err := h.service.Update(c.Request.Context(), id, userID, &req)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -158,7 +158,7 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 
-	if err := h.service.Delete(id, userID); err != nil {
+	if err := h.service.Delete(c.Request.Context(), id, userID); err != nil {
 		response.Error(c, err)
 		return
 	}
@@ -184,7 +184,7 @@ func (h *Handler) MonthlySummary(c *gin.Context) {
 		months = 12
 	}
 
-	summaries, err := h.service.GetMonthlySummary(userID, months)
+	summaries, err := h.service.GetMonthlySummary(c.Request.Context(), userID, months)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -221,7 +221,7 @@ func (h *Handler) CategorySummary(c *gin.Context) {
 		}
 	}
 
-	summaries, err := h.service.GetCategorySummary(userID, start, end)
+	summaries, err := h.service.GetCategorySummary(c.Request.Context(), userID, start, end)
 	if err != nil {
 		response.Error(c, err)
 		return

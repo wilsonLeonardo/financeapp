@@ -1,6 +1,7 @@
 package expense
 
 import (
+	"context"
 	"log/slog"
 	"time"
 
@@ -58,13 +59,13 @@ type PaginatedResponse struct {
 
 // Service defines the business logic interface for expenses.
 type Service interface {
-	Create(userID uuid.UUID, req *CreateRequest) (*domain.Expense, error)
-	GetByID(id, userID uuid.UUID) (*domain.Expense, error)
-	List(userID uuid.UUID, req ListRequest) (*PaginatedResponse, error)
-	Update(id, userID uuid.UUID, req *UpdateRequest) (*domain.Expense, error)
-	Delete(id, userID uuid.UUID) error
-	GetMonthlySummary(userID uuid.UUID, months int) ([]*MonthlySummary, error)
-	GetCategorySummary(userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error)
+	Create(ctx context.Context, userID uuid.UUID, req *CreateRequest) (*domain.Expense, error)
+	GetByID(ctx context.Context, id, userID uuid.UUID) (*domain.Expense, error)
+	List(ctx context.Context, userID uuid.UUID, req ListRequest) (*PaginatedResponse, error)
+	Update(ctx context.Context, id, userID uuid.UUID, req *UpdateRequest) (*domain.Expense, error)
+	Delete(ctx context.Context, id, userID uuid.UUID) error
+	GetMonthlySummary(ctx context.Context, userID uuid.UUID, months int) ([]*MonthlySummary, error)
+	GetCategorySummary(ctx context.Context, userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error)
 }
 
 type service struct {
@@ -77,7 +78,7 @@ func NewService(repo Repository, log *slog.Logger) Service {
 	return &service{repo: repo, log: log}
 }
 
-func (s *service) Create(userID uuid.UUID, req *CreateRequest) (*domain.Expense, error) {
+func (s *service) Create(ctx context.Context, userID uuid.UUID, req *CreateRequest) (*domain.Expense, error) {
 	if req.Amount.LessThanOrEqual(decimal.Zero) {
 		return nil, apperrors.New(400, "amount must be greater than zero")
 	}
@@ -97,18 +98,18 @@ func (s *service) Create(userID uuid.UUID, req *CreateRequest) (*domain.Expense,
 		Tags:        req.Tags,
 	}
 
-	if err := s.repo.Create(expense); err != nil {
+	if err := s.repo.Create(ctx, expense); err != nil {
 		return nil, apperrors.WrapLogged(s.log, "failed to create expense", err)
 	}
 
-	return s.repo.FindByID(expense.ID, userID)
+	return s.repo.FindByID(ctx, expense.ID, userID)
 }
 
-func (s *service) GetByID(id, userID uuid.UUID) (*domain.Expense, error) {
-	return s.repo.FindByID(id, userID)
+func (s *service) GetByID(ctx context.Context, id, userID uuid.UUID) (*domain.Expense, error) {
+	return s.repo.FindByID(ctx, id, userID)
 }
 
-func (s *service) List(userID uuid.UUID, req ListRequest) (*PaginatedResponse, error) {
+func (s *service) List(ctx context.Context, userID uuid.UUID, req ListRequest) (*PaginatedResponse, error) {
 	if req.Page < 1 {
 		req.Page = 1
 	}
@@ -145,7 +146,7 @@ func (s *service) List(userID uuid.UUID, req ListRequest) (*PaginatedResponse, e
 		}
 	}
 
-	expenses, total, err := s.repo.List(filter)
+	expenses, total, err := s.repo.List(ctx, filter)
 	if err != nil {
 		return nil, apperrors.WrapLogged(s.log, "failed to list expenses", err)
 	}
@@ -158,8 +159,8 @@ func (s *service) List(userID uuid.UUID, req ListRequest) (*PaginatedResponse, e
 	}, nil
 }
 
-func (s *service) Update(id, userID uuid.UUID, req *UpdateRequest) (*domain.Expense, error) {
-	expense, err := s.repo.FindByID(id, userID)
+func (s *service) Update(ctx context.Context, id, userID uuid.UUID, req *UpdateRequest) (*domain.Expense, error) {
+	expense, err := s.repo.FindByID(ctx, id, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -186,23 +187,23 @@ func (s *service) Update(id, userID uuid.UUID, req *UpdateRequest) (*domain.Expe
 	}
 	expense.Tags = req.Tags
 
-	if err := s.repo.Update(expense); err != nil {
+	if err := s.repo.Update(ctx, expense); err != nil {
 		return nil, apperrors.WrapLogged(s.log, "failed to update expense", err)
 	}
 	return expense, nil
 }
 
-func (s *service) Delete(id, userID uuid.UUID) error {
-	return s.repo.Delete(id, userID)
+func (s *service) Delete(ctx context.Context, id, userID uuid.UUID) error {
+	return s.repo.Delete(ctx, id, userID)
 }
 
-func (s *service) GetMonthlySummary(userID uuid.UUID, months int) ([]*MonthlySummary, error) {
+func (s *service) GetMonthlySummary(ctx context.Context, userID uuid.UUID, months int) ([]*MonthlySummary, error) {
 	if months < 1 || months > 24 {
 		months = 12
 	}
-	return s.repo.MonthlySummary(userID, months)
+	return s.repo.MonthlySummary(ctx, userID, months)
 }
 
-func (s *service) GetCategorySummary(userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error) {
-	return s.repo.CategorySummary(userID, start, end)
+func (s *service) GetCategorySummary(ctx context.Context, userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error) {
+	return s.repo.CategorySummary(ctx, userID, start, end)
 }

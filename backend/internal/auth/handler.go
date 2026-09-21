@@ -35,7 +35,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	resp, err := h.service.Register(&req)
+	resp, err := h.service.Register(c.Request.Context(), &req)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -62,7 +62,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	resp, err := h.service.Login(&req)
+	resp, err := h.service.Login(c.Request.Context(), &req)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -83,7 +83,7 @@ func (h *Handler) Login(c *gin.Context) {
 func (h *Handler) Logout(c *gin.Context) {
 	token, _ := c.Get("token")
 	if tokenStr, ok := token.(string); ok {
-		h.service.Logout(tokenStr)
+		h.service.Logout(c.Request.Context(), tokenStr)
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "logged out successfully"})
 }

@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"context"
 	"net/http"
 	"strings"
 
@@ -33,7 +32,7 @@ func Auth(cfg *config.JWTConfig, rdb *redis.Client) gin.HandlerFunc {
 
 		// Check if token is blacklisted in Redis.
 		blacklistKey := "blacklist:" + tokenStr
-		exists, err := rdb.Exists(context.Background(), blacklistKey).Result()
+		exists, err := rdb.Exists(c.Request.Context(), blacklistKey).Result()
 		if err == nil && exists > 0 {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "token revoked"})
 			return

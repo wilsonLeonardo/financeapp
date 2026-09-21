@@ -1,6 +1,7 @@
 package expense
 
 import (
+	"context"
 	"time"
 
 	"github.com/financeapp/backend/internal/domain"
@@ -41,15 +42,15 @@ type CategorySummary struct {
 
 // Repository defines the persistence interface for expenses.
 type Repository interface {
-	Create(expense *domain.Expense) error
-	FindByID(id, userID uuid.UUID) (*domain.Expense, error)
-	List(filter ListFilter) ([]*domain.Expense, int64, error)
-	Update(expense *domain.Expense) error
-	Delete(id, userID uuid.UUID) error
-	DeleteByImportID(importID string) error
-	MonthlySummary(userID uuid.UUID, months int) ([]*MonthlySummary, error)
-	CategorySummary(userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error)
-	CreateBatch(expenses []*domain.Expense) error
+	Create(ctx context.Context, expense *domain.Expense) error
+	FindByID(ctx context.Context, id, userID uuid.UUID) (*domain.Expense, error)
+	List(ctx context.Context, filter ListFilter) ([]*domain.Expense, int64, error)
+	Update(ctx context.Context, expense *domain.Expense) error
+	Delete(ctx context.Context, id, userID uuid.UUID) error
+	DeleteByImportID(ctx context.Context, importID string) error
+	MonthlySummary(ctx context.Context, userID uuid.UUID, months int) ([]*MonthlySummary, error)
+	CategorySummary(ctx context.Context, userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error)
+	CreateBatch(ctx context.Context, expenses []*domain.Expense) error
 }
 
 type postgresRepository struct {
@@ -61,13 +62,13 @@ func NewRepository(db *gorm.DB) Repository {
 	return &postgresRepository{db: db}
 }
 
-func (r *postgresRepository) Create(expense *domain.Expense) error {
-	return r.db.Create(expense).Error
+func (r *postgresRepository) Create(ctx context.Context, expense *domain.Expense) error {
+	return r.db.WithContext(ctx).Create(expense).Error
 }
 
-func (r *postgresRepository) FindByID(id, userID uuid.UUID) (*domain.Expense, error) {
+func (r *postgresRepository) FindByID(ctx context.Context, id, userID uuid.UUID) (*domain.Expense, error) {
 	var expense domain.Expense
-	err := r.db.Preload("Category").
+	err := r.db.WithContext(ctx).Preload("Category").
 		Where("id = ? AND user_id = ?", id, userID).
 		First(&expense).Error
 	if err != nil {
@@ -79,8 +80,8 @@ func (r *postgresRepository) FindByID(id, userID uuid.UUID) (*domain.Expense, er
 	return &expense, nil
 }
 
-func (r *postgresRepository) List(f ListFilter) ([]*domain.Expense, int64, error) {
-	query := r.db.Model(&domain.Expense{}).
+func (r *postgresRepository) List(ctx context.Context, f ListFilter) ([]*domain.Expense, int64, error) {
+	query := r.db.WithContext(ctx).Model(&domain.Expense{}).
 		Preload("Category").
 		Where("user_id = ?", f.UserID)
 
@@ -114,21 +115,21 @@ func (r *postgresRepository) List(f ListFilter) ([]*domain.Expense, int64, error
 	return expenses, total, err
 }
 
-func (r *postgresRepository) Update(expense *domain.Expense) error {
-	return r.db.Save(expense).Error
+func (r *postgresRepository) Update(ctx context.Context, expense *domain.Expense) error {
+	return r.db.WithContext(ctx).Save(expense).Error
 }
 
-func (r *postgresRepository) Delete(id, userID uuid.UUID) error {
-	result := r.db.Where("id = ? AND user_id = ?", id, userID).Delete(&domain.Expense{})
+func (r *postgresRepository) Delete(ctx context.Context, id, userID uuid.UUID) error {
+	result := r.db.WithContext(ctx).Where("id = ? AND user_id = ?", id, userID).Delete(&domain.Expense{})
 	if result.RowsAffected == 0 {
 		return apperrors.ErrNotFound
 	}
 	return result.Error
 }
 
-func (r *postgresRepository) MonthlySummary(userID uuid.UUID, months int) ([]*MonthlySummary, error) {
+func (r *postgresRepository) MonthlySummary(ctx context.Context, userID uuid.UUID, months int) ([]*MonthlySummary, error) {
 	var results []*MonthlySummary
-	err := r.db.Raw(`
+	err := r.db.WithContext(ctx).Raw(`
 		SELECT
 			TO_CHAR(date, 'YYYY-MM') AS month,
 			SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) AS total_spent,
@@ -142,9 +143,9 @@ func (r *postgresRepository) MonthlySummary(userID uuid.UUID, months int) ([]*Mo
 	return results, err
 }
 
-func (r *postgresRepository) CategorySummary(userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error) {
+func (r *postgresRepository) CategorySummary(ctx context.Context, userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error) {
 	var results []*CategorySummary
-	err := r.db.Raw(`
+	err := r.db.WithContext(ctx).Raw(`
 		SELECT
 			e.category_id,
 			COALESCE(c.name, 'Uncategorized') AS category_name,
@@ -161,11 +162,11 @@ func (r *postgresRepository) CategorySummary(userID uuid.UUID, start, end time.T
 	return results, err
 }
 
-func (r *postgresRepository) DeleteByImportID(importID string) error {
+func (r *postgresRepository) DeleteByImportID(ctx context.Context, importID string) error {
 	// import_id is stored as "csv-YYYYMMDD-N", we match the import UUID prefix
-	return r.db.Where("import_id LIKE ?", importID+"%").Delete(&domain.Expense{}).Error
+	return r.db.WithContext(ctx).Where("import_id LIKE ?", importID+"%").Delete(&domain.Expense{}).Error
 }
 
-func (r *postgresRepository) CreateBatch(expenses []*domain.Expense) error {
-	return r.db.CreateInBatches(expenses, 100).Error
+func (r *postgresRepository) CreateBatch(ctx context.Context, expenses []*domain.Expense) error {
+	return r.db.WithContext(ctx).CreateInBatches(expenses, 100).Error
 }

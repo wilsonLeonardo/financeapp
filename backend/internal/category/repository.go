@@ -1,6 +1,7 @@
 package category
 
 import (
+	"context"
 	"github.com/financeapp/backend/internal/domain"
 	apperrors "github.com/financeapp/backend/pkg/errors"
 	"github.com/google/uuid"
@@ -11,11 +12,11 @@ import (
 
 // Repository defines the persistence interface for categories.
 type Repository interface {
-	Create(category *domain.Category) error
-	FindByID(id, userID uuid.UUID) (*domain.Category, error)
-	FindAll(userID uuid.UUID) ([]*domain.Category, error)
-	Update(category *domain.Category) error
-	Delete(id, userID uuid.UUID) error
+	Create(ctx context.Context, category *domain.Category) error
+	FindByID(ctx context.Context, id, userID uuid.UUID) (*domain.Category, error)
+	FindAll(ctx context.Context, userID uuid.UUID) ([]*domain.Category, error)
+	Update(ctx context.Context, category *domain.Category) error
+	Delete(ctx context.Context, id, userID uuid.UUID) error
 }
 
 type postgresRepository struct{ db *gorm.DB }
@@ -25,13 +26,13 @@ func NewRepository(db *gorm.DB) Repository {
 	return &postgresRepository{db: db}
 }
 
-func (r *postgresRepository) Create(category *domain.Category) error {
-	return r.db.Create(category).Error
+func (r *postgresRepository) Create(ctx context.Context, category *domain.Category) error {
+	return r.db.WithContext(ctx).Create(category).Error
 }
 
-func (r *postgresRepository) FindByID(id, userID uuid.UUID) (*domain.Category, error) {
+func (r *postgresRepository) FindByID(ctx context.Context, id, userID uuid.UUID) (*domain.Category, error) {
 	var cat domain.Category
-	if err := r.db.Where("id = ? AND user_id = ?", id, userID).First(&cat).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("id = ? AND user_id = ?", id, userID).First(&cat).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, apperrors.ErrNotFound
 		}
@@ -40,18 +41,18 @@ func (r *postgresRepository) FindByID(id, userID uuid.UUID) (*domain.Category, e
 	return &cat, nil
 }
 
-func (r *postgresRepository) FindAll(userID uuid.UUID) ([]*domain.Category, error) {
+func (r *postgresRepository) FindAll(ctx context.Context, userID uuid.UUID) ([]*domain.Category, error) {
 	var categories []*domain.Category
-	err := r.db.Where("user_id = ?", userID).Order("name ASC").Find(&categories).Error
+	err := r.db.WithContext(ctx).Where("user_id = ?", userID).Order("name ASC").Find(&categories).Error
 	return categories, err
 }
 
-func (r *postgresRepository) Update(category *domain.Category) error {
-	return r.db.Save(category).Error
+func (r *postgresRepository) Update(ctx context.Context, category *domain.Category) error {
+	return r.db.WithContext(ctx).Save(category).Error
 }
 
-func (r *postgresRepository) Delete(id, userID uuid.UUID) error {
-	result := r.db.Where("id = ? AND user_id = ?", id, userID).Delete(&domain.Category{})
+func (r *postgresRepository) Delete(ctx context.Context, id, userID uuid.UUID) error {
+	result := r.db.WithContext(ctx).Where("id = ? AND user_id = ?", id, userID).Delete(&domain.Category{})
 	if result.RowsAffected == 0 {
 		return apperrors.ErrNotFound
 	}

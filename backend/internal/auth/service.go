@@ -36,9 +36,9 @@ type AuthResponse struct {
 
 // Service defines the business logic interface for auth.
 type Service interface {
-	Register(req *RegisterRequest) (*AuthResponse, error)
-	Login(req *LoginRequest) (*AuthResponse, error)
-	Logout(token string) error
+	Register(ctx context.Context, req *RegisterRequest) (*AuthResponse, error)
+	Login(ctx context.Context, req *LoginRequest) (*AuthResponse, error)
+	Logout(ctx context.Context, token string) error
 }
 
 type service struct {
@@ -53,7 +53,7 @@ func NewService(repo Repository, rdb *redis.Client, cfg *config.JWTConfig, log *
 	return &service{repo: repo, rdb: rdb, cfg: cfg, log: log}
 }
 
-func (s *service) Register(req *RegisterRequest) (*AuthResponse, error) {
+func (s *service) Register(ctx context.Context, req *RegisterRequest) (*AuthResponse, error) {
 	hashedPassword, err := security.HashPassword(req.Password)
 	if err != nil {
 		return nil, apperrors.WrapLogged(s.log, "failed to hash password", err)
@@ -65,7 +65,7 @@ func (s *service) Register(req *RegisterRequest) (*AuthResponse, error) {
 		Password: hashedPassword,
 	}
 
-	if err := s.repo.CreateUser(user); err != nil {
+	if err := s.repo.CreateUser(ctx, user); err != nil {
 		return nil, err
 	}
 
@@ -77,8 +77,8 @@ func (s *service) Register(req *RegisterRequest) (*AuthResponse, error) {
 	return &AuthResponse{Token: token, User: user}, nil
 }
 
-func (s *service) Login(req *LoginRequest) (*AuthResponse, error) {
-	user, err := s.repo.FindUserByEmail(req.Email)
+func (s *service) Login(ctx context.Context, req *LoginRequest) (*AuthResponse, error) {
+	user, err := s.repo.FindUserByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, apperrors.New(401, "invalid credentials")
 	}
@@ -95,7 +95,7 @@ func (s *service) Login(req *LoginRequest) (*AuthResponse, error) {
 	return &AuthResponse{Token: token, User: user}, nil
 }
 
-func (s *service) Logout(token string) error {
+func (s *service) Logout(ctx context.Context, token string) error {
 	claims, err := security.ParseToken(token, s.cfg.Secret)
 	if err != nil {
 		return nil // already invalid
@@ -103,7 +103,7 @@ func (s *service) Logout(token string) error {
 
 	ttl := time.Until(claims.ExpiresAt.Time)
 	if ttl > 0 {
-		if err := s.rdb.Set(context.Background(), "blacklist:"+token, 1, ttl).Err(); err != nil {
+		if err := s.rdb.Set(ctx, "blacklist:"+token, 1, ttl).Err(); err != nil {
 			// The caller is told the logout worked either way, so a token that
 			// stays valid until it expires must at least be visible here.
 			s.log.Error("failed to revoke token", "error", err, "user_id", claims.UserID)

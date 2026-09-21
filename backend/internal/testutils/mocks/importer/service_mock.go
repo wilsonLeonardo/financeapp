@@ -10,6 +10,7 @@
 package mocks
 
 import (
+	context "context"
 	multipart "mime/multipart"
 	reflect "reflect"
 
@@ -43,45 +44,45 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // Import mocks base method.
-func (m *MockService) Import(userID uuid.UUID, file multipart.File, header *multipart.FileHeader) (*domain.Import, error) {
+func (m *MockService) Import(ctx context.Context, userID uuid.UUID, file multipart.File, header *multipart.FileHeader) (*domain.Import, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Import", userID, file, header)
+	ret := m.ctrl.Call(m, "Import", ctx, userID, file, header)
 	ret0, _ := ret[0].(*domain.Import)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Import indicates an expected call of Import.
-func (mr *MockServiceMockRecorder) Import(userID, file, header any) *gomock.Call {
+func (mr *MockServiceMockRecorder) Import(ctx, userID, file, header any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Import", reflect.TypeOf((*MockService)(nil).Import), userID, file, header)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Import", reflect.TypeOf((*MockService)(nil).Import), ctx, userID, file, header)
 }
 
 // ListImports mocks base method.
-func (m *MockService) ListImports(userID uuid.UUID) ([]*domain.Import, error) {
+func (m *MockService) ListImports(ctx context.Context, userID uuid.UUID) ([]*domain.Import, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListImports", userID)
+	ret := m.ctrl.Call(m, "ListImports", ctx, userID)
 	ret0, _ := ret[0].([]*domain.Import)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ListImports indicates an expected call of ListImports.
-func (mr *MockServiceMockRecorder) ListImports(userID any) *gomock.Call {
+func (mr *MockServiceMockRecorder) ListImports(ctx, userID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListImports", reflect.TypeOf((*MockService)(nil).ListImports), userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListImports", reflect.TypeOf((*MockService)(nil).ListImports), ctx, userID)
 }
 
 // RevertImport mocks base method.
-func (m *MockService) RevertImport(id, userID uuid.UUID) error {
+func (m *MockService) RevertImport(ctx context.Context, id, userID uuid.UUID) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RevertImport", id, userID)
+	ret := m.ctrl.Call(m, "RevertImport", ctx, id, userID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // RevertImport indicates an expected call of RevertImport.
-func (mr *MockServiceMockRecorder) RevertImport(id, userID any) *gomock.Call {
+func (mr *MockServiceMockRecorder) RevertImport(ctx, id, userID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevertImport", reflect.TypeOf((*MockService)(nil).RevertImport), id, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevertImport", reflect.TypeOf((*MockService)(nil).RevertImport), ctx, id, userID)
 }

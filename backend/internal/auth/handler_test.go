@@ -1,6 +1,7 @@
 package auth_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -24,7 +25,7 @@ func TestHandlerRegister_Created(t *testing.T) {
 	h, svc := newHandler(t)
 	want := &auth.AuthResponse{Token: "jwt-token", User: &domain.User{ID: uuid.New(), Email: "a@b.com"}}
 
-	svc.EXPECT().Register(gomock.Any()).DoAndReturn(func(req *auth.RegisterRequest) (*auth.AuthResponse, error) {
+	svc.EXPECT().Register(gomock.Any(), gomock.Any()).DoAndReturn(func(_ context.Context, req *auth.RegisterRequest) (*auth.AuthResponse, error) {
 		assert.Equal(t, "a@b.com", req.Email, "handler must forward the parsed payload")
 		return want, nil
 	})
@@ -71,7 +72,7 @@ func TestHandlerRegister_MalformedJSON(t *testing.T) {
 
 func TestHandlerRegister_MapsServiceErrorStatus(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Register(gomock.Any()).Return(nil, apperrors.ErrConflict)
+	svc.EXPECT().Register(gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrConflict)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/auth/register",
@@ -87,7 +88,7 @@ func TestHandlerRegister_MapsServiceErrorStatus(t *testing.T) {
 // A plain error carries no status, so it must not leak as anything but a 500.
 func TestHandlerRegister_UnknownErrorBecomes500(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Register(gomock.Any()).Return(nil, errBoom)
+	svc.EXPECT().Register(gomock.Any(), gomock.Any()).Return(nil, errBoom)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/auth/register",
@@ -102,7 +103,7 @@ func TestHandlerRegister_UnknownErrorBecomes500(t *testing.T) {
 
 func TestHandlerLogin_OK(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Login(gomock.Any()).Return(&auth.AuthResponse{Token: "t", User: &domain.User{}}, nil)
+	svc.EXPECT().Login(gomock.Any(), gomock.Any()).Return(&auth.AuthResponse{Token: "t", User: &domain.User{}}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/auth/login",
@@ -114,7 +115,7 @@ func TestHandlerLogin_OK(t *testing.T) {
 
 func TestHandlerLogin_InvalidCredentials(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Login(gomock.Any()).Return(nil, apperrors.New(http.StatusUnauthorized, "invalid credentials"))
+	svc.EXPECT().Login(gomock.Any(), gomock.Any()).Return(nil, apperrors.New(http.StatusUnauthorized, "invalid credentials"))
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/auth/login",
@@ -136,7 +137,7 @@ func TestHandlerLogin_MissingPassword(t *testing.T) {
 
 func TestHandlerLogout_RevokesTokenFromContext(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Logout("the-token").Return(nil)
+	svc.EXPECT().Logout(gomock.Any(), "the-token").Return(nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/auth/logout",

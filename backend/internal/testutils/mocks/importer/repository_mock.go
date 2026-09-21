@@ -10,6 +10,7 @@
 package mocks
 
 import (
+	context "context"
 	reflect "reflect"
 
 	domain "github.com/financeapp/backend/internal/domain"
@@ -42,73 +43,73 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockRepository) Create(imp *domain.Import) error {
+func (m *MockRepository) Create(ctx context.Context, imp *domain.Import) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", imp)
+	ret := m.ctrl.Call(m, "Create", ctx, imp)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockRepositoryMockRecorder) Create(imp any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) Create(ctx, imp any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), imp)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), ctx, imp)
 }
 
 // Delete mocks base method.
-func (m *MockRepository) Delete(id uuid.UUID) error {
+func (m *MockRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", id)
+	ret := m.ctrl.Call(m, "Delete", ctx, id)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockRepositoryMockRecorder) Delete(id any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) Delete(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRepository)(nil).Delete), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRepository)(nil).Delete), ctx, id)
 }
 
 // FindAll mocks base method.
-func (m *MockRepository) FindAll(userID uuid.UUID) ([]*domain.Import, error) {
+func (m *MockRepository) FindAll(ctx context.Context, userID uuid.UUID) ([]*domain.Import, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindAll", userID)
+	ret := m.ctrl.Call(m, "FindAll", ctx, userID)
 	ret0, _ := ret[0].([]*domain.Import)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindAll indicates an expected call of FindAll.
-func (mr *MockRepositoryMockRecorder) FindAll(userID any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) FindAll(ctx, userID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAll", reflect.TypeOf((*MockRepository)(nil).FindAll), userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindAll", reflect.TypeOf((*MockRepository)(nil).FindAll), ctx, userID)
 }
 
 // FindByID mocks base method.
-func (m *MockRepository) FindByID(id, userID uuid.UUID) (*domain.Import, error) {
+func (m *MockRepository) FindByID(ctx context.Context, id, userID uuid.UUID) (*domain.Import, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByID", id, userID)
+	ret := m.ctrl.Call(m, "FindByID", ctx, id, userID)
 	ret0, _ := ret[0].(*domain.Import)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindByID indicates an expected call of FindByID.
-func (mr *MockRepositoryMockRecorder) FindByID(id, userID any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) FindByID(ctx, id, userID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockRepository)(nil).FindByID), id, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockRepository)(nil).FindByID), ctx, id, userID)
 }
 
 // Update mocks base method.
-func (m *MockRepository) Update(imp *domain.Import) error {
+func (m *MockRepository) Update(ctx context.Context, imp *domain.Import) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", imp)
+	ret := m.ctrl.Call(m, "Update", ctx, imp)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Update indicates an expected call of Update.
-func (mr *MockRepositoryMockRecorder) Update(imp any) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) Update(ctx, imp any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockRepository)(nil).Update), imp)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockRepository)(nil).Update), ctx, imp)
 }

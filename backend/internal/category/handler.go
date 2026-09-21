@@ -34,7 +34,7 @@ func (h *Handler) Create(c *gin.Context) {
 		response.BadRequest(c, err.Error())
 		return
 	}
-	cat, err := h.service.Create(userID, &req)
+	cat, err := h.service.Create(c.Request.Context(), userID, &req)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -51,7 +51,7 @@ func (h *Handler) Create(c *gin.Context) {
 // @Router       /categories [get]
 func (h *Handler) List(c *gin.Context) {
 	userID := middleware.GetUserID(c)
-	categories, err := h.service.GetAll(userID)
+	categories, err := h.service.GetAll(c.Request.Context(), userID)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -82,7 +82,7 @@ func (h *Handler) Update(c *gin.Context) {
 		response.BadRequest(c, err.Error())
 		return
 	}
-	cat, err := h.service.Update(id, userID, &req)
+	cat, err := h.service.Update(c.Request.Context(), id, userID, &req)
 	if err != nil {
 		response.Error(c, err)
 		return
@@ -107,7 +107,7 @@ func (h *Handler) Delete(c *gin.Context) {
 		response.BadRequest(c, "invalid id")
 		return
 	}
-	if err := h.service.Delete(id, userID); err != nil {
+	if err := h.service.Delete(c.Request.Context(), id, userID); err != nil {
 		response.Error(c, err)
 		return
 	}

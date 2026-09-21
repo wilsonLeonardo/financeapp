@@ -1,6 +1,7 @@
 package auth_test
 
 import (
+	"context"
 	"errors"
 	"github.com/financeapp/backend/pkg/logger"
 	"net/http"
@@ -54,12 +55,12 @@ func TestRegister_Success(t *testing.T) {
 	newID := uuid.New()
 
 	// The repository assigns the id, and the token must be minted from it.
-	repo.EXPECT().CreateUser(gomock.Any()).DoAndReturn(func(u *domain.User) error {
+	repo.EXPECT().CreateUser(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, u *domain.User) error {
 		u.ID = newID
 		return nil
 	})
 
-	resp, err := svc.Register(&auth.RegisterRequest{
+	resp, err := svc.Register(t.Context(), &auth.RegisterRequest{
 		Name: "João Silva", Email: "joao@example.com", Password: "password123",
 	})
 	require.NoError(t, err)
@@ -75,12 +76,12 @@ func TestRegister_HashesPasswordBeforeStoring(t *testing.T) {
 	svc, repo := newService(t)
 	var stored *domain.User
 
-	repo.EXPECT().CreateUser(gomock.Any()).DoAndReturn(func(u *domain.User) error {
+	repo.EXPECT().CreateUser(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, u *domain.User) error {
 		stored = u
 		return nil
 	})
 
-	_, err := svc.Register(&auth.RegisterRequest{Name: "Test", Email: "a@b.com", Password: "supersecret"})
+	_, err := svc.Register(t.Context(), &auth.RegisterRequest{Name: "Test", Email: "a@b.com", Password: "supersecret"})
 	require.NoError(t, err)
 
 	require.NotNil(t, stored)
@@ -91,9 +92,9 @@ func TestRegister_HashesPasswordBeforeStoring(t *testing.T) {
 
 func TestRegister_PropagatesRepositoryError(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().CreateUser(gomock.Any()).Return(apperrors.ErrConflict)
+	repo.EXPECT().CreateUser(t.Context(), gomock.Any()).Return(apperrors.ErrConflict)
 
-	_, err := svc.Register(&auth.RegisterRequest{
+	_, err := svc.Register(t.Context(), &auth.RegisterRequest{
 		Name: "Test", Email: "dup@example.com", Password: "password123",
 	})
 	assert.Equal(t, http.StatusConflict, requireAppError(t, err).Code)
@@ -102,9 +103,9 @@ func TestRegister_PropagatesRepositoryError(t *testing.T) {
 func TestLogin_Success(t *testing.T) {
 	svc, repo := newService(t)
 	user := storedUser(t, "user@example.com", "mypassword")
-	repo.EXPECT().FindUserByEmail("user@example.com").Return(user, nil)
+	repo.EXPECT().FindUserByEmail(t.Context(), "user@example.com").Return(user, nil)
 
-	resp, err := svc.Login(&auth.LoginRequest{Email: "user@example.com", Password: "mypassword"})
+	resp, err := svc.Login(t.Context(), &auth.LoginRequest{Email: "user@example.com", Password: "mypassword"})
 	require.NoError(t, err)
 
 	claims, err := security.ParseToken(resp.Token, jwtCfg.Secret)
@@ -114,10 +115,10 @@ func TestLogin_Success(t *testing.T) {
 
 func TestLogin_WrongPassword(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().FindUserByEmail(gomock.Any()).
+	repo.EXPECT().FindUserByEmail(t.Context(), gomock.Any()).
 		Return(storedUser(t, "user@example.com", "correct-pass"), nil)
 
-	_, err := svc.Login(&auth.LoginRequest{Email: "user@example.com", Password: "wrong-pass"})
+	_, err := svc.Login(t.Context(), &auth.LoginRequest{Email: "user@example.com", Password: "wrong-pass"})
 	assert.Equal(t, http.StatusUnauthorized, requireAppError(t, err).Code)
 }
 
@@ -125,9 +126,9 @@ func TestLogin_WrongPassword(t *testing.T) {
 // endpoint turns into an account-enumeration oracle.
 func TestLogin_UnknownEmailLooksLikeWrongPassword(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().FindUserByEmail("ghost@example.com").Return(nil, apperrors.ErrNotFound)
+	repo.EXPECT().FindUserByEmail(t.Context(), "ghost@example.com").Return(nil, apperrors.ErrNotFound)
 
-	_, err := svc.Login(&auth.LoginRequest{Email: "ghost@example.com", Password: "whatever"})
+	_, err := svc.Login(t.Context(), &auth.LoginRequest{Email: "ghost@example.com", Password: "whatever"})
 	appErr := requireAppError(t, err)
 	assert.Equal(t, http.StatusUnauthorized, appErr.Code, "404 would leak which emails exist")
 	assert.Equal(t, "invalid credentials", appErr.Message,
@@ -138,14 +139,14 @@ func TestLogin_UnknownEmailLooksLikeWrongPassword(t *testing.T) {
 // denylist and no Redis call to make.
 func TestLogout_InvalidTokenIsANoOp(t *testing.T) {
 	svc, _ := newService(t)
-	assert.NoError(t, svc.Logout("not-a-jwt"))
+	assert.NoError(t, svc.Logout(t.Context(), "not-a-jwt"))
 }
 
 func TestLogout_TokenSignedWithAnotherSecret(t *testing.T) {
 	svc, _ := newService(t)
 	other, err := security.GenerateToken(uuid.New(), "different", time.Hour)
 	require.NoError(t, err)
-	assert.NoError(t, svc.Logout(other), "a token we cannot verify is already rejected at the gate")
+	assert.NoError(t, svc.Logout(t.Context(), other), "a token we cannot verify is already rejected at the gate")
 }
 
 // An expired token has no remaining TTL, so it never reaches Redis either —
@@ -155,5 +156,5 @@ func TestLogout_ExpiredToken(t *testing.T) {
 	expired, err := security.GenerateToken(uuid.New(), jwtCfg.Secret, -time.Hour)
 	require.NoError(t, err)
 	time.Sleep(time.Millisecond)
-	assert.NoError(t, svc.Logout(expired))
+	assert.NoError(t, svc.Logout(t.Context(), expired))
 }

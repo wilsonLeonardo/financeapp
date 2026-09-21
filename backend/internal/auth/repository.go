@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"github.com/financeapp/backend/internal/domain"
 	apperrors "github.com/financeapp/backend/pkg/errors"
 	"gorm.io/gorm"
@@ -11,9 +12,9 @@ import (
 
 // Repository defines the persistence interface for auth operations.
 type Repository interface {
-	CreateUser(user *domain.User) error
-	FindUserByEmail(email string) (*domain.User, error)
-	FindUserByID(id string) (*domain.User, error)
+	CreateUser(ctx context.Context, user *domain.User) error
+	FindUserByEmail(ctx context.Context, email string) (*domain.User, error)
+	FindUserByID(ctx context.Context, id string) (*domain.User, error)
 }
 
 type postgresRepository struct {
@@ -26,16 +27,16 @@ func NewRepository(db *gorm.DB, log *slog.Logger) Repository {
 	return &postgresRepository{db: db, log: log}
 }
 
-func (r *postgresRepository) CreateUser(user *domain.User) error {
-	if err := r.db.Create(user).Error; err != nil {
+func (r *postgresRepository) CreateUser(ctx context.Context, user *domain.User) error {
+	if err := r.db.WithContext(ctx).Create(user).Error; err != nil {
 		return apperrors.Wrap(409, "email already registered", err)
 	}
 	return nil
 }
 
-func (r *postgresRepository) FindUserByEmail(email string) (*domain.User, error) {
+func (r *postgresRepository) FindUserByEmail(ctx context.Context, email string) (*domain.User, error) {
 	var user domain.User
-	if err := r.db.Where("email = ?", email).First(&user).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("email = ?", email).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, apperrors.ErrNotFound
 		}
@@ -44,9 +45,9 @@ func (r *postgresRepository) FindUserByEmail(email string) (*domain.User, error)
 	return &user, nil
 }
 
-func (r *postgresRepository) FindUserByID(id string) (*domain.User, error) {
+func (r *postgresRepository) FindUserByID(ctx context.Context, id string) (*domain.User, error) {
 	var user domain.User
-	if err := r.db.Where("id = ?", id).First(&user).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("id = ?", id).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, apperrors.ErrNotFound
 		}

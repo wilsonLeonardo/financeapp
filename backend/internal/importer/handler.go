@@ -34,7 +34,7 @@ func (h *Handler) Import(c *gin.Context) {
 	}
 	defer file.Close()
 
-	imp, err := h.service.Import(userID, file, header)
+	imp, err := h.service.Import(c.Request.Context(), userID, file, header)
 	if err != nil {
 		response.ErrorWithFallback(c, err, "import failed")
 		return
@@ -52,7 +52,7 @@ func (h *Handler) Import(c *gin.Context) {
 // @Router       /imports [get]
 func (h *Handler) List(c *gin.Context) {
 	userID := middleware.GetUserID(c)
-	imports, err := h.service.ListImports(userID)
+	imports, err := h.service.ListImports(c.Request.Context(), userID)
 	if err != nil {
 		response.ErrorWithFallback(c, err, "failed to list imports")
 		return
@@ -78,7 +78,7 @@ func (h *Handler) Revert(c *gin.Context) {
 		return
 	}
 
-	if err := h.service.RevertImport(id, userID); err != nil {
+	if err := h.service.RevertImport(c.Request.Context(), id, userID); err != nil {
 		response.ErrorWithFallback(c, err, "failed to revert import")
 		return
 	}

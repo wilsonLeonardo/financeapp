@@ -1,6 +1,7 @@
 package expense_test
 
 import (
+	"context"
 	"errors"
 	"github.com/financeapp/backend/pkg/logger"
 	"net/http"
@@ -36,10 +37,13 @@ func requireAppError(t *testing.T, err error) *apperrors.AppError {
 	return appErr
 }
 
-// captureFilter records the ListFilter the service builds and returns an empty page.
-func captureFilter(repo *expmocks.MockRepository, into *expense.ListFilter) {
-	repo.EXPECT().List(gomock.Any()).DoAndReturn(
-		func(f expense.ListFilter) ([]*domain.Expense, int64, error) {
+// captureFilter records the ListFilter the service builds and returns an empty
+// page. It expects the test's own context, so a service that swapped it for
+// another one would fail here.
+func captureFilter(t *testing.T, repo *expmocks.MockRepository, into *expense.ListFilter) {
+	t.Helper()
+	repo.EXPECT().List(t.Context(), gomock.Any()).DoAndReturn(
+		func(_ context.Context, f expense.ListFilter) ([]*domain.Expense, int64, error) {
 			*into = f
 			return nil, 0, nil
 		})
@@ -65,9 +69,9 @@ func TestList_ForwardsCategoryIDToRepository(t *testing.T) {
 	svc, repo := newService(t)
 	categoryID := uuid.New()
 	var got expense.ListFilter
-	captureFilter(repo, &got)
+	captureFilter(t, repo, &got)
 
-	_, err := svc.List(uuid.New(), expense.ListRequest{CategoryID: categoryID.String()})
+	_, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{CategoryID: categoryID.String()})
 	require.NoError(t, err)
 
 	require.NotNil(t, got.CategoryID, "expenses were not filtered by category")
@@ -78,9 +82,9 @@ func TestList_ForwardsCategoryIDToRepository(t *testing.T) {
 func TestList_WithoutCategoryIDDoesNotFilter(t *testing.T) {
 	svc, repo := newService(t)
 	var got expense.ListFilter
-	captureFilter(repo, &got)
+	captureFilter(t, repo, &got)
 
-	_, err := svc.List(uuid.New(), expense.ListRequest{})
+	_, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{})
 	require.NoError(t, err)
 	assert.Nil(t, got.CategoryID)
 	assert.False(t, got.Uncategorized)
@@ -90,16 +94,16 @@ func TestList_RejectsMalformedCategoryID(t *testing.T) {
 	svc, _ := newService(t)
 	// No List expectation: a bad id must never reach the repository.
 
-	_, err := svc.List(uuid.New(), expense.ListRequest{CategoryID: "not-a-uuid"})
+	_, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{CategoryID: "not-a-uuid"})
 	assert.Equal(t, http.StatusBadRequest, requireAppError(t, err).Code)
 }
 
 func TestList_UncategorizedFilterSelectsNullCategory(t *testing.T) {
 	svc, repo := newService(t)
 	var got expense.ListFilter
-	captureFilter(repo, &got)
+	captureFilter(t, repo, &got)
 
-	_, err := svc.List(uuid.New(), expense.ListRequest{CategoryID: expense.UncategorizedFilter})
+	_, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{CategoryID: expense.UncategorizedFilter})
 	require.NoError(t, err, "the sentinel must not be mistaken for a malformed uuid")
 	assert.True(t, got.Uncategorized)
 	assert.Nil(t, got.CategoryID)
@@ -108,10 +112,10 @@ func TestList_UncategorizedFilterSelectsNullCategory(t *testing.T) {
 func TestList_ForwardsTypeAndDateRange(t *testing.T) {
 	svc, repo := newService(t)
 	var got expense.ListFilter
-	captureFilter(repo, &got)
+	captureFilter(t, repo, &got)
 
 	income := domain.TransactionTypeIncome
-	_, err := svc.List(uuid.New(), expense.ListRequest{
+	_, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{
 		Type: &income, StartDate: "2026-09-01", EndDate: "2026-09-30",
 	})
 	require.NoError(t, err)
@@ -128,9 +132,9 @@ func TestList_ForwardsTypeAndDateRange(t *testing.T) {
 func TestList_IgnoresUnparseableDates(t *testing.T) {
 	svc, repo := newService(t)
 	var got expense.ListFilter
-	captureFilter(repo, &got)
+	captureFilter(t, repo, &got)
 
-	_, err := svc.List(uuid.New(), expense.ListRequest{StartDate: "31/12/2026", EndDate: ""})
+	_, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{StartDate: "31/12/2026", EndDate: ""})
 	require.NoError(t, err)
 	assert.Nil(t, got.StartDate)
 	assert.Nil(t, got.EndDate)
@@ -140,9 +144,9 @@ func TestList_ScopesToTheCaller(t *testing.T) {
 	svc, repo := newService(t)
 	userID := uuid.New()
 	var got expense.ListFilter
-	captureFilter(repo, &got)
+	captureFilter(t, repo, &got)
 
-	_, err := svc.List(userID, expense.ListRequest{})
+	_, err := svc.List(t.Context(), userID, expense.ListRequest{})
 	require.NoError(t, err)
 	assert.Equal(t, userID, got.UserID)
 }
@@ -163,9 +167,9 @@ func TestList_ClampsPagination(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			svc, repo := newService(t)
 			var got expense.ListFilter
-			captureFilter(repo, &got)
+			captureFilter(t, repo, &got)
 
-			resp, err := svc.List(uuid.New(), expense.ListRequest{Page: tc.page, PageSize: tc.size})
+			resp, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{Page: tc.page, PageSize: tc.size})
 			require.NoError(t, err)
 
 			assert.Equal(t, tc.wantPage, got.Page, "filter page")
@@ -179,9 +183,9 @@ func TestList_ClampsPagination(t *testing.T) {
 func TestList_ReturnsTotalFromRepository(t *testing.T) {
 	svc, repo := newService(t)
 	rows := []*domain.Expense{{Description: "a"}, {Description: "b"}}
-	repo.EXPECT().List(gomock.Any()).Return(rows, int64(57), nil)
+	repo.EXPECT().List(t.Context(), gomock.Any()).Return(rows, int64(57), nil)
 
-	resp, err := svc.List(uuid.New(), expense.ListRequest{})
+	resp, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{})
 	require.NoError(t, err)
 	assert.Len(t, resp.Data, 2)
 	assert.EqualValues(t, 57, resp.Total, "total must be the full count, not the page length")
@@ -189,9 +193,9 @@ func TestList_ReturnsTotalFromRepository(t *testing.T) {
 
 func TestList_WrapsRepositoryFailureAs500(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().List(gomock.Any()).Return(nil, int64(0), errDB)
+	repo.EXPECT().List(t.Context(), gomock.Any()).Return(nil, int64(0), errDB)
 
-	_, err := svc.List(uuid.New(), expense.ListRequest{})
+	_, err := svc.List(t.Context(), uuid.New(), expense.ListRequest{})
 	assert.Equal(t, http.StatusInternalServerError, requireAppError(t, err).Code)
 	assert.ErrorIs(t, err, errDB)
 }
@@ -210,15 +214,15 @@ func TestCreate_PersistsAndReloadsWithCategory(t *testing.T) {
 	userID, newID := uuid.New(), uuid.New()
 	var saved *domain.Expense
 
-	repo.EXPECT().Create(gomock.Any()).DoAndReturn(func(e *domain.Expense) error {
+	repo.EXPECT().Create(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, e *domain.Expense) error {
 		saved = e
 		e.ID = newID
 		return nil
 	})
 	// Reloaded so the response carries the preloaded Category.
-	repo.EXPECT().FindByID(newID, userID).Return(&domain.Expense{ID: newID}, nil)
+	repo.EXPECT().FindByID(t.Context(), newID, userID).Return(&domain.Expense{ID: newID}, nil)
 
-	got, err := svc.Create(userID, validCreate())
+	got, err := svc.Create(t.Context(), userID, validCreate())
 	require.NoError(t, err)
 
 	assert.Equal(t, userID, saved.UserID)
@@ -234,7 +238,7 @@ func TestCreate_RejectsNonPositiveAmounts(t *testing.T) {
 			req := validCreate()
 			req.Amount = decimal.RequireFromString(amount)
 
-			_, err := svc.Create(uuid.New(), req)
+			_, err := svc.Create(t.Context(), uuid.New(), req)
 			assert.Equal(t, http.StatusBadRequest, requireAppError(t, err).Code)
 		})
 	}
@@ -245,7 +249,7 @@ func TestCreate_RejectsBadDateFormat(t *testing.T) {
 	req := validCreate()
 	req.Date = "10/09/2026"
 
-	_, err := svc.Create(uuid.New(), req)
+	_, err := svc.Create(t.Context(), uuid.New(), req)
 	appErr := requireAppError(t, err)
 	assert.Equal(t, http.StatusBadRequest, appErr.Code)
 	assert.Contains(t, appErr.Message, "YYYY-MM-DD", "the message should say what format is expected")
@@ -253,9 +257,9 @@ func TestCreate_RejectsBadDateFormat(t *testing.T) {
 
 func TestCreate_WrapsRepositoryFailureAs500(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().Create(gomock.Any()).Return(errDB)
+	repo.EXPECT().Create(t.Context(), gomock.Any()).Return(errDB)
 
-	_, err := svc.Create(uuid.New(), validCreate())
+	_, err := svc.Create(t.Context(), uuid.New(), validCreate())
 	assert.Equal(t, http.StatusInternalServerError, requireAppError(t, err).Code)
 }
 
@@ -269,11 +273,11 @@ func TestUpdate_AppliesOnlyTheProvidedFields(t *testing.T) {
 		Description: "Original",
 		Date:        time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC),
 	}
-	repo.EXPECT().FindByID(id, userID).Return(existing, nil)
-	repo.EXPECT().Update(existing).Return(nil)
+	repo.EXPECT().FindByID(t.Context(), id, userID).Return(existing, nil)
+	repo.EXPECT().Update(t.Context(), existing).Return(nil)
 
 	newAmount := decimal.NewFromInt(250)
-	got, err := svc.Update(id, userID, &expense.UpdateRequest{Amount: &newAmount})
+	got, err := svc.Update(t.Context(), id, userID, &expense.UpdateRequest{Amount: &newAmount})
 	require.NoError(t, err)
 
 	assert.True(t, got.Amount.Equal(newAmount), "amount should change")
@@ -284,30 +288,30 @@ func TestUpdate_AppliesOnlyTheProvidedFields(t *testing.T) {
 
 func TestUpdate_RejectsNonPositiveAmount(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().FindByID(gomock.Any(), gomock.Any()).Return(&domain.Expense{}, nil)
+	repo.EXPECT().FindByID(t.Context(), gomock.Any(), gomock.Any()).Return(&domain.Expense{}, nil)
 	// No Update expectation: the write must not happen.
 
 	zero := decimal.Zero
-	_, err := svc.Update(uuid.New(), uuid.New(), &expense.UpdateRequest{Amount: &zero})
+	_, err := svc.Update(t.Context(), uuid.New(), uuid.New(), &expense.UpdateRequest{Amount: &zero})
 	assert.Equal(t, http.StatusBadRequest, requireAppError(t, err).Code)
 }
 
 func TestUpdate_UnknownExpenseDoesNotWrite(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().FindByID(gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
+	repo.EXPECT().FindByID(t.Context(), gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
 
-	_, err := svc.Update(uuid.New(), uuid.New(), &expense.UpdateRequest{Description: "X"})
+	_, err := svc.Update(t.Context(), uuid.New(), uuid.New(), &expense.UpdateRequest{Description: "X"})
 	assert.Equal(t, http.StatusNotFound, requireAppError(t, err).Code)
 }
 
 func TestUpdate_MovesExpenseToAnotherCategory(t *testing.T) {
 	svc, repo := newService(t)
 	existing := &domain.Expense{}
-	repo.EXPECT().FindByID(gomock.Any(), gomock.Any()).Return(existing, nil)
-	repo.EXPECT().Update(existing).Return(nil)
+	repo.EXPECT().FindByID(t.Context(), gomock.Any(), gomock.Any()).Return(existing, nil)
+	repo.EXPECT().Update(t.Context(), existing).Return(nil)
 
 	newCategory := uuid.New()
-	got, err := svc.Update(uuid.New(), uuid.New(), &expense.UpdateRequest{CategoryID: &newCategory})
+	got, err := svc.Update(t.Context(), uuid.New(), uuid.New(), &expense.UpdateRequest{CategoryID: &newCategory})
 	require.NoError(t, err)
 	require.NotNil(t, got.CategoryID)
 	assert.Equal(t, newCategory, *got.CategoryID)
@@ -316,18 +320,18 @@ func TestUpdate_MovesExpenseToAnotherCategory(t *testing.T) {
 func TestGetByID_ForwardsBothIDs(t *testing.T) {
 	svc, repo := newService(t)
 	id, userID := uuid.New(), uuid.New()
-	repo.EXPECT().FindByID(id, userID).Return(&domain.Expense{ID: id}, nil)
+	repo.EXPECT().FindByID(t.Context(), id, userID).Return(&domain.Expense{ID: id}, nil)
 
-	got, err := svc.GetByID(id, userID)
+	got, err := svc.GetByID(t.Context(), id, userID)
 	require.NoError(t, err)
 	assert.Equal(t, id, got.ID)
 }
 
 func TestDelete_PropagatesNotFound(t *testing.T) {
 	svc, repo := newService(t)
-	repo.EXPECT().Delete(gomock.Any(), gomock.Any()).Return(apperrors.ErrNotFound)
+	repo.EXPECT().Delete(t.Context(), gomock.Any(), gomock.Any()).Return(apperrors.ErrNotFound)
 
-	err := svc.Delete(uuid.New(), uuid.New())
+	err := svc.Delete(t.Context(), uuid.New(), uuid.New())
 	assert.Equal(t, http.StatusNotFound, requireAppError(t, err).Code)
 }
 
@@ -342,9 +346,9 @@ func TestGetMonthlySummary_ClampsTheWindow(t *testing.T) {
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
 			svc, repo := newService(t)
-			repo.EXPECT().MonthlySummary(gomock.Any(), tc.want).Return(nil, nil)
+			repo.EXPECT().MonthlySummary(t.Context(), gomock.Any(), tc.want).Return(nil, nil)
 
-			_, err := svc.GetMonthlySummary(uuid.New(), tc.in)
+			_, err := svc.GetMonthlySummary(t.Context(), uuid.New(), tc.in)
 			require.NoError(t, err)
 		})
 	}
@@ -356,9 +360,9 @@ func TestGetCategorySummary_ForwardsTheRange(t *testing.T) {
 	start := time.Date(2026, 9, 1, 0, 0, 0, 0, time.UTC)
 	end := time.Date(2026, 9, 30, 0, 0, 0, 0, time.UTC)
 	want := []*expense.CategorySummary{{CategoryName: "Mercado", Total: 120}}
-	repo.EXPECT().CategorySummary(userID, start, end).Return(want, nil)
+	repo.EXPECT().CategorySummary(t.Context(), userID, start, end).Return(want, nil)
 
-	got, err := svc.GetCategorySummary(userID, start, end)
+	got, err := svc.GetCategorySummary(t.Context(), userID, start, end)
 	require.NoError(t, err)
 	assert.Equal(t, want, got)
 }

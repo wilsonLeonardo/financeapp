@@ -23,7 +23,7 @@ func newHandler(t *testing.T) (*category.Handler, *catmocks.MockService) {
 func TestHandlerCreate_Created(t *testing.T) {
 	h, svc := newHandler(t)
 	userID := uuid.New()
-	svc.EXPECT().Create(userID, gomock.Any()).Return(&domain.Category{Name: "Mercado"}, nil)
+	svc.EXPECT().Create(gomock.Any(), userID, gomock.Any()).Return(&domain.Category{Name: "Mercado"}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/categories", UserID: &userID,
@@ -39,7 +39,7 @@ func TestHandlerCreate_Created(t *testing.T) {
 func TestHandlerCreate_UsesTheAuthenticatedUser(t *testing.T) {
 	h, svc := newHandler(t)
 	authenticated := uuid.New()
-	svc.EXPECT().Create(authenticated, gomock.Any()).Return(&domain.Category{}, nil)
+	svc.EXPECT().Create(gomock.Any(), authenticated, gomock.Any()).Return(&domain.Category{}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPost, Target: "/categories", UserID: &authenticated,
@@ -72,7 +72,7 @@ func TestHandlerCreate_RejectsInvalidPayload(t *testing.T) {
 func TestHandlerList_OK(t *testing.T) {
 	h, svc := newHandler(t)
 	userID := uuid.New()
-	svc.EXPECT().GetAll(userID).Return([]*domain.Category{{Name: "Casa"}, {Name: "Mercado"}}, nil)
+	svc.EXPECT().GetAll(gomock.Any(), userID).Return([]*domain.Category{{Name: "Casa"}, {Name: "Mercado"}}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{Target: "/categories", UserID: &userID})
 	h.List(c)
@@ -83,7 +83,7 @@ func TestHandlerList_OK(t *testing.T) {
 
 func TestHandlerList_ServiceError(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().GetAll(gomock.Any()).Return(nil, apperrors.ErrInternal)
+	svc.EXPECT().GetAll(gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrInternal)
 
 	c, rec := testutils.NewContext(t, testutils.Request{Target: "/categories"})
 	h.List(c)
@@ -93,7 +93,7 @@ func TestHandlerList_ServiceError(t *testing.T) {
 func TestHandlerUpdate_OK(t *testing.T) {
 	h, svc := newHandler(t)
 	id, userID := uuid.New(), uuid.New()
-	svc.EXPECT().Update(id, userID, gomock.Any()).Return(&domain.Category{Name: "Novo"}, nil)
+	svc.EXPECT().Update(gomock.Any(), id, userID, gomock.Any()).Return(&domain.Category{Name: "Novo"}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPut, Target: "/categories/" + id.String(), UserID: &userID,
@@ -121,7 +121,7 @@ func TestHandlerUpdate_MalformedID(t *testing.T) {
 func TestHandlerUpdate_NotFound(t *testing.T) {
 	h, svc := newHandler(t)
 	id := uuid.New()
-	svc.EXPECT().Update(id, gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
+	svc.EXPECT().Update(gomock.Any(), id, gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodPut, Target: "/categories/" + id.String(),
@@ -135,7 +135,7 @@ func TestHandlerUpdate_NotFound(t *testing.T) {
 func TestHandlerDelete_NoContent(t *testing.T) {
 	h, svc := newHandler(t)
 	id, userID := uuid.New(), uuid.New()
-	svc.EXPECT().Delete(id, userID).Return(nil)
+	svc.EXPECT().Delete(gomock.Any(), id, userID).Return(nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodDelete, Target: "/categories/" + id.String(), UserID: &userID,
@@ -160,7 +160,7 @@ func TestHandlerDelete_MalformedID(t *testing.T) {
 func TestHandlerDelete_NotFound(t *testing.T) {
 	h, svc := newHandler(t)
 	id := uuid.New()
-	svc.EXPECT().Delete(id, gomock.Any()).Return(apperrors.ErrNotFound)
+	svc.EXPECT().Delete(gomock.Any(), id, gomock.Any()).Return(apperrors.ErrNotFound)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodDelete, Target: "/categories/" + id.String(),

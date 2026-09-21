@@ -2,6 +2,7 @@ package importer_test
 
 import (
 	"bytes"
+	"context"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -54,8 +55,8 @@ func TestHandlerImport_OK(t *testing.T) {
 	h, svc := newHandler(t)
 	userID := uuid.New()
 
-	svc.EXPECT().Import(userID, gomock.Any(), gomock.Any()).DoAndReturn(
-		func(_ uuid.UUID, _ multipart.File, header *multipart.FileHeader) (*domain.Import, error) {
+	svc.EXPECT().Import(gomock.Any(), userID, gomock.Any(), gomock.Any()).DoAndReturn(
+		func(_ context.Context, _ uuid.UUID, _ multipart.File, header *multipart.FileHeader) (*domain.Import, error) {
 			assert.Equal(t, "extrato.csv", header.Filename, "the original filename must reach the service")
 			return &domain.Import{FileName: "extrato.csv", Imported: 2, Status: "completed"}, nil
 		})
@@ -91,7 +92,7 @@ func TestHandlerImport_WrongFieldName(t *testing.T) {
 
 func TestHandlerImport_MapsServiceErrorStatus(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Import(gomock.Any(), gomock.Any(), gomock.Any()).
+	svc.EXPECT().Import(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(nil, apperrors.New(http.StatusInternalServerError, "failed to read file"))
 
 	c, rec := uploadContext(t, uuid.New(), "file", "extrato.csv", "x")
@@ -103,7 +104,7 @@ func TestHandlerImport_MapsServiceErrorStatus(t *testing.T) {
 
 func TestHandlerImport_UnknownErrorBecomesGeneric500(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().Import(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, errDB)
+	svc.EXPECT().Import(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, errDB)
 
 	c, rec := uploadContext(t, uuid.New(), "file", "extrato.csv", "x")
 	h.Import(c)
@@ -115,7 +116,7 @@ func TestHandlerImport_UnknownErrorBecomesGeneric500(t *testing.T) {
 func TestHandlerList_OK(t *testing.T) {
 	h, svc := newHandler(t)
 	userID := uuid.New()
-	svc.EXPECT().ListImports(userID).Return([]*domain.Import{{FileName: "a.csv"}, {FileName: "b.ofx"}}, nil)
+	svc.EXPECT().ListImports(gomock.Any(), userID).Return([]*domain.Import{{FileName: "a.csv"}, {FileName: "b.ofx"}}, nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{Target: "/imports", UserID: &userID})
 	h.List(c)
@@ -126,7 +127,7 @@ func TestHandlerList_OK(t *testing.T) {
 
 func TestHandlerList_ServiceError(t *testing.T) {
 	h, svc := newHandler(t)
-	svc.EXPECT().ListImports(gomock.Any()).Return(nil, errDB)
+	svc.EXPECT().ListImports(gomock.Any(), gomock.Any()).Return(nil, errDB)
 
 	c, rec := testutils.NewContext(t, testutils.Request{Target: "/imports"})
 	h.List(c)
@@ -138,7 +139,7 @@ func TestHandlerList_ServiceError(t *testing.T) {
 func TestHandlerRevert_OK(t *testing.T) {
 	h, svc := newHandler(t)
 	id, userID := uuid.New(), uuid.New()
-	svc.EXPECT().RevertImport(id, userID).Return(nil)
+	svc.EXPECT().RevertImport(gomock.Any(), id, userID).Return(nil)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodDelete, Target: "/imports/" + id.String(), UserID: &userID,
@@ -163,7 +164,7 @@ func TestHandlerRevert_MalformedID(t *testing.T) {
 func TestHandlerRevert_NotFound(t *testing.T) {
 	h, svc := newHandler(t)
 	id := uuid.New()
-	svc.EXPECT().RevertImport(id, gomock.Any()).Return(apperrors.ErrNotFound)
+	svc.EXPECT().RevertImport(gomock.Any(), id, gomock.Any()).Return(apperrors.ErrNotFound)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodDelete, Target: "/imports/" + id.String(),
@@ -176,7 +177,7 @@ func TestHandlerRevert_NotFound(t *testing.T) {
 func TestHandlerRevert_UnknownErrorBecomesGeneric500(t *testing.T) {
 	h, svc := newHandler(t)
 	id := uuid.New()
-	svc.EXPECT().RevertImport(id, gomock.Any()).Return(errDB)
+	svc.EXPECT().RevertImport(gomock.Any(), id, gomock.Any()).Return(errDB)
 
 	c, rec := testutils.NewContext(t, testutils.Request{
 		Method: http.MethodDelete, Target: "/imports/" + id.String(),

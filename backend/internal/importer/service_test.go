@@ -2,6 +2,7 @@ package importer_test
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"github.com/financeapp/backend/pkg/logger"
 	"mime/multipart"
@@ -57,7 +58,7 @@ func TestImport_ParsesRowsAndRecordsTheJob(t *testing.T) {
 	userID, importID := uuid.New(), uuid.New()
 	var batch []*domain.Expense
 
-	repo.EXPECT().Create(gomock.Any()).DoAndReturn(func(imp *domain.Import) error {
+	repo.EXPECT().Create(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, imp *domain.Import) error {
 		assert.Equal(t, userID, imp.UserID)
 		assert.Equal(t, "extrato.csv", imp.FileName)
 		assert.Equal(t, "csv", imp.FileType)
@@ -65,14 +66,14 @@ func TestImport_ParsesRowsAndRecordsTheJob(t *testing.T) {
 		imp.ID = importID
 		return nil
 	})
-	expenses.EXPECT().CreateBatch(gomock.Any()).DoAndReturn(func(e []*domain.Expense) error {
+	expenses.EXPECT().CreateBatch(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, e []*domain.Expense) error {
 		batch = e
 		return nil
 	})
-	repo.EXPECT().Update(gomock.Any()).Return(nil)
+	repo.EXPECT().Update(t.Context(), gomock.Any()).Return(nil)
 
 	file, header := upload(csvTwoRows, "extrato.csv")
-	imp, err := svc.Import(userID, file, header)
+	imp, err := svc.Import(t.Context(), userID, file, header)
 	require.NoError(t, err)
 
 	assert.Len(t, batch, 2, "both CSV rows should be parsed")
@@ -95,30 +96,30 @@ func TestImport_ParsesRowsAndRecordsTheJob(t *testing.T) {
 
 func TestImport_DetectsOFXFromTheExtension(t *testing.T) {
 	svc, repo, _ := newService(t)
-	repo.EXPECT().Create(gomock.Any()).DoAndReturn(func(imp *domain.Import) error {
+	repo.EXPECT().Create(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, imp *domain.Import) error {
 		assert.Equal(t, "ofx", imp.FileType)
 		imp.ID = uuid.New()
 		return nil
 	})
-	repo.EXPECT().Update(gomock.Any()).Return(nil)
+	repo.EXPECT().Update(t.Context(), gomock.Any()).Return(nil)
 
 	file, header := upload("OFXHEADER:100\n", "extrato.ofx")
-	_, err := svc.Import(uuid.New(), file, header)
+	_, err := svc.Import(t.Context(), uuid.New(), file, header)
 	require.NoError(t, err)
 }
 
 // A file with no usable rows produces no batch insert and a failed job.
 func TestImport_MarksJobFailedWhenNothingIsImported(t *testing.T) {
 	svc, repo, _ := newService(t)
-	repo.EXPECT().Create(gomock.Any()).DoAndReturn(func(imp *domain.Import) error {
+	repo.EXPECT().Create(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, imp *domain.Import) error {
 		imp.ID = uuid.New()
 		return nil
 	})
 	// No CreateBatch expectation: there is nothing to insert.
-	repo.EXPECT().Update(gomock.Any()).Return(nil)
+	repo.EXPECT().Update(t.Context(), gomock.Any()).Return(nil)
 
 	file, header := upload("data,descricao,valor\nlinha,invalida,xx\n", "ruim.csv")
-	imp, err := svc.Import(uuid.New(), file, header)
+	imp, err := svc.Import(t.Context(), uuid.New(), file, header)
 	require.NoError(t, err)
 
 	assert.Zero(t, imp.Imported)
@@ -129,20 +130,20 @@ func TestImport_MarksJobFailedWhenNothingIsImported(t *testing.T) {
 
 func TestImport_BatchFailureIsRecordedInTheJob(t *testing.T) {
 	svc, repo, expenses := newService(t)
-	repo.EXPECT().Create(gomock.Any()).DoAndReturn(func(imp *domain.Import) error {
+	repo.EXPECT().Create(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, imp *domain.Import) error {
 		imp.ID = uuid.New()
 		return nil
 	})
-	expenses.EXPECT().CreateBatch(gomock.Any()).Return(errDB)
+	expenses.EXPECT().CreateBatch(t.Context(), gomock.Any()).Return(errDB)
 
 	var updated *domain.Import
-	repo.EXPECT().Update(gomock.Any()).DoAndReturn(func(imp *domain.Import) error {
+	repo.EXPECT().Update(t.Context(), gomock.Any()).DoAndReturn(func(_ context.Context, imp *domain.Import) error {
 		updated = imp
 		return nil
 	})
 
 	file, header := upload(csvTwoRows, "extrato.csv")
-	imp, err := svc.Import(uuid.New(), file, header)
+	imp, err := svc.Import(t.Context(), uuid.New(), file, header)
 	require.NoError(t, err, "a failed batch is reported in the job, not as a call error")
 
 	assert.Zero(t, imp.Imported, "nothing was stored")
@@ -152,20 +153,20 @@ func TestImport_BatchFailureIsRecordedInTheJob(t *testing.T) {
 
 func TestImport_CreateFailureAborts(t *testing.T) {
 	svc, repo, _ := newService(t)
-	repo.EXPECT().Create(gomock.Any()).Return(errDB)
+	repo.EXPECT().Create(t.Context(), gomock.Any()).Return(errDB)
 	// Neither the parse result nor an update should follow.
 
 	file, header := upload(csvTwoRows, "extrato.csv")
-	_, err := svc.Import(uuid.New(), file, header)
+	_, err := svc.Import(t.Context(), uuid.New(), file, header)
 	assert.Equal(t, http.StatusInternalServerError, requireAppError(t, err).Code)
 }
 
 func TestListImports_ScopesToTheUser(t *testing.T) {
 	svc, repo, _ := newService(t)
 	userID := uuid.New()
-	repo.EXPECT().FindAll(userID).Return([]*domain.Import{{FileName: "a.csv"}}, nil)
+	repo.EXPECT().FindAll(t.Context(), userID).Return([]*domain.Import{{FileName: "a.csv"}}, nil)
 
-	got, err := svc.ListImports(userID)
+	got, err := svc.ListImports(t.Context(), userID)
 	require.NoError(t, err)
 	assert.Len(t, got, 1)
 }
@@ -175,21 +176,21 @@ func TestRevertImport_DeletesExpensesThenTheJob(t *testing.T) {
 	id, userID := uuid.New(), uuid.New()
 
 	gomock.InOrder(
-		repo.EXPECT().FindByID(id, userID).Return(&domain.Import{ID: id}, nil),
-		expenses.EXPECT().DeleteByImportID(id.String()).Return(nil),
-		repo.EXPECT().Delete(id).Return(nil),
+		repo.EXPECT().FindByID(t.Context(), id, userID).Return(&domain.Import{ID: id}, nil),
+		expenses.EXPECT().DeleteByImportID(t.Context(), id.String()).Return(nil),
+		repo.EXPECT().Delete(t.Context(), id).Return(nil),
 	)
 
-	assert.NoError(t, svc.RevertImport(id, userID))
+	assert.NoError(t, svc.RevertImport(t.Context(), id, userID))
 }
 
 // Reverting someone else's import must not touch any data.
 func TestRevertImport_UnknownJobDeletesNothing(t *testing.T) {
 	svc, repo, _ := newService(t)
-	repo.EXPECT().FindByID(gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
+	repo.EXPECT().FindByID(t.Context(), gomock.Any(), gomock.Any()).Return(nil, apperrors.ErrNotFound)
 	// No DeleteByImportID and no Delete expectations.
 
-	err := svc.RevertImport(uuid.New(), uuid.New())
+	err := svc.RevertImport(t.Context(), uuid.New(), uuid.New())
 	assert.Equal(t, http.StatusNotFound, requireAppError(t, err).Code)
 }
 
@@ -198,11 +199,11 @@ func TestRevertImport_UnknownJobDeletesNothing(t *testing.T) {
 func TestRevertImport_KeepsJobWhenExpenseDeletionFails(t *testing.T) {
 	svc, repo, expenses := newService(t)
 	id := uuid.New()
-	repo.EXPECT().FindByID(id, gomock.Any()).Return(&domain.Import{ID: id}, nil)
-	expenses.EXPECT().DeleteByImportID(id.String()).Return(errDB)
+	repo.EXPECT().FindByID(t.Context(), id, gomock.Any()).Return(&domain.Import{ID: id}, nil)
+	expenses.EXPECT().DeleteByImportID(t.Context(), id.String()).Return(errDB)
 	// No Delete expectation.
 
-	err := svc.RevertImport(id, uuid.New())
+	err := svc.RevertImport(t.Context(), id, uuid.New())
 	assert.Equal(t, http.StatusInternalServerError, requireAppError(t, err).Code)
 	assert.ErrorIs(t, err, errDB)
 }
