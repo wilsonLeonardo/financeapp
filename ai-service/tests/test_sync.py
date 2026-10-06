@@ -24,6 +24,18 @@ async def test_sync_indexes_only_new_or_changed_transactions(embeddings) -> None
     assert (meta["e2"]["category_id"], meta["e2"]["text"]) == ("food", "padaria doce pao")
 
 
+async def test_sync_drops_transactions_that_left_the_history(embeddings) -> None:
+    index = MemoryTransactionIndex(embeddings)
+    await sync_index(index, "u1", [expense("e1", "UBER TRIP", "transport"), expense("e2", "PADARIA", "food")])
+    await sync_index(index, "u2", [expense("e9", "PADARIA", "food")])
+
+    # e2 was deleted, or its category removed: it is no longer part of u1's history.
+    assert await sync_index(index, "u1", [expense("e1", "UBER TRIP", "transport")]) == 0
+
+    assert index.indexed_ids("u1") == {"e1"}
+    assert index.indexed_ids("u2") == {"e9"}
+
+
 def test_exemplars_are_each_categorys_most_frequent_merchants() -> None:
     history = [
         expense("1", "UBER *TRIP 01/09", "transport"),

@@ -43,3 +43,14 @@ def test_upsert_replaces_rows_in_place(index: PgTransactionIndex) -> None:
 
     assert index.indexed([expense_id])[expense_id]["category_id"] == "books"
     assert len(index.search("alice", "expense", "amazon", k=5)) == 1
+
+
+def test_lists_and_deletes_the_rows_of_one_user(index: PgTransactionIndex) -> None:
+    kept, removed, theirs = (f"{prefix}-{uuid.uuid4().hex}" for prefix in "krb")
+    index.upsert("alice", [item(kept, "uber trip", "transport"), item(removed, "padaria", "food")])
+    index.upsert("bob", [item(theirs, "padaria", "food")])
+
+    index.delete([removed])
+
+    assert index.indexed_ids("alice") == {kept}
+    assert index.indexed_ids("bob") == {theirs}

@@ -10,16 +10,21 @@ _BATCH = 200  # embeddings per call; keeps a first sync of a long history from o
 
 
 async def categorized_history(api: FinanceAPI, *, limit: int = 5000) -> list[Expense]:
-    """The user's transactions that already have a category: the categorizer's ground truth."""
+    """The user's transactions that already have a category: the categorizer's ground truth.
+
+    Only the latest ``limit`` transactions are read, which also bounds the index (see sync_index).
+    """
     return [e for e in await api.expenses(limit=limit) if e.category_id]
 
 
 async def sync_index(index: TransactionIndex, user_id: str, history: Sequence[Expense]) -> int:
-    """Indexes the transactions that are new, re-categorized or re-described since the last sync.
+    """Makes the index mirror the user's categorized history.
 
-    Categories assigned anywhere in the app reach the index this way, so it needs no hooks in the
-    Go API. Comparing the stored text and model also re-embeds everything after a normalization or
-    embedding-model change.
+    Indexes the transactions that are new, re-categorized or re-described since the last sync, and
+    drops the ones that left the history (deleted, or no longer categorized) so they stop showing up
+    as neighbours. Categories assigned anywhere in the app reach the index this way, so it needs no
+    hooks in the Go API. Comparing the stored text and model also re-embeds everything after a
+    normalization or embedding-model change.
     Returns how many transactions were (re)indexed.
     """
     current = {
@@ -37,6 +42,10 @@ async def sync_index(index: TransactionIndex, user_id: str, history: Sequence[Ex
     ]
     for start in range(0, len(stale), _BATCH):
         await asyncio.to_thread(index.upsert, user_id, stale[start : start + _BATCH])
+
+    gone = (await asyncio.to_thread(index.indexed_ids, user_id)).difference(current)
+    if gone:
+        await asyncio.to_thread(index.delete, sorted(gone))
     return len(stale)
 
 

@@ -71,6 +71,13 @@ class TransactionIndex(ABC):
     def indexed(self, expense_ids: Sequence[str]) -> dict[str, dict]:
         """Metadata of the given IDs that are already indexed, keyed by expense ID."""
 
+    @abstractmethod
+    def indexed_ids(self, user_id: str) -> set[str]:
+        """IDs of every transaction indexed for this user."""
+
+    @abstractmethod
+    def delete(self, expense_ids: Sequence[str]) -> None: ...
+
 
 class PgTransactionIndex(TransactionIndex):
     def __init__(self, embeddings: Embeddings, connection: str, collection: str, model: str):
@@ -100,6 +107,23 @@ class PgTransactionIndex(TransactionIndex):
             return {}
         return {doc.metadata["expense_id"]: doc.metadata for doc in self.store.get_by_ids(list(expense_ids))}
 
+    def indexed_ids(self, user_id: str) -> set[str]:
+        # PGVector has no "list by metadata", so this queries its table; the containment filter (@>)
+        # uses the GIN index PGVector keeps on the metadata.
+        rows = self.store.EmbeddingStore
+        with self.store.session_maker() as session:
+            collection = self.store.get_collection(session)
+            if collection is None:
+                return set()
+            query = session.query(rows.id).filter(
+                rows.collection_id == collection.uuid, rows.cmetadata.contains({"user_id": user_id})
+            )
+            return {expense_id for (expense_id,) in query}
+
+    def delete(self, expense_ids: Sequence[str]) -> None:
+        if expense_ids:
+            self.store.delete(list(expense_ids), collection_only=True)
+
 
 class MemoryTransactionIndex(TransactionIndex):
     def __init__(self, embeddings: Embeddings, model: str = "memory"):
@@ -121,3 +145,9 @@ class MemoryTransactionIndex(TransactionIndex):
 
     def indexed(self, expense_ids: Sequence[str]) -> dict[str, dict]:
         return {doc.metadata["expense_id"]: doc.metadata for doc in self.store.get_by_ids(list(expense_ids))}
+
+    def indexed_ids(self, user_id: str) -> set[str]:
+        return {doc_id for doc_id, doc in self.store.store.items() if doc["metadata"]["user_id"] == user_id}
+
+    def delete(self, expense_ids: Sequence[str]) -> None:
+        self.store.delete(list(expense_ids))

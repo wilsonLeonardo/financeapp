@@ -44,3 +44,14 @@ def test_upsert_replaces_a_recategorized_transaction(embeddings) -> None:
 
     assert index.indexed(["a1"])["a1"]["category_id"] == "books"
     assert len(index.search("alice", "expense", "expense amazon", k=5)) == 1
+
+
+def test_lists_and_deletes_one_users_transactions(embeddings) -> None:
+    index = MemoryTransactionIndex(embeddings)
+    index.upsert("alice", [item("a1", "expense uber", "transport"), item("a2", "expense padaria", "food")])
+    index.upsert("bob", [item("b1", "expense uber trip", "transport")])
+
+    index.delete(["a2"])
+
+    assert index.indexed_ids("alice") == {"a1"}
+    assert index.indexed_ids("bob") == {"b1"}
