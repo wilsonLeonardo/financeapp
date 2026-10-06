@@ -107,7 +107,8 @@ func (r *postgresRepository) List(ctx context.Context, f ListFilter) ([]*domain.
 
 	offset := (f.Page - 1) * f.PageSize
 	var expenses []*domain.Expense
-	err := query.Order("date DESC").
+	// id breaks ties between same-day rows; without it pages overlap and skip rows.
+	err := query.Order("date DESC, id DESC").
 		Limit(f.PageSize).
 		Offset(offset).
 		Find(&expenses).Error
