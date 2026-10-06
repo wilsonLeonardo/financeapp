@@ -37,7 +37,7 @@ Examples:
 "quanto gastei com mercado em setembro?" -> analyst
 "how much did I earn last month?" -> analyst
 "quais foram minhas maiores despesas este mês?" -> analyst
-"categorize my imported transactions" -> categorizer
+"categorize my new transactions" -> categorizer
 "tenho transações sem categoria?" -> categorizer
 "oi, o que você faz?" -> general
 "thanks!" -> general"""

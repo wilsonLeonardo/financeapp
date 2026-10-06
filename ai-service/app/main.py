@@ -243,7 +243,7 @@ async def apply(body: ApplyRequest, user: User, api: API, index: Index) -> Apply
             IndexedTransaction(expense.id, index_text(expense.description), expense.type, item.category_id)
         )
 
-    # Confirmed choices feed the index right away, so the next import benefits from them.
+    # Confirmed choices feed the index right away, so the next suggestions already learn from them.
     await asyncio.to_thread(index.upsert, user.user_id, applied)
     return ApplyResponse(applied=len(applied), failed=failed)
 
