@@ -1,0 +1,21 @@
+{"prompt": "Quanto gastei por categoria este mês?", "tool": "spending_by_category"}
+{"prompt": "Em que categoria gastei mais em agosto?", "tool": "spending_by_category"}
+{"prompt": "What did I spend per category last month?", "tool": "spending_by_category"}
+{"prompt": "Como foram meus gastos nos últimos 6 meses?", "tool": "monthly_totals"}
+{"prompt": "Qual foi meu saldo em julho?", "tool": "monthly_totals"}
+{"prompt": "How much did I earn each month this year?", "tool": "monthly_totals"}
+{"prompt": "Quais categorias eu tenho?", "tool": "list_categories"}
+{"prompt": "Quais foram meus gastos detalhados na categoria Moradia em setembro?", "tool": "search_transactions", "args": {"category": "moradia"}}
+{"prompt": "Liste as transações da categoria Alimentação deste mês", "tool": "search_transactions", "args": {"category": "alimentacao"}}
+{"prompt": "Show me every transaction in Transporte for September", "tool": "search_transactions", "args": {"category": "transporte"}}
+{"prompt": "Quanto gastei com Uber em agosto?", "tool": "search_transactions", "args": {"text": "uber"}}
+{"prompt": "Mostre minhas compras na Amazon", "tool": "search_transactions", "args": {"text": "amazon"}}
+{"prompt": "List my Netflix charges", "tool": "search_transactions", "args": {"text": "netflix"}}
+{"history": ["Quanto gastei por categoria em setembro de 2026?", "Em setembro de 2026 você gastou: Moradia $3,229.15, Mercado $1,809.56, Compras $1,782.92, Saúde $1,706.42, Transporte $1,329.50, Alimentação $995.40. Total: $13,015.75."], "prompt": "quais foram os gastos detalhados na categoria moradia?", "tool": "search_transactions", "args": {"category": "moradia"}}
+{"history": ["Quanto gastei por categoria em setembro de 2026?", "Em setembro de 2026 você gastou: Moradia $3,229.15, Mercado $1,809.56, Compras $1,782.92, Saúde $1,706.42, Transporte $1,329.50, Alimentação $995.40. Total: $13,015.75."], "prompt": "e na categoria mercado, quais foram as transações?", "tool": "search_transactions", "args": {"category": "mercado"}}
+{"history": ["Quanto gastei por categoria este mês?", "Neste mês de outubro de 2026, você gastou: Educação $4,844.75, Casa $1,753.51, Saúde $293.81, Academia $195.00, Mercado $172.25, Lazer $7.00. Total: $7,288.85."], "prompt": "quais foram os gastos detalhados na categoria casa?", "tool": "search_transactions", "args": {"category": "casa"}}
+{"history": ["Quanto gastei por categoria este mês?", "Neste mês de outubro de 2026, você gastou: Educação $4,844.75, Casa $1,753.51, Saúde $293.81, Academia $195.00, Mercado $172.25, Lazer $7.00. Total: $7,288.85."], "prompt": "me mostra o que entrou em Educação", "tool": "search_transactions", "args": {"category": "educacao"}}
+{"history": ["How much did I spend per category this month?", "This month you spent: Educação $4,844.75, Casa $1,753.51, Saúde $293.81, Mercado $172.25. Total: $7,066.32."], "prompt": "what were the detailed expenses in Casa?", "tool": "search_transactions", "args": {"category": "casa"}}
+{"history": ["How much did I spend per category this month?", "This month you spent: Educação $4,844.75, Casa $1,753.51, Saúde $293.81, Mercado $172.25. Total: $7,066.32."], "prompt": "break down Saúde for me", "tool": "search_transactions", "args": {"category": "saude"}}
+{"history": ["Quanto gastei por categoria este mês?", "Neste mês de outubro de 2026, você gastou: Educação $4,844.75, Casa $1,753.51, Saúde $293.81, Academia $195.00, Mercado $172.25, Lazer $7.00. Total: $7,288.85."], "prompt": "e no mês passado, por categoria?", "tool": "spending_by_category"}
+{"history": ["Quanto gastei por categoria este mês?", "Neste mês, gastei $7,130.34 em gastos totais. Aqui estão os gastos por categoria: Educação: $4,844.75, Casa: $1,595.00, Saúde: $293.81, Academia: $195.00, Mercado: $172.25, Lazer: $7.00"], "prompt": "Considere os gastos futuros também, que já adicionei", "tool": "spending_by_category"}

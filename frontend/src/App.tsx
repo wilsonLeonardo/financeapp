@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import Layout from '@/components/layout/Layout'
@@ -6,6 +7,10 @@ import RegisterPage from '@/pages/RegisterPage'
 import DashboardPage from '@/pages/DashboardPage'
 import ExpensesPage from '@/pages/ExpensesPage'
 import CategoriesPage from '@/pages/CategoriesPage'
+import { PageLoader } from '@/components/common'
+
+// The AI SDK is large and only this page needs it, so it loads on first visit.
+const AssistantPage = lazy(() => import('@/pages/AssistantPage'))
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -27,6 +32,10 @@ export default function App() {
           <Route index element={<DashboardPage />} />
           <Route path="expenses" element={<ExpensesPage />} />
           <Route path="categories" element={<CategoriesPage />} />
+          <Route
+            path="assistant"
+            element={<Suspense fallback={<PageLoader />}><AssistantPage /></Suspense>}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

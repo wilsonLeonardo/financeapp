@@ -1,0 +1,313 @@
+{
+  "generated_at": "2026-10-06T05:09:01+00:00",
+  "chat_model": "qwen2.5:3b",
+  "cases": 21,
+  "tool_accuracy": 0.9047619047619048,
+  "tool_and_args_accuracy": 0.8095238095238095,
+  "follow_up_accuracy": 0.75,
+  "narrated_tool_calls": 0.0,
+  "latency_ms_median": 4973.659830982797,
+  "rows": [
+    {
+      "prompt": "Quanto gastei por categoria este mês?",
+      "follow_up": false,
+      "expected": "spending_by_category",
+      "got": "spending_by_category",
+      "args": {
+        "category": null,
+        "end_date": "2026-10-06",
+        "month": "2026-10"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 5183.879106014501
+    },
+    {
+      "prompt": "Em que categoria gastei mais em agosto?",
+      "follow_up": false,
+      "expected": "spending_by_category",
+      "got": "spending_by_category",
+      "args": {
+        "category": null,
+        "end_date": "2026-08-31",
+        "month": null,
+        "start_date": null
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 5194.616650987882
+    },
+    {
+      "prompt": "What did I spend per category last month?",
+      "follow_up": false,
+      "expected": "spending_by_category",
+      "got": "spending_by_category",
+      "args": {
+        "category": null,
+        "end_date": "2026-10-05",
+        "month": null,
+        "start_date": "2026-09-01"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 6175.345679046586
+    },
+    {
+      "prompt": "Como foram meus gastos nos últimos 6 meses?",
+      "follow_up": false,
+      "expected": "monthly_totals",
+      "got": "monthly_totals",
+      "args": {
+        "end_date": "2026-10-01",
+        "last_n_months": 6
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 4240.072804968804
+    },
+    {
+      "prompt": "Qual foi meu saldo em julho?",
+      "follow_up": false,
+      "expected": "monthly_totals",
+      "got": "monthly_totals",
+      "args": {
+        "month": "2026-07",
+        "end_date": "2026-07-31"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 4472.210954991169
+    },
+    {
+      "prompt": "How much did I earn each month this year?",
+      "follow_up": false,
+      "expected": "monthly_totals",
+      "got": "monthly_totals",
+      "args": {
+        "end_date": "2026-12-31",
+        "last_n_months": 12
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 4337.322264967952
+    },
+    {
+      "prompt": "Quais categorias eu tenho?",
+      "follow_up": false,
+      "expected": "list_categories",
+      "got": "list_categories",
+      "args": {},
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 1939.8749810061418
+    },
+    {
+      "prompt": "Quais foram meus gastos detalhados na categoria Moradia em setembro?",
+      "follow_up": false,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "end_date": "2026-09-30",
+        "limit": 10,
+        "category": "Moradia",
+        "start_date": "2026-09-01"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 6471.655955014285
+    },
+    {
+      "prompt": "Liste as transações da categoria Alimentação deste mês",
+      "follow_up": false,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "category": "Alimentação",
+        "month": "2026-10"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 3802.9318849439733
+    },
+    {
+      "prompt": "Show me every transaction in Transporte for September",
+      "follow_up": false,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "category": "Transporte",
+        "start_date": "2026-09-01",
+        "end_date": "2026-09-30",
+        "limit": 100
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 6384.478160995059
+    },
+    {
+      "prompt": "Quanto gastei com Uber em agosto?",
+      "follow_up": false,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "month": "2026-08",
+        "limit": 10,
+        "category": "Uber"
+      },
+      "tool_ok": true,
+      "args_ok": false,
+      "narrated": false,
+      "ms": 4345.922945998609
+    },
+    {
+      "prompt": "Mostre minhas compras na Amazon",
+      "follow_up": false,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "category": "Amazon",
+        "type": "expenses"
+      },
+      "tool_ok": true,
+      "args_ok": false,
+      "narrated": false,
+      "ms": 2963.156962010544
+    },
+    {
+      "prompt": "List my Netflix charges",
+      "follow_up": false,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "category": "uncategorized",
+        "text": "netflix",
+        "type": "expenses"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 3699.4332599570043
+    },
+    {
+      "prompt": "quais foram os gastos detalhados na categoria moradia?",
+      "follow_up": true,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "category": "Moradia",
+        "end_date": "2026-09-30",
+        "limit": 10
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 8233.97100501461
+    },
+    {
+      "prompt": "e na categoria mercado, quais foram as transações?",
+      "follow_up": true,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "limit": 10,
+        "category": "Mercado",
+        "end_date": "2026-09-30"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 4973.659830982797
+    },
+    {
+      "prompt": "quais foram os gastos detalhados na categoria casa?",
+      "follow_up": true,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "limit": 10,
+        "category": "Casa",
+        "end_date": "2026-10-06"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 7869.823980028741
+    },
+    {
+      "prompt": "me mostra o que entrou em Educação",
+      "follow_up": true,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "category": "Educação",
+        "type": "income",
+        "limit": 10
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 3903.092973981984
+    },
+    {
+      "prompt": "what were the detailed expenses in Casa?",
+      "follow_up": true,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "limit": 10,
+        "category": "Casa"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 5243.9329830231145
+    },
+    {
+      "prompt": "break down Saúde for me",
+      "follow_up": true,
+      "expected": "search_transactions",
+      "got": "search_transactions",
+      "args": {
+        "end_date": "2026-10-06",
+        "limit": 10,
+        "category": "Saúde"
+      },
+      "tool_ok": true,
+      "args_ok": true,
+      "narrated": false,
+      "ms": 4660.865031997673
+    },
+    {
+      "prompt": "e no mês passado, por categoria?",
+      "follow_up": true,
+      "expected": "spending_by_category",
+      "got": null,
+      "args": null,
+      "tool_ok": false,
+      "args_ok": false,
+      "narrated": false,
+      "ms": 22053.67178400047
+    },
+    {
+      "prompt": "Considere os gastos futuros também, que já adicionei",
+      "follow_up": true,
+      "expected": "spending_by_category",
+      "got": null,
+      "args": null,
+      "tool_ok": false,
+      "args_ok": false,
+      "narrated": false,
+      "ms": 16277.417358011007
+    }
+  ]
+}

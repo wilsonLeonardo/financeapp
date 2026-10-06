@@ -1,0 +1,393 @@
+{
+  "generated_at": "2026-10-06T03:58:08+00:00",
+  "chat_model": "qwen2.5:3b",
+  "embed_model": "nomic-embed-text",
+  "k": 5,
+  "auto_threshold": 0.9,
+  "history_transactions": 171,
+  "test_transactions": 57,
+  "test_from_new_merchants": 21,
+  "results": [
+    {
+      "strategy": "zero_shot",
+      "accuracy": 0.45614035087719296,
+      "accuracy_seen_merchants": 0.4166666666666667,
+      "accuracy_new_merchants": 0.5238095238095238,
+      "macro_f1": 0.5054614975667607,
+      "resolved_without_llm": 0.0,
+      "no_suggestion": 0.017543859649122806,
+      "latency_ms_p50": 1813.2661689887755,
+      "latency_ms_p95": 2257.0069530047476,
+      "errors": [
+        {
+          "description": "COMPRA CARTAO 8993 OXXO MINIMERCADO",
+          "expected": "Mercado",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "COMPRA SPOTIFY *5D3H1Z",
+          "expected": "Assinaturas",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "DEB AUT STARBUCKS SAO PAULO BR",
+          "expected": "Alimentação",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "PAG*OUTBACK STEAKHOUSE",
+          "expected": "Alimentação",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "Deb Aut Ted Enviada Ana Lima *E21E9E",
+          "expected": "Transferências",
+          "predicted": null,
+          "method": "none"
+        },
+        {
+          "description": "STARBUCKS *EJGX74",
+          "expected": "Alimentação",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "DEB AUT OUTBACK STEAKHOUSE",
+          "expected": "Alimentação",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "Compra Cartao 3527 Indrive Corrida",
+          "expected": "Transporte",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "PAG*AUTO POSTO BR",
+          "expected": "Transporte",
+          "predicted": "Mercado",
+          "method": "llm"
+        },
+        {
+          "description": "COMPRA AMAZON PRIME SAO PAULO BR",
+          "expected": "Assinaturas",
+          "predicted": "Mercado",
+          "method": "llm"
+        },
+        {
+          "description": "Compra Cartao 3937 St Marche 12/09",
+          "expected": "Mercado",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "99 *POP",
+          "expected": "Transporte",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "COMPRA DEEZER PREMIUM",
+          "expected": "Assinaturas",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "Compra Cartao 6152 Reembolso Despesas Empresa 6152",
+          "expected": "Renda",
+          "predicted": "Transferências",
+          "method": "llm"
+        },
+        {
+          "description": "Auto Posto Br Sao Paulo Br",
+          "expected": "Transporte",
+          "predicted": "Mercado",
+          "method": "llm"
+        },
+        {
+          "description": "COMPRA DROGA RAIA SAO PAULO BR",
+          "expected": "Saúde",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "PAG*MC DONALDS",
+          "expected": "Alimentação",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "ZONA AZUL DIGITAL SAO PAULO BR",
+          "expected": "Transporte",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "LEROY MERLIN *84SLKU",
+          "expected": "Compras",
+          "predicted": "Mercado",
+          "method": "llm"
+        },
+        {
+          "description": "DEB AUT BURGER KING 20/09",
+          "expected": "Alimentação",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "Oxxo Minimercado Sao Paulo Br",
+          "expected": "Mercado",
+          "predicted": "Alimentação",
+          "method": "llm"
+        },
+        {
+          "description": "COMPRA SEM PARAR",
+          "expected": "Transporte",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "COMPRA VIVO FIBRA INTERNET",
+          "expected": "Moradia",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "Deb Aut Drogaria Sao Paulo *M4W30L",
+          "expected": "Saúde",
+          "predicted": "Mercado",
+          "method": "llm"
+        },
+        {
+          "description": "Sympla Eventos 21/09",
+          "expected": "Lazer",
+          "predicted": "Educação",
+          "method": "llm"
+        },
+        {
+          "description": "COMPRA SUSHI YAMA SAO PAULO BR",
+          "expected": "Alimentação",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "PAG*DROGA RAIA 22/09",
+          "expected": "Saúde",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "DEB AUT 99 *POP",
+          "expected": "Transporte",
+          "predicted": "Transferências",
+          "method": "llm"
+        },
+        {
+          "description": "PAG*ALIEXPRESS",
+          "expected": "Compras",
+          "predicted": "Mercado",
+          "method": "llm"
+        },
+        {
+          "description": "DEB AUT PAO DE ACUCAR *1MDHCW",
+          "expected": "Mercado",
+          "predicted": "Alimentação",
+          "method": "llm"
+        },
+        {
+          "description": "CENTAURO ESPORTES SAO PAULO BR",
+          "expected": "Compras",
+          "predicted": "Lazer",
+          "method": "llm"
+        }
+      ]
+    },
+    {
+      "strategy": "knn",
+      "accuracy": 0.6491228070175439,
+      "accuracy_seen_merchants": 0.8611111111111112,
+      "accuracy_new_merchants": 0.2857142857142857,
+      "macro_f1": 0.5738012536431509,
+      "resolved_without_llm": 1.0,
+      "no_suggestion": 0.0,
+      "latency_ms_p50": 35.56543804006651,
+      "latency_ms_p95": 49.84780104132369,
+      "errors": [
+        {
+          "description": "DEB AUT CANTINA DO NONNO",
+          "expected": "Alimentação",
+          "predicted": "Transporte",
+          "method": "knn"
+        },
+        {
+          "description": "DESCOMPLICA CURSO",
+          "expected": "Educação",
+          "predicted": "Mercado",
+          "method": "knn"
+        },
+        {
+          "description": "COMPRA CARTAO 1478 CLINICA ODONTO SORRIA 1478",
+          "expected": "Saúde",
+          "predicted": "Alimentação",
+          "method": "knn"
+        },
+        {
+          "description": "Compra Cartao 3527 Indrive Corrida",
+          "expected": "Transporte",
+          "predicted": "Mercado",
+          "method": "knn"
+        },
+        {
+          "description": "Compra Cartao 3937 St Marche 12/09",
+          "expected": "Mercado",
+          "predicted": "Compras",
+          "method": "knn"
+        },
+        {
+          "description": "COMPRA C&A MODA SAO PAULO BR",
+          "expected": "Compras",
+          "predicted": "Transporte",
+          "method": "knn"
+        },
+        {
+          "description": "Escola De Ingles Wise Up 13/09",
+          "expected": "Educação",
+          "predicted": "Moradia",
+          "method": "knn"
+        },
+        {
+          "description": "COMPRA DROGA RAIA SAO PAULO BR",
+          "expected": "Saúde",
+          "predicted": "Mercado",
+          "method": "knn"
+        },
+        {
+          "description": "ZONA AZUL DIGITAL SAO PAULO BR",
+          "expected": "Transporte",
+          "predicted": "Assinaturas",
+          "method": "knn"
+        },
+        {
+          "description": "LEROY MERLIN *84SLKU",
+          "expected": "Compras",
+          "predicted": "Alimentação",
+          "method": "knn"
+        },
+        {
+          "description": "Compra Cantina Do Nonno",
+          "expected": "Alimentação",
+          "predicted": "Mercado",
+          "method": "knn"
+        },
+        {
+          "description": "PAG*SABESP AGUA SAO PAULO BR",
+          "expected": "Moradia",
+          "predicted": "Mercado",
+          "method": "knn"
+        },
+        {
+          "description": "Deb Aut Drogaria Sao Paulo *M4W30L",
+          "expected": "Saúde",
+          "predicted": "Transporte",
+          "method": "knn"
+        },
+        {
+          "description": "Sympla Eventos 21/09",
+          "expected": "Lazer",
+          "predicted": "Moradia",
+          "method": "knn"
+        },
+        {
+          "description": "DEB AUT CANTINA DO NONNO 9037",
+          "expected": "Alimentação",
+          "predicted": "Transporte",
+          "method": "knn"
+        },
+        {
+          "description": "DEB AUT BOLICHE STRIKE",
+          "expected": "Lazer",
+          "predicted": "Transporte",
+          "method": "knn"
+        },
+        {
+          "description": "Compra Cantina Do Nonno",
+          "expected": "Alimentação",
+          "predicted": "Mercado",
+          "method": "knn"
+        },
+        {
+          "description": "PAG*ALIEXPRESS",
+          "expected": "Compras",
+          "predicted": "Mercado",
+          "method": "knn"
+        },
+        {
+          "description": "COMPRA BOLICHE STRIKE 7010",
+          "expected": "Lazer",
+          "predicted": "Moradia",
+          "method": "knn"
+        },
+        {
+          "description": "CENTAURO ESPORTES SAO PAULO BR",
+          "expected": "Compras",
+          "predicted": "Lazer",
+          "method": "knn"
+        }
+      ]
+    },
+    {
+      "strategy": "rag",
+      "accuracy": 0.8947368421052632,
+      "accuracy_seen_merchants": 1.0,
+      "accuracy_new_merchants": 0.7142857142857143,
+      "macro_f1": 0.9015873015873016,
+      "resolved_without_llm": 0.543859649122807,
+      "no_suggestion": 0.03508771929824561,
+      "latency_ms_p50": 65.63398201251402,
+      "latency_ms_p95": 4290.008993004449,
+      "errors": [
+        {
+          "description": "Compra Cartao 3527 Indrive Corrida",
+          "expected": "Transporte",
+          "predicted": "Compras",
+          "method": "llm"
+        },
+        {
+          "description": "ZONA AZUL DIGITAL SAO PAULO BR",
+          "expected": "Transporte",
+          "predicted": "Lazer",
+          "method": "llm"
+        },
+        {
+          "description": "Deb Aut Drogaria Sao Paulo *M4W30L",
+          "expected": "Saúde",
+          "predicted": "Mercado",
+          "method": "llm"
+        },
+        {
+          "description": "Sympla Eventos 21/09",
+          "expected": "Lazer",
+          "predicted": null,
+          "method": "none"
+        },
+        {
+          "description": "PAG*ALIEXPRESS",
+          "expected": "Compras",
+          "predicted": null,
+          "method": "none"
+        },
+        {
+          "description": "CENTAURO ESPORTES SAO PAULO BR",
+          "expected": "Compras",
+          "predicted": "Lazer",
+          "method": "llm"
+        }
+      ]
+    }
+  ]
+}

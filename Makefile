@@ -1,5 +1,6 @@
 BACKEND  := backend
 FRONTEND := frontend
+AI       := ai-service
 BINARY   := bin/server
 
 .DEFAULT_GOAL := help
@@ -71,6 +72,44 @@ web-test:
 web-build:
 	@cd $(FRONTEND) && npm run build
 
+# AI service
+## ai-install: create the ai-service virtualenv with the dev and eval extras
+ai-install:
+	@cd $(AI) && python3 -m venv .venv && .venv/bin/pip install -q -e ".[dev,eval]"
+
+## ai-dev: run the ai-service with reload (needs ollama, postgres, redis and the API)
+ai-dev:
+	@cd $(AI) && .venv/bin/uvicorn app.main:app --reload --port 8000
+
+## ai-test: run the ai-service test suite
+ai-test:
+	@cd $(AI) && .venv/bin/pytest -q
+
+## ai-lint: lint and format-check the ai-service
+ai-lint:
+	@cd $(AI) && .venv/bin/ruff check . && .venv/bin/ruff format --check .
+
+## ai-models: pull the models by hand (make up already pulls any that are missing)
+ai-models:
+	@docker compose exec ollama ollama pull $${CHAT_MODEL:-qwen2.5:3b}
+	@docker compose exec ollama ollama pull $${EMBED_MODEL:-nomic-embed-text}
+
+## ai-seed: create a demo account with four months of synthetic transactions
+ai-seed:
+	@cd $(AI) && .venv/bin/python -m scripts.seed_demo --api $${API_URL:-http://localhost:8080/api/v1}
+
+## ai-eval: measure categorization accuracy of the three strategies on the local models
+ai-eval:
+	@cd $(AI) && .venv/bin/python -m evals.run_categorization
+
+## ai-eval-router: measure how often the router picks the right agent
+ai-eval-router:
+	@cd $(AI) && .venv/bin/python -m evals.run_router
+
+## ai-eval-tools: measure whether the analyst picks the right tool and arguments, follow-ups included
+ai-eval-tools:
+	@cd $(AI) && .venv/bin/python -m evals.run_tools
+
 # Stack
 ## up: start the whole stack with docker compose
 up:
@@ -89,8 +128,8 @@ db:
 	@docker compose exec postgres psql -U $${POSTGRES_USER:-financeapp} -d $${POSTGRES_DB:-financeapp}
 
 # Everything
-## check: what CI runs — format check, vet and both test suites
-check: vet test web-test
+## check: what CI runs — format checks, vet, lint and all three test suites
+check: vet test web-test ai-lint ai-test
 	@cd $(BACKEND) && test -z "$$(gofmt -l .)" || (echo "these files need gofmt:" && gofmt -l . && exit 1)
 	@echo "all checks passed"
 
@@ -99,4 +138,6 @@ clean:
 	@rm -rf $(BACKEND)/bin $(BACKEND)/coverage.out $(BACKEND)/coverage.html $(FRONTEND)/dist
 
 .PHONY: help build run test test-race cover generate docs fmt vet tidy \
-        web-install web-dev web-test web-build up down logs db check clean
+        web-install web-dev web-test web-build \
+        ai-install ai-dev ai-test ai-lint ai-models ai-seed ai-eval ai-eval-router ai-eval-tools \
+        up down logs db check clean

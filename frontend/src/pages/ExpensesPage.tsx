@@ -3,6 +3,7 @@ import { Plus, Filter, X } from 'lucide-react'
 import { useExpenses, useCategories } from '@/hooks/useFinance'
 import ExpenseTable from '@/components/expenses/ExpenseTable'
 import ExpenseFormModal from '@/components/expenses/ExpenseFormModal'
+import CategorySuggestions from '@/components/expenses/CategorySuggestions'
 import type { ListExpensesParams, TransactionType } from '@/types'
 import { currentMonthRange, UNCATEGORIZED } from '@/utils'
 
@@ -126,6 +127,8 @@ export default function ExpensesPage() {
           pageSize={20}
         />
       </div>
+
+      <CategorySuggestions />
 
       <ExpenseFormModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>

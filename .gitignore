@@ -5,6 +5,13 @@
 
 # Dependencies
 node_modules/
+.venv/
+
+# Python caches
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
 
 # Build caches
 .vite/

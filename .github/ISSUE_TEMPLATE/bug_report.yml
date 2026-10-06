@@ -28,6 +28,7 @@ body:
       options:
         - Frontend (React)
         - Backend (Go API)
+        - AI assistant (ai-service)
         - Not sure
     validations:
       required: true

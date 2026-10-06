@@ -1,0 +1,228 @@
+{"date": "2026-06-01", "description": "COMPRA STARBUCKS 2424", "amount": 77.57, "type": "expense", "category": "Alimentação", "merchant": "STARBUCKS", "id": "t0001"}
+{"date": "2026-06-01", "description": "DEB AUT SABESP AGUA SAO PAULO BR", "amount": 329.9, "type": "expense", "category": "Moradia", "merchant": "SABESP AGUA", "id": "t0002"}
+{"date": "2026-06-02", "description": "AUTO POSTO BR 9238", "amount": 110.35, "type": "expense", "category": "Transporte", "merchant": "AUTO POSTO BR", "id": "t0003"}
+{"date": "2026-06-02", "description": "COMPRA POSTO IPIRANGA SAO PAULO BR", "amount": 108.34, "type": "expense", "category": "Transporte", "merchant": "POSTO IPIRANGA", "id": "t0004"}
+{"date": "2026-06-02", "description": "SEM PARAR *L1CR99", "amount": 75.57, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0005"}
+{"date": "2026-06-02", "description": "Compra Estapar Estacionamento *5Nf4Zw", "amount": 214.09, "type": "expense", "category": "Transporte", "merchant": "ESTAPAR ESTACIONAMENTO", "id": "t0006"}
+{"date": "2026-06-03", "description": "COMPRA PIX ENVIADO JOAO PEREIRA *ZLVSUQ", "amount": 577.14, "type": "expense", "category": "Transferências", "merchant": "PIX ENVIADO JOAO PEREIRA", "id": "t0007"}
+{"date": "2026-06-04", "description": "Compra Cartao 5557 Restaurante Sabor Caseiro", "amount": 31.73, "type": "expense", "category": "Alimentação", "merchant": "RESTAURANTE SABOR CASEIRO", "id": "t0008"}
+{"date": "2026-06-04", "description": "COMPRA MC DONALDS *30U9NU", "amount": 69.35, "type": "expense", "category": "Alimentação", "merchant": "MC DONALDS", "id": "t0009"}
+{"date": "2026-06-05", "description": "COMPRA CARTAO 2139 PADARIA DOCE PAO 05/06", "amount": 69.81, "type": "expense", "category": "Alimentação", "merchant": "PADARIA DOCE PAO", "id": "t0010"}
+{"date": "2026-06-06", "description": "Deb Aut Pao De Acucar 06/06", "amount": 134.99, "type": "expense", "category": "Mercado", "merchant": "PAO DE ACUCAR", "id": "t0011"}
+{"date": "2026-06-06", "description": "PAG*MERCADOLIVRE*VENDEDOR 3683", "amount": 549.2, "type": "expense", "category": "Compras", "merchant": "MERCADOLIVRE*VENDEDOR", "id": "t0012"}
+{"date": "2026-06-07", "description": "DEB AUT SEM PARAR", "amount": 60.1, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0013"}
+{"date": "2026-06-07", "description": "PAG*ENEL SP ENERGIA *V9BWM2", "amount": 330.61, "type": "expense", "category": "Moradia", "merchant": "ENEL SP ENERGIA", "id": "t0014"}
+{"date": "2026-06-08", "description": "COMPRA MC DONALDS", "amount": 71.88, "type": "expense", "category": "Alimentação", "merchant": "MC DONALDS", "id": "t0015"}
+{"date": "2026-06-08", "description": "COMPRA CARTAO 4598 STARBUCKS", "amount": 151.89, "type": "expense", "category": "Alimentação", "merchant": "STARBUCKS", "id": "t0016"}
+{"date": "2026-06-08", "description": "COMPRA VIVO FIBRA INTERNET 4114", "amount": 912.28, "type": "expense", "category": "Moradia", "merchant": "VIVO FIBRA INTERNET", "id": "t0017"}
+{"date": "2026-06-08", "description": "COMPRA CARTAO 6409 ALUGUEL IMOBILIARIA LAR 08/06", "amount": 1357.33, "type": "expense", "category": "Moradia", "merchant": "ALUGUEL IMOBILIARIA LAR", "id": "t0018"}
+{"date": "2026-06-08", "description": "PAG*SPOTIFY", "amount": 36.71, "type": "expense", "category": "Assinaturas", "merchant": "SPOTIFY", "id": "t0019"}
+{"date": "2026-06-09", "description": "DEB AUT MC DONALDS *YP7RKJ", "amount": 101.01, "type": "expense", "category": "Alimentação", "merchant": "MC DONALDS", "id": "t0020"}
+{"date": "2026-06-09", "description": "Assai Atacadista Sao Paulo Br", "amount": 140.91, "type": "expense", "category": "Mercado", "merchant": "ASSAI ATACADISTA", "id": "t0021"}
+{"date": "2026-06-10", "description": "TED ENVIADA ANA LIMA", "amount": 413.15, "type": "expense", "category": "Transferências", "merchant": "TED ENVIADA ANA LIMA", "id": "t0022"}
+{"date": "2026-06-11", "description": "SEM PARAR SAO PAULO BR", "amount": 168.92, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0023"}
+{"date": "2026-06-11", "description": "UNIMED MENSALIDADE SAO PAULO BR", "amount": 420.59, "type": "expense", "category": "Saúde", "merchant": "UNIMED MENSALIDADE", "id": "t0024"}
+{"date": "2026-06-11", "description": "COMPRA PARQUE IBIRAPUERA ESTAC 11/06", "amount": 245.53, "type": "expense", "category": "Lazer", "merchant": "PARQUE IBIRAPUERA ESTAC", "id": "t0025"}
+{"date": "2026-06-12", "description": "MAGALU SAO PAULO BR", "amount": 608.91, "type": "expense", "category": "Compras", "merchant": "MAGALU", "id": "t0026"}
+{"date": "2026-06-14", "description": "Pag*Hortifruti Quitanda", "amount": 328.25, "type": "expense", "category": "Mercado", "merchant": "HORTIFRUTI QUITANDA", "id": "t0027"}
+{"date": "2026-06-15", "description": "COMPRA CARTAO 7209 AMAZON KINDLE EBOOK *MSMSNJ", "amount": 137.74, "type": "expense", "category": "Educação", "merchant": "AMAZON KINDLE EBOOK", "id": "t0028"}
+{"date": "2026-06-16", "description": "PAG*YOUTUBE PREMIUM SAO PAULO BR", "amount": 53.98, "type": "expense", "category": "Assinaturas", "merchant": "YOUTUBE PREMIUM", "id": "t0029"}
+{"date": "2026-06-17", "description": "COMPRA ASSAI ATACADISTA SAO PAULO BR", "amount": 83.62, "type": "expense", "category": "Mercado", "merchant": "ASSAI ATACADISTA", "id": "t0030"}
+{"date": "2026-06-17", "description": "COMPRA CARTAO 5543 PARQUE IBIRAPUERA ESTAC SAO PAULO BR", "amount": 182.05, "type": "expense", "category": "Lazer", "merchant": "PARQUE IBIRAPUERA ESTAC", "id": "t0031"}
+{"date": "2026-06-18", "description": "Deb Aut Pao De Acucar", "amount": 479.68, "type": "expense", "category": "Mercado", "merchant": "PAO DE ACUCAR", "id": "t0032"}
+{"date": "2026-06-18", "description": "Sem Parar *1Uqac6", "amount": 101.67, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0033"}
+{"date": "2026-06-18", "description": "PAG*INGRESSO.COM", "amount": 146.04, "type": "expense", "category": "Lazer", "merchant": "INGRESSO.COM", "id": "t0034"}
+{"date": "2026-06-19", "description": "POSTO SHELL 8041", "amount": 34.8, "type": "expense", "category": "Transporte", "merchant": "POSTO SHELL", "id": "t0035"}
+{"date": "2026-06-19", "description": "PAGUE MENOS FARMACIA 19/06", "amount": 505.31, "type": "expense", "category": "Saúde", "merchant": "PAGUE MENOS FARMACIA", "id": "t0036"}
+{"date": "2026-06-19", "description": "COMPRA ALURA CURSOS 9464", "amount": 339.24, "type": "expense", "category": "Educação", "merchant": "ALURA CURSOS", "id": "t0037"}
+{"date": "2026-06-19", "description": "RENDIMENTO CDB", "amount": 9854.62, "type": "income", "category": "Renda", "merchant": "RENDIMENTO CDB", "id": "t0038"}
+{"date": "2026-06-20", "description": "PAG*ST MARCHE", "amount": 35.96, "type": "expense", "category": "Mercado", "merchant": "ST MARCHE", "id": "t0039"}
+{"date": "2026-06-20", "description": "COMPRA UNIMED MENSALIDADE", "amount": 562.78, "type": "expense", "category": "Saúde", "merchant": "UNIMED MENSALIDADE", "id": "t0040"}
+{"date": "2026-06-20", "description": "PAG*PARQUE IBIRAPUERA ESTAC *52NAM1", "amount": 183.84, "type": "expense", "category": "Lazer", "merchant": "PARQUE IBIRAPUERA ESTAC", "id": "t0041"}
+{"date": "2026-06-20", "description": "COMPRA AMAZON PRIME", "amount": 42.59, "type": "expense", "category": "Assinaturas", "merchant": "AMAZON PRIME", "id": "t0042"}
+{"date": "2026-06-20", "description": "PAG*MERCADOLIVRE*VENDEDOR 9289", "amount": 191.48, "type": "expense", "category": "Compras", "merchant": "MERCADOLIVRE*VENDEDOR", "id": "t0043"}
+{"date": "2026-06-20", "description": "RENNER SAO PAULO BR", "amount": 249.72, "type": "expense", "category": "Compras", "merchant": "RENNER", "id": "t0044"}
+{"date": "2026-06-21", "description": "SUSHI YAMA 7543", "amount": 114.63, "type": "expense", "category": "Alimentação", "merchant": "SUSHI YAMA", "id": "t0045"}
+{"date": "2026-06-21", "description": "Drogasil 21/06", "amount": 315.4, "type": "expense", "category": "Saúde", "merchant": "DROGASIL", "id": "t0046"}
+{"date": "2026-06-22", "description": "Compra Sushi Yama 2040", "amount": 143.64, "type": "expense", "category": "Alimentação", "merchant": "SUSHI YAMA", "id": "t0047"}
+{"date": "2026-06-22", "description": "CONDOMINIO ED SOLAR SAO PAULO BR", "amount": 1065.94, "type": "expense", "category": "Moradia", "merchant": "CONDOMINIO ED SOLAR", "id": "t0048"}
+{"date": "2026-06-24", "description": "DEB AUT OUTBACK STEAKHOUSE", "amount": 33.11, "type": "expense", "category": "Alimentação", "merchant": "OUTBACK STEAKHOUSE", "id": "t0049"}
+{"date": "2026-06-24", "description": "OUTBACK STEAKHOUSE *WF1U2U", "amount": 20.77, "type": "expense", "category": "Alimentação", "merchant": "OUTBACK STEAKHOUSE", "id": "t0050"}
+{"date": "2026-06-24", "description": "Deb Aut Mc Donalds", "amount": 85.49, "type": "expense", "category": "Alimentação", "merchant": "MC DONALDS", "id": "t0051"}
+{"date": "2026-06-24", "description": "METRO SP RECARGA 3532", "amount": 205.38, "type": "expense", "category": "Transporte", "merchant": "METRO SP RECARGA", "id": "t0052"}
+{"date": "2026-06-24", "description": "PAG*METRO SP RECARGA SAO PAULO BR", "amount": 208.63, "type": "expense", "category": "Transporte", "merchant": "METRO SP RECARGA", "id": "t0053"}
+{"date": "2026-06-24", "description": "Compra Cartao 9042 Pix Recebido Freelance 24/06", "amount": 1195.21, "type": "income", "category": "Renda", "merchant": "PIX RECEBIDO FREELANCE", "id": "t0054"}
+{"date": "2026-06-25", "description": "REEMBOLSO DESPESAS EMPRESA", "amount": 6001.58, "type": "income", "category": "Renda", "merchant": "REEMBOLSO DESPESAS EMPRESA", "id": "t0055"}
+{"date": "2026-06-28", "description": "COMPRA EXTRA SUPERMERCADO 5345", "amount": 119.5, "type": "expense", "category": "Mercado", "merchant": "EXTRA SUPERMERCADO", "id": "t0056"}
+{"date": "2026-06-29", "description": "DEB AUT GLOBOPLAY", "amount": 22.81, "type": "expense", "category": "Assinaturas", "merchant": "GLOBOPLAY", "id": "t0057"}
+{"date": "2026-07-01", "description": "COMPRA CARTAO 9022 SONDA SUPERMERCADOS", "amount": 141.27, "type": "expense", "category": "Mercado", "merchant": "SONDA SUPERMERCADOS", "id": "t0058"}
+{"date": "2026-07-01", "description": "COMPRA CARTAO 2210 POSTO SHELL", "amount": 223.19, "type": "expense", "category": "Transporte", "merchant": "POSTO SHELL", "id": "t0059"}
+{"date": "2026-07-02", "description": "COMPRA COURSERA", "amount": 345.83, "type": "expense", "category": "Educação", "merchant": "COURSERA", "id": "t0060"}
+{"date": "2026-07-04", "description": "DEB AUT LAB FLEURY 8267", "amount": 646.64, "type": "expense", "category": "Saúde", "merchant": "LAB FLEURY", "id": "t0061"}
+{"date": "2026-07-05", "description": "NETFLIX.COM SAO PAULO BR", "amount": 24.16, "type": "expense", "category": "Assinaturas", "merchant": "NETFLIX.COM", "id": "t0062"}
+{"date": "2026-07-05", "description": "RENDIMENTO CDB 7421", "amount": 13275.39, "type": "income", "category": "Renda", "merchant": "RENDIMENTO CDB", "id": "t0063"}
+{"date": "2026-07-06", "description": "DISNEY PLUS", "amount": 24.47, "type": "expense", "category": "Assinaturas", "merchant": "DISNEY PLUS", "id": "t0064"}
+{"date": "2026-07-06", "description": "COMPRA CARTAO 6928 C&A MODA 6928", "amount": 326.44, "type": "expense", "category": "Compras", "merchant": "C&A MODA", "id": "t0065"}
+{"date": "2026-07-08", "description": "SUSHI YAMA SAO PAULO BR", "amount": 40.3, "type": "expense", "category": "Alimentação", "merchant": "SUSHI YAMA", "id": "t0066"}
+{"date": "2026-07-08", "description": "Compra Pix Enviado Carlos Rocha *Twn7P2", "amount": 523.16, "type": "expense", "category": "Transferências", "merchant": "PIX ENVIADO CARLOS ROCHA", "id": "t0067"}
+{"date": "2026-07-09", "description": "Pag*99 *Pop Sao Paulo Br", "amount": 226.13, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0068"}
+{"date": "2026-07-10", "description": "COMPRA CARTAO 2229 RAPPI*RESTAURANTE 2229", "amount": 28.11, "type": "expense", "category": "Alimentação", "merchant": "RAPPI*RESTAURANTE", "id": "t0069"}
+{"date": "2026-07-10", "description": "COMPRA EXTRA SUPERMERCADO 4826", "amount": 255.42, "type": "expense", "category": "Mercado", "merchant": "EXTRA SUPERMERCADO", "id": "t0070"}
+{"date": "2026-07-10", "description": "PAG*CARREFOUR HIPER", "amount": 217.44, "type": "expense", "category": "Mercado", "merchant": "CARREFOUR HIPER", "id": "t0071"}
+{"date": "2026-07-10", "description": "UBER *TRIP *462H3H", "amount": 198.65, "type": "expense", "category": "Transporte", "merchant": "UBER *TRIP", "id": "t0072"}
+{"date": "2026-07-11", "description": "COMPRA SHOPEE", "amount": 165.94, "type": "expense", "category": "Compras", "merchant": "SHOPEE", "id": "t0073"}
+{"date": "2026-07-12", "description": "COMPRA ENEL SP ENERGIA 1992", "amount": 109.98, "type": "expense", "category": "Moradia", "merchant": "ENEL SP ENERGIA", "id": "t0074"}
+{"date": "2026-07-12", "description": "PARQUE IBIRAPUERA ESTAC", "amount": 87.27, "type": "expense", "category": "Lazer", "merchant": "PARQUE IBIRAPUERA ESTAC", "id": "t0075"}
+{"date": "2026-07-12", "description": "COMPRA UDEMY", "amount": 97.3, "type": "expense", "category": "Educação", "merchant": "UDEMY", "id": "t0076"}
+{"date": "2026-07-12", "description": "SALARIO EMPRESA TECH LTDA", "amount": 2422.75, "type": "income", "category": "Renda", "merchant": "SALARIO EMPRESA TECH LTDA", "id": "t0077"}
+{"date": "2026-07-13", "description": "COMPRA PADARIA DOCE PAO", "amount": 135.38, "type": "expense", "category": "Alimentação", "merchant": "PADARIA DOCE PAO", "id": "t0078"}
+{"date": "2026-07-14", "description": "DEB AUT SMART FIT 5831", "amount": 293.79, "type": "expense", "category": "Saúde", "merchant": "SMART FIT", "id": "t0079"}
+{"date": "2026-07-15", "description": "COMPRA IFOOD *LANCHONETE SAO PAULO BR", "amount": 151.86, "type": "expense", "category": "Alimentação", "merchant": "IFOOD *LANCHONETE", "id": "t0080"}
+{"date": "2026-07-15", "description": "STARBUCKS", "amount": 136.71, "type": "expense", "category": "Alimentação", "merchant": "STARBUCKS", "id": "t0081"}
+{"date": "2026-07-15", "description": "POSTO SHELL SAO PAULO BR", "amount": 113.29, "type": "expense", "category": "Transporte", "merchant": "POSTO SHELL", "id": "t0082"}
+{"date": "2026-07-16", "description": "COMPRA CARTAO 7779 DROGA RAIA", "amount": 321.42, "type": "expense", "category": "Saúde", "merchant": "DROGA RAIA", "id": "t0083"}
+{"date": "2026-07-17", "description": "COMPRA SUSHI YAMA 17/07", "amount": 43.77, "type": "expense", "category": "Alimentação", "merchant": "SUSHI YAMA", "id": "t0084"}
+{"date": "2026-07-18", "description": "PAG*POSTO IPIRANGA SAO PAULO BR", "amount": 94.02, "type": "expense", "category": "Transporte", "merchant": "POSTO IPIRANGA", "id": "t0085"}
+{"date": "2026-07-18", "description": "ENEL SP ENERGIA SAO PAULO BR", "amount": 1905.43, "type": "expense", "category": "Moradia", "merchant": "ENEL SP ENERGIA", "id": "t0086"}
+{"date": "2026-07-19", "description": "COMPRA CARTAO 3529 HORTIFRUTI QUITANDA 3529", "amount": 204.1, "type": "expense", "category": "Mercado", "merchant": "HORTIFRUTI QUITANDA", "id": "t0087"}
+{"date": "2026-07-20", "description": "SUSHI YAMA SAO PAULO BR", "amount": 88.36, "type": "expense", "category": "Alimentação", "merchant": "SUSHI YAMA", "id": "t0088"}
+{"date": "2026-07-20", "description": "BURGER KING 1601", "amount": 83.6, "type": "expense", "category": "Alimentação", "merchant": "BURGER KING", "id": "t0089"}
+{"date": "2026-07-20", "description": "Compra Netflix.Com Sao Paulo Br", "amount": 53.09, "type": "expense", "category": "Assinaturas", "merchant": "NETFLIX.COM", "id": "t0090"}
+{"date": "2026-07-21", "description": "Vivo Fibra Internet", "amount": 1908.56, "type": "expense", "category": "Moradia", "merchant": "VIVO FIBRA INTERNET", "id": "t0091"}
+{"date": "2026-07-22", "description": "Deb Aut 99 *Pop Sao Paulo Br", "amount": 108.04, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0092"}
+{"date": "2026-07-22", "description": "COMPRA CARTAO 9791 SEM PARAR", "amount": 127.34, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0093"}
+{"date": "2026-07-22", "description": "PAG*CONDOMINIO ED SOLAR SAO PAULO BR", "amount": 315.19, "type": "expense", "category": "Moradia", "merchant": "CONDOMINIO ED SOLAR", "id": "t0094"}
+{"date": "2026-07-22", "description": "DEB AUT DROGASIL *DD13UV", "amount": 101.39, "type": "expense", "category": "Saúde", "merchant": "DROGASIL", "id": "t0095"}
+{"date": "2026-07-22", "description": "DEB AUT CINEMARK *4N1V34", "amount": 187.02, "type": "expense", "category": "Lazer", "merchant": "CINEMARK", "id": "t0096"}
+{"date": "2026-07-23", "description": "DEB AUT TED ENVIADA ANA LIMA", "amount": 487.05, "type": "expense", "category": "Transferências", "merchant": "TED ENVIADA ANA LIMA", "id": "t0097"}
+{"date": "2026-07-24", "description": "COMPRA ASSAI ATACADISTA", "amount": 78.81, "type": "expense", "category": "Mercado", "merchant": "ASSAI ATACADISTA", "id": "t0098"}
+{"date": "2026-07-25", "description": "IFOOD *RESTAURANTE SAO PAULO BR", "amount": 117.15, "type": "expense", "category": "Alimentação", "merchant": "IFOOD *RESTAURANTE", "id": "t0099"}
+{"date": "2026-07-25", "description": "Pag*Netflix.Com Sao Paulo Br", "amount": 11.04, "type": "expense", "category": "Assinaturas", "merchant": "NETFLIX.COM", "id": "t0100"}
+{"date": "2026-07-26", "description": "IFOOD *LANCHONETE", "amount": 147.64, "type": "expense", "category": "Alimentação", "merchant": "IFOOD *LANCHONETE", "id": "t0101"}
+{"date": "2026-07-26", "description": "ESTAPAR ESTACIONAMENTO", "amount": 132.65, "type": "expense", "category": "Transporte", "merchant": "ESTAPAR ESTACIONAMENTO", "id": "t0102"}
+{"date": "2026-07-26", "description": "DEB AUT MAGALU *W1YG2S", "amount": 834.77, "type": "expense", "category": "Compras", "merchant": "MAGALU", "id": "t0103"}
+{"date": "2026-07-27", "description": "Compra Cartao 2646 Hortifruti Quitanda 27/07", "amount": 271.37, "type": "expense", "category": "Mercado", "merchant": "HORTIFRUTI QUITANDA", "id": "t0104"}
+{"date": "2026-07-27", "description": "SONDA SUPERMERCADOS", "amount": 148.02, "type": "expense", "category": "Mercado", "merchant": "SONDA SUPERMERCADOS", "id": "t0105"}
+{"date": "2026-07-28", "description": "PAG*RESTAURANTE SABOR CASEIRO 28/07", "amount": 96.28, "type": "expense", "category": "Alimentação", "merchant": "RESTAURANTE SABOR CASEIRO", "id": "t0106"}
+{"date": "2026-07-28", "description": "STEAM GAMES *AK17MG", "amount": 40.88, "type": "expense", "category": "Lazer", "merchant": "STEAM GAMES", "id": "t0107"}
+{"date": "2026-07-29", "description": "PAG*99 *POP *6ERY18", "amount": 47.79, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0108"}
+{"date": "2026-07-29", "description": "PAG*METRO SP RECARGA", "amount": 33.94, "type": "expense", "category": "Transporte", "merchant": "METRO SP RECARGA", "id": "t0109"}
+{"date": "2026-07-29", "description": "VIVO FIBRA INTERNET", "amount": 2042.68, "type": "expense", "category": "Moradia", "merchant": "VIVO FIBRA INTERNET", "id": "t0110"}
+{"date": "2026-07-30", "description": "PAG*BURGER KING SAO PAULO BR", "amount": 90.1, "type": "expense", "category": "Alimentação", "merchant": "BURGER KING", "id": "t0111"}
+{"date": "2026-07-30", "description": "DEB AUT RENDIMENTO CDB", "amount": 2413.26, "type": "income", "category": "Renda", "merchant": "RENDIMENTO CDB", "id": "t0112"}
+{"date": "2026-07-31", "description": "COMPRA CARTAO 1502 LIVRARIA CULTURA CAFE *DUNRFL", "amount": 285.0, "type": "expense", "category": "Lazer", "merchant": "LIVRARIA CULTURA CAFE", "id": "t0113"}
+{"date": "2026-07-31", "description": "DEB AUT KABUM", "amount": 428.65, "type": "expense", "category": "Compras", "merchant": "KABUM", "id": "t0114"}
+{"date": "2026-08-01", "description": "Compra Cartao 7666 Spotify 7666", "amount": 48.44, "type": "expense", "category": "Assinaturas", "merchant": "SPOTIFY", "id": "t0115"}
+{"date": "2026-08-01", "description": "COMPRA RENNER", "amount": 160.93, "type": "expense", "category": "Compras", "merchant": "RENNER", "id": "t0116"}
+{"date": "2026-08-02", "description": "PAG*MC DONALDS", "amount": 152.49, "type": "expense", "category": "Alimentação", "merchant": "MC DONALDS", "id": "t0117"}
+{"date": "2026-08-02", "description": "Pag*Vivo Fibra Internet Sao Paulo Br", "amount": 179.71, "type": "expense", "category": "Moradia", "merchant": "VIVO FIBRA INTERNET", "id": "t0118"}
+{"date": "2026-08-02", "description": "DEB AUT VIVO FIBRA INTERNET 4189", "amount": 361.07, "type": "expense", "category": "Moradia", "merchant": "VIVO FIBRA INTERNET", "id": "t0119"}
+{"date": "2026-08-02", "description": "PAG*PIX ENVIADO CARLOS ROCHA SAO PAULO BR", "amount": 609.35, "type": "expense", "category": "Transferências", "merchant": "PIX ENVIADO CARLOS ROCHA", "id": "t0120"}
+{"date": "2026-08-05", "description": "Compra Reembolso Despesas Empresa *9P56Nz", "amount": 12085.93, "type": "income", "category": "Renda", "merchant": "REEMBOLSO DESPESAS EMPRESA", "id": "t0121"}
+{"date": "2026-08-06", "description": "DEB AUT RESTAURANTE SABOR CASEIRO", "amount": 25.41, "type": "expense", "category": "Alimentação", "merchant": "RESTAURANTE SABOR CASEIRO", "id": "t0122"}
+{"date": "2026-08-06", "description": "COMPRA CARTAO 7081 RESTAURANTE SABOR CASEIRO 06/08", "amount": 38.92, "type": "expense", "category": "Alimentação", "merchant": "RESTAURANTE SABOR CASEIRO", "id": "t0123"}
+{"date": "2026-08-06", "description": "DEB AUT POSTO SHELL *TEGE2A", "amount": 210.72, "type": "expense", "category": "Transporte", "merchant": "POSTO SHELL", "id": "t0124"}
+{"date": "2026-08-06", "description": "DEB AUT KABUM", "amount": 349.21, "type": "expense", "category": "Compras", "merchant": "KABUM", "id": "t0125"}
+{"date": "2026-08-07", "description": "COMPRA INGRESSO.COM 07/08", "amount": 124.64, "type": "expense", "category": "Lazer", "merchant": "INGRESSO.COM", "id": "t0126"}
+{"date": "2026-08-10", "description": "Deb Aut Posto Shell", "amount": 88.57, "type": "expense", "category": "Transporte", "merchant": "POSTO SHELL", "id": "t0127"}
+{"date": "2026-08-10", "description": "99 *POP 10/08", "amount": 226.92, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0128"}
+{"date": "2026-08-10", "description": "Pag*Aluguel Imobiliaria Lar *N9Unew", "amount": 151.06, "type": "expense", "category": "Moradia", "merchant": "ALUGUEL IMOBILIARIA LAR", "id": "t0129"}
+{"date": "2026-08-10", "description": "CLINICA ODONTO SORRIA *WKY9VH", "amount": 352.65, "type": "expense", "category": "Saúde", "merchant": "CLINICA ODONTO SORRIA", "id": "t0130"}
+{"date": "2026-08-11", "description": "Compra Cartao 2017 Magalu 2017", "amount": 827.87, "type": "expense", "category": "Compras", "merchant": "MAGALU", "id": "t0131"}
+{"date": "2026-08-12", "description": "Compra Extra Supermercado 12/08", "amount": 303.09, "type": "expense", "category": "Mercado", "merchant": "EXTRA SUPERMERCADO", "id": "t0132"}
+{"date": "2026-08-12", "description": "COMPRA CARTAO 6456 COMGAS", "amount": 1502.61, "type": "expense", "category": "Moradia", "merchant": "COMGAS", "id": "t0133"}
+{"date": "2026-08-13", "description": "PAG*ST MARCHE", "amount": 191.44, "type": "expense", "category": "Mercado", "merchant": "ST MARCHE", "id": "t0134"}
+{"date": "2026-08-14", "description": "DEB AUT BURGER KING SAO PAULO BR", "amount": 159.22, "type": "expense", "category": "Alimentação", "merchant": "BURGER KING", "id": "t0135"}
+{"date": "2026-08-14", "description": "PAG*CARREFOUR HIPER SAO PAULO BR", "amount": 368.7, "type": "expense", "category": "Mercado", "merchant": "CARREFOUR HIPER", "id": "t0136"}
+{"date": "2026-08-15", "description": "COMPRA CARTAO 4678 MC DONALDS 15/08", "amount": 37.71, "type": "expense", "category": "Alimentação", "merchant": "MC DONALDS", "id": "t0137"}
+{"date": "2026-08-15", "description": "COMPRA CARTAO 1510 PAO DE ACUCAR SAO PAULO BR", "amount": 287.42, "type": "expense", "category": "Mercado", "merchant": "PAO DE ACUCAR", "id": "t0138"}
+{"date": "2026-08-16", "description": "Compra Cartao 6511 Enel Sp Energia 6511", "amount": 1034.7, "type": "expense", "category": "Moradia", "merchant": "ENEL SP ENERGIA", "id": "t0139"}
+{"date": "2026-08-16", "description": "Parque Ibirapuera Estac Sao Paulo Br", "amount": 306.59, "type": "expense", "category": "Lazer", "merchant": "PARQUE IBIRAPUERA ESTAC", "id": "t0140"}
+{"date": "2026-08-18", "description": "COMPRA CARTAO 9488 99 *POP", "amount": 168.4, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0141"}
+{"date": "2026-08-18", "description": "SEM PARAR 3050", "amount": 235.4, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0142"}
+{"date": "2026-08-18", "description": "DISNEY PLUS", "amount": 29.85, "type": "expense", "category": "Assinaturas", "merchant": "DISNEY PLUS", "id": "t0143"}
+{"date": "2026-08-18", "description": "Deb Aut Udemy", "amount": 243.58, "type": "expense", "category": "Educação", "merchant": "UDEMY", "id": "t0144"}
+{"date": "2026-08-20", "description": "DEB AUT RESTAURANTE SABOR CASEIRO *W6AHF7", "amount": 128.22, "type": "expense", "category": "Alimentação", "merchant": "RESTAURANTE SABOR CASEIRO", "id": "t0145"}
+{"date": "2026-08-20", "description": "DEB AUT CINEMARK 6674", "amount": 52.77, "type": "expense", "category": "Lazer", "merchant": "CINEMARK", "id": "t0146"}
+{"date": "2026-08-21", "description": "COMPRA CARTAO 3924 SALARIO EMPRESA TECH LTDA 21/08", "amount": 7758.9, "type": "income", "category": "Renda", "merchant": "SALARIO EMPRESA TECH LTDA", "id": "t0147"}
+{"date": "2026-08-23", "description": "PAG*PADARIA DOCE PAO *EJXXC4", "amount": 107.74, "type": "expense", "category": "Alimentação", "merchant": "PADARIA DOCE PAO", "id": "t0148"}
+{"date": "2026-08-23", "description": "DEB AUT ESTAPAR ESTACIONAMENTO 23/08", "amount": 16.6, "type": "expense", "category": "Transporte", "merchant": "ESTAPAR ESTACIONAMENTO", "id": "t0149"}
+{"date": "2026-08-23", "description": "PAG*SEM PARAR 23/08", "amount": 60.21, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0150"}
+{"date": "2026-08-24", "description": "COMPRA SUSHI YAMA", "amount": 69.21, "type": "expense", "category": "Alimentação", "merchant": "SUSHI YAMA", "id": "t0151"}
+{"date": "2026-08-24", "description": "PAG*SONDA SUPERMERCADOS SAO PAULO BR", "amount": 146.08, "type": "expense", "category": "Mercado", "merchant": "SONDA SUPERMERCADOS", "id": "t0152"}
+{"date": "2026-08-24", "description": "COMPRA CARTAO 7229 LAB FLEURY 24/08", "amount": 456.56, "type": "expense", "category": "Saúde", "merchant": "LAB FLEURY", "id": "t0153"}
+{"date": "2026-08-24", "description": "PAG*RENNER 7021", "amount": 444.91, "type": "expense", "category": "Compras", "merchant": "RENNER", "id": "t0154"}
+{"date": "2026-08-25", "description": "COMPRA CARTAO 9914 STARBUCKS SAO PAULO BR", "amount": 68.71, "type": "expense", "category": "Alimentação", "merchant": "STARBUCKS", "id": "t0155"}
+{"date": "2026-08-25", "description": "COMPRA REEMBOLSO DESPESAS EMPRESA 25/08", "amount": 13126.46, "type": "income", "category": "Renda", "merchant": "REEMBOLSO DESPESAS EMPRESA", "id": "t0156"}
+{"date": "2026-08-26", "description": "COMPRA CARTAO 6649 IFOOD *LANCHONETE *JYDV1E", "amount": 109.28, "type": "expense", "category": "Alimentação", "merchant": "IFOOD *LANCHONETE", "id": "t0157"}
+{"date": "2026-08-26", "description": "UNIMED MENSALIDADE *2751CE", "amount": 438.89, "type": "expense", "category": "Saúde", "merchant": "UNIMED MENSALIDADE", "id": "t0158"}
+{"date": "2026-08-26", "description": "Deb Aut Amazon Kindle Ebook 26/08", "amount": 229.05, "type": "expense", "category": "Educação", "merchant": "AMAZON KINDLE EBOOK", "id": "t0159"}
+{"date": "2026-08-26", "description": "PAG*PIX ENVIADO MARIA SOUZA", "amount": 184.99, "type": "expense", "category": "Transferências", "merchant": "PIX ENVIADO MARIA SOUZA", "id": "t0160"}
+{"date": "2026-08-27", "description": "RESTAURANTE SABOR CASEIRO", "amount": 62.81, "type": "expense", "category": "Alimentação", "merchant": "RESTAURANTE SABOR CASEIRO", "id": "t0161"}
+{"date": "2026-08-28", "description": "Deb Aut Posto Shell *5L9Mp1", "amount": 69.68, "type": "expense", "category": "Transporte", "merchant": "POSTO SHELL", "id": "t0162"}
+{"date": "2026-08-29", "description": "OUTBACK STEAKHOUSE 9444", "amount": 35.68, "type": "expense", "category": "Alimentação", "merchant": "OUTBACK STEAKHOUSE", "id": "t0163"}
+{"date": "2026-08-29", "description": "PAG*CARREFOUR HIPER", "amount": 162.08, "type": "expense", "category": "Mercado", "merchant": "CARREFOUR HIPER", "id": "t0164"}
+{"date": "2026-08-29", "description": "COMPRA EXTRA SUPERMERCADO SAO PAULO BR", "amount": 350.75, "type": "expense", "category": "Mercado", "merchant": "EXTRA SUPERMERCADO", "id": "t0165"}
+{"date": "2026-08-29", "description": "99 *POP SAO PAULO BR", "amount": 190.0, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0166"}
+{"date": "2026-08-29", "description": "COMPRA SMART FIT 7173", "amount": 458.32, "type": "expense", "category": "Saúde", "merchant": "SMART FIT", "id": "t0167"}
+{"date": "2026-08-30", "description": "DEB AUT POSTO IPIRANGA 30/08", "amount": 63.0, "type": "expense", "category": "Transporte", "merchant": "POSTO IPIRANGA", "id": "t0168"}
+{"date": "2026-08-30", "description": "YOUTUBE PREMIUM SAO PAULO BR", "amount": 59.45, "type": "expense", "category": "Assinaturas", "merchant": "YOUTUBE PREMIUM", "id": "t0169"}
+{"date": "2026-08-31", "description": "Compra Livraria Cultura Cafe 31/08", "amount": 251.23, "type": "expense", "category": "Lazer", "merchant": "LIVRARIA CULTURA CAFE", "id": "t0170"}
+{"date": "2026-08-31", "description": "APPLE.COM/BILL ICLOUD 9590", "amount": 22.86, "type": "expense", "category": "Assinaturas", "merchant": "APPLE.COM/BILL ICLOUD", "id": "t0171"}
+{"date": "2026-09-01", "description": "CANTINA DO NONNO *JBQU12", "amount": 51.25, "type": "expense", "category": "Alimentação", "merchant": "CANTINA DO NONNO", "id": "t0172"}
+{"date": "2026-09-01", "description": "METRO SP RECARGA SAO PAULO BR", "amount": 187.63, "type": "expense", "category": "Transporte", "merchant": "METRO SP RECARGA", "id": "t0173"}
+{"date": "2026-09-02", "description": "DEB AUT CANTINA DO NONNO", "amount": 57.07, "type": "expense", "category": "Alimentação", "merchant": "CANTINA DO NONNO", "id": "t0174"}
+{"date": "2026-09-02", "description": "COMPRA CARTAO 8993 OXXO MINIMERCADO", "amount": 345.55, "type": "expense", "category": "Mercado", "merchant": "OXXO MINIMERCADO", "id": "t0175"}
+{"date": "2026-09-02", "description": "COMPRA SPOTIFY *5D3H1Z", "amount": 18.3, "type": "expense", "category": "Assinaturas", "merchant": "SPOTIFY", "id": "t0176"}
+{"date": "2026-09-02", "description": "DESCOMPLICA CURSO", "amount": 232.58, "type": "expense", "category": "Educação", "merchant": "DESCOMPLICA CURSO", "id": "t0177"}
+{"date": "2026-09-03", "description": "DEB AUT STARBUCKS SAO PAULO BR", "amount": 75.97, "type": "expense", "category": "Alimentação", "merchant": "STARBUCKS", "id": "t0178"}
+{"date": "2026-09-04", "description": "PAG*OUTBACK STEAKHOUSE", "amount": 155.43, "type": "expense", "category": "Alimentação", "merchant": "OUTBACK STEAKHOUSE", "id": "t0179"}
+{"date": "2026-09-04", "description": "Deb Aut Ted Enviada Ana Lima *E21E9E", "amount": 537.52, "type": "expense", "category": "Transferências", "merchant": "TED ENVIADA ANA LIMA", "id": "t0180"}
+{"date": "2026-09-06", "description": "COMPRA CARTAO 1478 CLINICA ODONTO SORRIA 1478", "amount": 64.1, "type": "expense", "category": "Saúde", "merchant": "CLINICA ODONTO SORRIA", "id": "t0181"}
+{"date": "2026-09-07", "description": "STARBUCKS *EJGX74", "amount": 45.05, "type": "expense", "category": "Alimentação", "merchant": "STARBUCKS", "id": "t0182"}
+{"date": "2026-09-08", "description": "DEB AUT OUTBACK STEAKHOUSE", "amount": 141.47, "type": "expense", "category": "Alimentação", "merchant": "OUTBACK STEAKHOUSE", "id": "t0183"}
+{"date": "2026-09-08", "description": "Compra Cartao 3527 Indrive Corrida", "amount": 56.04, "type": "expense", "category": "Transporte", "merchant": "INDRIVE CORRIDA", "id": "t0184"}
+{"date": "2026-09-09", "description": "PAG*AUTO POSTO BR", "amount": 106.34, "type": "expense", "category": "Transporte", "merchant": "AUTO POSTO BR", "id": "t0185"}
+{"date": "2026-09-09", "description": "COMPRA AMAZON PRIME SAO PAULO BR", "amount": 23.37, "type": "expense", "category": "Assinaturas", "merchant": "AMAZON PRIME", "id": "t0186"}
+{"date": "2026-09-11", "description": "Pix Enviado Carlos Rocha", "amount": 142.37, "type": "expense", "category": "Transferências", "merchant": "PIX ENVIADO CARLOS ROCHA", "id": "t0187"}
+{"date": "2026-09-12", "description": "Compra Cartao 3937 St Marche 12/09", "amount": 461.89, "type": "expense", "category": "Mercado", "merchant": "ST MARCHE", "id": "t0188"}
+{"date": "2026-09-12", "description": "99 *POP", "amount": 114.7, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0189"}
+{"date": "2026-09-12", "description": "COMPRA DEEZER PREMIUM", "amount": 45.57, "type": "expense", "category": "Assinaturas", "merchant": "DEEZER PREMIUM", "id": "t0190"}
+{"date": "2026-09-12", "description": "COMPRA C&A MODA SAO PAULO BR", "amount": 724.28, "type": "expense", "category": "Compras", "merchant": "C&A MODA", "id": "t0191"}
+{"date": "2026-09-12", "description": "Compra Cartao 6152 Reembolso Despesas Empresa 6152", "amount": 11904.86, "type": "income", "category": "Renda", "merchant": "REEMBOLSO DESPESAS EMPRESA", "id": "t0192"}
+{"date": "2026-09-13", "description": "Auto Posto Br Sao Paulo Br", "amount": 108.32, "type": "expense", "category": "Transporte", "merchant": "AUTO POSTO BR", "id": "t0193"}
+{"date": "2026-09-13", "description": "Escola De Ingles Wise Up 13/09", "amount": 344.32, "type": "expense", "category": "Educação", "merchant": "ESCOLA DE INGLES WISE UP", "id": "t0194"}
+{"date": "2026-09-13", "description": "RENDIMENTO CDB 13/09", "amount": 3602.82, "type": "income", "category": "Renda", "merchant": "RENDIMENTO CDB", "id": "t0195"}
+{"date": "2026-09-14", "description": "COMPRA DROGA RAIA SAO PAULO BR", "amount": 407.07, "type": "expense", "category": "Saúde", "merchant": "DROGA RAIA", "id": "t0196"}
+{"date": "2026-09-15", "description": "PAG*MC DONALDS", "amount": 117.94, "type": "expense", "category": "Alimentação", "merchant": "MC DONALDS", "id": "t0197"}
+{"date": "2026-09-15", "description": "ZONA AZUL DIGITAL SAO PAULO BR", "amount": 246.77, "type": "expense", "category": "Transporte", "merchant": "ZONA AZUL DIGITAL", "id": "t0198"}
+{"date": "2026-09-15", "description": "YOUTUBE PREMIUM 15/09", "amount": 23.91, "type": "expense", "category": "Assinaturas", "merchant": "YOUTUBE PREMIUM", "id": "t0199"}
+{"date": "2026-09-15", "description": "LEROY MERLIN *84SLKU", "amount": 717.94, "type": "expense", "category": "Compras", "merchant": "LEROY MERLIN", "id": "t0200"}
+{"date": "2026-09-16", "description": "DEB AUT POSTO IPIRANGA", "amount": 79.36, "type": "expense", "category": "Transporte", "merchant": "POSTO IPIRANGA", "id": "t0201"}
+{"date": "2026-09-18", "description": "COMPRA METRO SP RECARGA 18/09", "amount": 61.62, "type": "expense", "category": "Transporte", "merchant": "METRO SP RECARGA", "id": "t0202"}
+{"date": "2026-09-18", "description": "COMPRA ALUGUEL IMOBILIARIA LAR 2791", "amount": 1821.28, "type": "expense", "category": "Moradia", "merchant": "ALUGUEL IMOBILIARIA LAR", "id": "t0203"}
+{"date": "2026-09-20", "description": "DEB AUT BURGER KING 20/09", "amount": 132.0, "type": "expense", "category": "Alimentação", "merchant": "BURGER KING", "id": "t0204"}
+{"date": "2026-09-20", "description": "Compra Cantina Do Nonno", "amount": 96.57, "type": "expense", "category": "Alimentação", "merchant": "CANTINA DO NONNO", "id": "t0205"}
+{"date": "2026-09-20", "description": "OXXO MINIMERCADO", "amount": 202.84, "type": "expense", "category": "Mercado", "merchant": "OXXO MINIMERCADO", "id": "t0206"}
+{"date": "2026-09-20", "description": "OXXO MINIMERCADO *XZC4XM", "amount": 137.25, "type": "expense", "category": "Mercado", "merchant": "OXXO MINIMERCADO", "id": "t0207"}
+{"date": "2026-09-20", "description": "PAG*SABESP AGUA SAO PAULO BR", "amount": 1867.28, "type": "expense", "category": "Moradia", "merchant": "SABESP AGUA", "id": "t0208"}
+{"date": "2026-09-21", "description": "Oxxo Minimercado Sao Paulo Br", "amount": 127.19, "type": "expense", "category": "Mercado", "merchant": "OXXO MINIMERCADO", "id": "t0209"}
+{"date": "2026-09-21", "description": "COMPRA SEM PARAR", "amount": 207.06, "type": "expense", "category": "Transporte", "merchant": "SEM PARAR", "id": "t0210"}
+{"date": "2026-09-21", "description": "COMPRA VIVO FIBRA INTERNET", "amount": 862.78, "type": "expense", "category": "Moradia", "merchant": "VIVO FIBRA INTERNET", "id": "t0211"}
+{"date": "2026-09-21", "description": "Deb Aut Drogaria Sao Paulo *M4W30L", "amount": 108.72, "type": "expense", "category": "Saúde", "merchant": "DROGARIA SAO PAULO", "id": "t0212"}
+{"date": "2026-09-21", "description": "Sympla Eventos 21/09", "amount": 264.56, "type": "expense", "category": "Lazer", "merchant": "SYMPLA EVENTOS", "id": "t0213"}
+{"date": "2026-09-22", "description": "COMPRA SUSHI YAMA SAO PAULO BR", "amount": 134.67, "type": "expense", "category": "Alimentação", "merchant": "SUSHI YAMA", "id": "t0214"}
+{"date": "2026-09-22", "description": "DEB AUT ASSAI ATACADISTA SAO PAULO BR", "amount": 364.19, "type": "expense", "category": "Mercado", "merchant": "ASSAI ATACADISTA", "id": "t0215"}
+{"date": "2026-09-22", "description": "PAG*DROGA RAIA 22/09", "amount": 422.19, "type": "expense", "category": "Saúde", "merchant": "DROGA RAIA", "id": "t0216"}
+{"date": "2026-09-23", "description": "DEB AUT CANTINA DO NONNO 9037", "amount": 92.4, "type": "expense", "category": "Alimentação", "merchant": "CANTINA DO NONNO", "id": "t0217"}
+{"date": "2026-09-23", "description": "DEB AUT BOLICHE STRIKE", "amount": 86.16, "type": "expense", "category": "Lazer", "merchant": "BOLICHE STRIKE", "id": "t0218"}
+{"date": "2026-09-24", "description": "PAG*SALARIO EMPRESA TECH LTDA SAO PAULO BR", "amount": 2666.95, "type": "income", "category": "Renda", "merchant": "SALARIO EMPRESA TECH LTDA", "id": "t0219"}
+{"date": "2026-09-26", "description": "DEB AUT 99 *POP", "amount": 99.24, "type": "expense", "category": "Transporte", "merchant": "99 *POP", "id": "t0220"}
+{"date": "2026-09-26", "description": "Compra Condominio Ed Solar", "amount": 862.8, "type": "expense", "category": "Moradia", "merchant": "CONDOMINIO ED SOLAR", "id": "t0221"}
+{"date": "2026-09-29", "description": "Compra Cantina Do Nonno", "amount": 89.81, "type": "expense", "category": "Alimentação", "merchant": "CANTINA DO NONNO", "id": "t0222"}
+{"date": "2026-09-29", "description": "PAG*ALUGUEL IMOBILIARIA LAR", "amount": 1533.64, "type": "expense", "category": "Moradia", "merchant": "ALUGUEL IMOBILIARIA LAR", "id": "t0223"}
+{"date": "2026-09-29", "description": "PAG*ALIEXPRESS", "amount": 407.91, "type": "expense", "category": "Compras", "merchant": "ALIEXPRESS", "id": "t0224"}
+{"date": "2026-09-30", "description": "DEB AUT PAO DE ACUCAR *1MDHCW", "amount": 379.23, "type": "expense", "category": "Mercado", "merchant": "PAO DE ACUCAR", "id": "t0225"}
+{"date": "2026-09-30", "description": "DEB AUT CINEMARK", "amount": 100.37, "type": "expense", "category": "Lazer", "merchant": "CINEMARK", "id": "t0226"}
+{"date": "2026-09-30", "description": "COMPRA BOLICHE STRIKE 7010", "amount": 109.31, "type": "expense", "category": "Lazer", "merchant": "BOLICHE STRIKE", "id": "t0227"}
+{"date": "2026-09-30", "description": "CENTAURO ESPORTES SAO PAULO BR", "amount": 598.06, "type": "expense", "category": "Compras", "merchant": "CENTAURO ESPORTES", "id": "t0228"}

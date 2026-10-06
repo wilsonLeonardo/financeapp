@@ -1,0 +1,46 @@
+[project]
+name = "financeapp-ai"
+version = "0.1.0"
+description = "AI service for FinanceApp: a multi-agent finance assistant and RAG-based transaction categorization on local LLMs."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "pydantic",
+    "pydantic-settings",
+    "pyjwt",
+    "redis",
+    "langchain-core",
+    "langchain-ollama",
+    "langchain-postgres",
+    "langgraph",
+    "psycopg[binary]",
+    "tzdata",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio", "respx", "ruff"]
+eval = ["pandas", "tabulate"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# Merchant tables read better one category per block than wrapped to the line limit.
+"evals/generate_dataset.py" = ["E501"]

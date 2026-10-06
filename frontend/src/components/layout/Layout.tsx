@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import {
-  LayoutDashboard, Receipt, Tag, LogOut, Menu, X, TrendingUp,
+  LayoutDashboard, Receipt, Tag, LogOut, Menu, X, TrendingUp, Sparkles,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
@@ -11,6 +11,7 @@ const NAV = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/expenses', icon: Receipt, label: 'Transações' },
   { to: '/categories', icon: Tag, label: 'Categorias' },
+  { to: '/assistant', icon: Sparkles, label: 'Assistente' },
 ]
 
 export default function Layout() {

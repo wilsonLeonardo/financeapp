@@ -1,0 +1,36 @@
+{"prompt": "Quanto gastei com transporte em agosto?", "route": "analyst"}
+{"prompt": "Qual foi meu gasto total no mês passado?", "route": "analyst"}
+{"prompt": "Em que categoria eu mais gastei este mês?", "route": "analyst"}
+{"prompt": "Quanto recebi de salário em setembro?", "route": "analyst"}
+{"prompt": "Meus gastos aumentaram em relação a julho?", "route": "analyst"}
+{"prompt": "Liste minhas compras na Amazon", "route": "analyst"}
+{"prompt": "Quanto paguei de aluguel nos últimos meses?", "route": "analyst"}
+{"prompt": "Qual foi meu saldo líquido em agosto?", "route": "analyst"}
+{"prompt": "Quanto gastei na farmácia em junho?", "route": "analyst"}
+{"prompt": "Quais transações fiz acima de 500 reais?", "route": "analyst"}
+{"prompt": "What did I spend on restaurants this month?", "route": "analyst"}
+{"prompt": "Show my biggest expenses in September", "route": "analyst"}
+{"prompt": "How much did I pay for subscriptions in July?", "route": "analyst"}
+{"prompt": "What's my average monthly spending?", "route": "analyst"}
+{"prompt": "Did I spend more on groceries or on eating out in August?", "route": "analyst"}
+{"prompt": "List my Uber rides this month", "route": "analyst"}
+{"prompt": "Categorize as transações do extrato que importei", "route": "categorizer"}
+{"prompt": "Organize meus lançamentos sem categoria", "route": "categorizer"}
+{"prompt": "Quantas transações estão sem categoria?", "route": "categorizer"}
+{"prompt": "Sugira categorias para minhas despesas novas", "route": "categorizer"}
+{"prompt": "Classifique os gastos importados hoje", "route": "categorizer"}
+{"prompt": "Me ajuda a classificar as compras do último extrato", "route": "categorizer"}
+{"prompt": "Can you categorize my uncategorized expenses?", "route": "categorizer"}
+{"prompt": "Help me sort my new transactions into categories", "route": "categorizer"}
+{"prompt": "Which transactions still need a category?", "route": "categorizer"}
+{"prompt": "Put categories on the statement I just uploaded", "route": "categorizer"}
+{"prompt": "Olá!", "route": "general"}
+{"prompt": "Bom dia, tudo bem?", "route": "general"}
+{"prompt": "Obrigado pela ajuda", "route": "general"}
+{"prompt": "O que você consegue fazer?", "route": "general"}
+{"prompt": "Valeu, era só isso", "route": "general"}
+{"prompt": "Qual a previsão do tempo amanhã?", "route": "general"}
+{"prompt": "Me conta uma piada", "route": "general"}
+{"prompt": "Hi there", "route": "general"}
+{"prompt": "What can you help me with?", "route": "general"}
+{"prompt": "Who made you?", "route": "general"}

@@ -72,3 +72,28 @@ export interface ListExpensesParams {
   page?: number
   page_size?: number
 }
+
+// AI service
+export type SuggestionMethod = 'knn' | 'llm' | 'none'
+
+export interface CategorySuggestion {
+  expense_id: string
+  description: string
+  amount: string
+  type: TransactionType
+  date: string
+  category_id: string | null
+  category_name: string | null
+  method: SuggestionMethod
+  confidence: number | null
+}
+
+export interface SuggestResult {
+  suggestions: CategorySuggestion[]
+  indexed: number
+}
+
+export interface ApplyResult {
+  applied: number
+  failed: string[]
+}

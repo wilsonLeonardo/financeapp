@@ -2,7 +2,8 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:16-alpine
+    # Postgres 16 with pgvector, which stores the ai-service's categorization index.
+    image: pgvector/pgvector:pg16
     container_name: financeapp-postgres
     restart: unless-stopped
     environment:
@@ -10,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-financeapp123}
       POSTGRES_DB: ${POSTGRES_DB:-financeapp}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/migrations:/docker-entrypoint-initdb.d
@@ -27,7 +28,7 @@ services:
     container_name: financeapp-redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "${REDIS_HOST_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
@@ -64,7 +65,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:-super-secret-jwt-key-change-in-production}
       JWT_EXPIRY_HOURS: ${JWT_EXPIRY_HOURS:-24}
     ports:
-      - "8080:8080"
+      - "${BACKEND_HOST_PORT:-8080}:8080"
     volumes:
       - uploads_data:/app/uploads
     networks:
@@ -76,12 +77,85 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:8080/api/v1}
+        VITE_AI_URL: ${VITE_AI_URL:-http://localhost:8000}
     container_name: financeapp-frontend
     restart: unless-stopped
     depends_on:
       - backend
     ports:
-      - "3000:80"
+      - "${FRONTEND_HOST_PORT:-3000}:80"
+    networks:
+      - financeapp-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: financeapp-ollama
+    restart: unless-stopped
+    environment:
+      # CPU inference: one request at a time, models kept warm between chat turns.
+      OLLAMA_NUM_PARALLEL: 1
+      OLLAMA_KEEP_ALIVE: 30m
+    ports:
+      - "${OLLAMA_HOST_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - financeapp-network
+
+  # One-shot: pulls the configured models into Ollama on the first start and does nothing when they
+  # are already there, so later starts also work offline. The ai-service waits for it.
+  ollama-models:
+    image: ollama/ollama:latest
+    container_name: financeapp-ollama-models
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      CHAT_MODEL: ${CHAT_MODEL:-qwen2.5:3b}
+      EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        for model in "$$CHAT_MODEL" "$$EMBED_MODEL"; do
+          ollama show "$$model" > /dev/null 2>&1 || ollama pull "$$model" || exit 1
+        done
+    restart: "no"
+    networks:
+      - financeapp-network
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: financeapp-ai
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ollama-models:
+        condition: service_completed_successfully
+      backend:
+        condition: service_started
+    environment:
+      FINANCE_API_URL: http://backend:8080/api/v1
+      OLLAMA_BASE_URL: http://ollama:11434
+      CHAT_MODEL: ${CHAT_MODEL:-qwen2.5:3b}
+      EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-financeapp}:${POSTGRES_PASSWORD:-financeapp123}@postgres:5432/${POSTGRES_DB:-financeapp}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379/0
+      # Must match the backend's secret: the ai-service verifies the same tokens.
+      JWT_SECRET: ${JWT_SECRET:-super-secret-jwt-key-change-in-production}
+      CORS_ORIGINS: '["http://localhost:${FRONTEND_HOST_PORT:-3000}", "http://localhost:5173"]'
+    ports:
+      - "${AI_HOST_PORT:-8000}:8000"
     networks:
       - financeapp-network
 
@@ -89,6 +163,7 @@ volumes:
   postgres_data:
   redis_data:
   uploads_data:
+  ollama_data:
 
 networks:
   financeapp-network:

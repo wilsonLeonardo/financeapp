@@ -4,7 +4,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 ARG VITE_API_URL=http://localhost:8080/api/v1
-ENV VITE_API_URL=$VITE_API_URL
+ARG VITE_AI_URL=http://localhost:8000
+ENV VITE_API_URL=$VITE_API_URL VITE_AI_URL=$VITE_AI_URL
 
 COPY package*.json ./
 RUN npm ci
