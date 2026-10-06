@@ -5,7 +5,6 @@ import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import DashboardPage from '@/pages/DashboardPage'
 import ExpensesPage from '@/pages/ExpensesPage'
-import ImportPage from '@/pages/ImportPage'
 import CategoriesPage from '@/pages/CategoriesPage'
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
@@ -27,7 +26,6 @@ export default function App() {
         <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
           <Route index element={<DashboardPage />} />
           <Route path="expenses" element={<ExpensesPage />} />
-          <Route path="import" element={<ImportPage />} />
           <Route path="categories" element={<CategoriesPage />} />
         </Route>
       </Routes>

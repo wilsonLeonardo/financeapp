@@ -9,7 +9,6 @@ import (
 	"github.com/financeapp/backend/internal/auth"
 	"github.com/financeapp/backend/internal/category"
 	"github.com/financeapp/backend/internal/expense"
-	"github.com/financeapp/backend/internal/importer"
 	"github.com/financeapp/backend/internal/routes"
 	"github.com/financeapp/backend/pkg/config"
 	"github.com/gin-gonic/gin"
@@ -38,9 +37,6 @@ var wantRoutes = []route{
 	{http.MethodGet, "/api/v1/categories"},
 	{http.MethodPut, "/api/v1/categories/:id"},
 	{http.MethodDelete, "/api/v1/categories/:id"},
-	{http.MethodPost, "/api/v1/imports"},
-	{http.MethodGet, "/api/v1/imports"},
-	{http.MethodDelete, "/api/v1/imports/:id"},
 }
 
 // publicRoutes are the only ones reachable without a token.
@@ -62,7 +58,6 @@ func newRouter(env string) *gin.Engine {
 		Auth:     auth.NewHandler(nil),
 		Expense:  expense.NewHandler(nil),
 		Category: category.NewHandler(nil),
-		Import:   importer.NewHandler(nil),
 	}, &config.Config{
 		App: config.AppConfig{Env: env},
 		JWT: config.JWTConfig{Secret: "test-secret", ExpiryHours: 1},

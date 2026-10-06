@@ -73,20 +73,6 @@ func (mr *MockRepositoryMockRecorder) Create(ctx, arg1 any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), ctx, arg1)
 }
 
-// CreateBatch mocks base method.
-func (m *MockRepository) CreateBatch(ctx context.Context, expenses []*domain.Expense) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateBatch", ctx, expenses)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateBatch indicates an expected call of CreateBatch.
-func (mr *MockRepositoryMockRecorder) CreateBatch(ctx, expenses any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateBatch", reflect.TypeOf((*MockRepository)(nil).CreateBatch), ctx, expenses)
-}
-
 // Delete mocks base method.
 func (m *MockRepository) Delete(ctx context.Context, id, userID uuid.UUID) error {
 	m.ctrl.T.Helper()
@@ -99,20 +85,6 @@ func (m *MockRepository) Delete(ctx context.Context, id, userID uuid.UUID) error
 func (mr *MockRepositoryMockRecorder) Delete(ctx, id, userID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRepository)(nil).Delete), ctx, id, userID)
-}
-
-// DeleteByImportID mocks base method.
-func (m *MockRepository) DeleteByImportID(ctx context.Context, importID string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteByImportID", ctx, importID)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteByImportID indicates an expected call of DeleteByImportID.
-func (mr *MockRepositoryMockRecorder) DeleteByImportID(ctx, importID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByImportID", reflect.TypeOf((*MockRepository)(nil).DeleteByImportID), ctx, importID)
 }
 
 // FindByID mocks base method.

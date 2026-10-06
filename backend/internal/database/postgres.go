@@ -49,6 +49,5 @@ func autoMigrate(db *gorm.DB) error {
 		&domain.User{},
 		&domain.Category{},
 		&domain.Expense{},
-		&domain.Import{},
 	)
 }

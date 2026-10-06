@@ -9,7 +9,6 @@ import (
 	"github.com/financeapp/backend/internal/auth"
 	"github.com/financeapp/backend/internal/category"
 	"github.com/financeapp/backend/internal/expense"
-	"github.com/financeapp/backend/internal/importer"
 	"github.com/financeapp/backend/pkg/config"
 	"github.com/financeapp/backend/pkg/middleware"
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,6 @@ type Handlers struct {
 	Auth     *auth.Handler
 	Expense  *expense.Handler
 	Category *category.Handler
-	Import   *importer.Handler
 }
 
 // Register mounts the health check and the /api/v1 tree on r. The Swagger UI is
@@ -80,12 +78,5 @@ func registerProtected(v1 *gin.RouterGroup, h Handlers, jwtCfg *config.JWTConfig
 		categories.GET("", h.Category.List)
 		categories.PUT("/:id", h.Category.Update)
 		categories.DELETE("/:id", h.Category.Delete)
-	}
-
-	imports := protected.Group("/imports")
-	{
-		imports.POST("", h.Import.Import)
-		imports.GET("", h.Import.List)
-		imports.DELETE("/:id", h.Import.Revert)
 	}
 }

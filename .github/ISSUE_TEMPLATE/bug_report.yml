@@ -28,7 +28,6 @@ body:
       options:
         - Frontend (React)
         - Backend (Go API)
-        - Statement import
         - Not sure
     validations:
       required: true

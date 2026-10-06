@@ -8,7 +8,6 @@ import (
 	"github.com/financeapp/backend/internal/category"
 	"github.com/financeapp/backend/internal/database"
 	"github.com/financeapp/backend/internal/expense"
-	"github.com/financeapp/backend/internal/importer"
 	"github.com/financeapp/backend/internal/routes"
 	"github.com/financeapp/backend/pkg/config"
 	"github.com/financeapp/backend/pkg/logger"
@@ -18,7 +17,7 @@ import (
 
 // @title           FinanceApp API
 // @version         1.0
-// @description     Personal finance tracker: transactions, categories and bank statement imports.
+// @description     Personal finance tracker: transactions and categories.
 // @BasePath        /api/v1
 //
 // @securityDefinitions.apikey BearerAuth
@@ -45,19 +44,16 @@ func main() {
 	authRepo := auth.NewRepository(db, log)
 	expenseRepo := expense.NewRepository(db)
 	categoryRepo := category.NewRepository(db)
-	importRepo := importer.NewRepository(db)
 
 	// Services
 	authService := auth.NewService(authRepo, rdb, &cfg.JWT, log)
 	expenseService := expense.NewService(expenseRepo, log)
 	categoryService := category.NewService(categoryRepo, log)
-	importService := importer.NewService(importRepo, expenseRepo, log)
 
 	// Handlers
 	authHandler := auth.NewHandler(authService)
 	expenseHandler := expense.NewHandler(expenseService)
 	categoryHandler := category.NewHandler(categoryService)
-	importHandler := importer.NewHandler(importService)
 
 	if cfg.App.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)
@@ -72,7 +68,6 @@ func main() {
 		Auth:     authHandler,
 		Expense:  expenseHandler,
 		Category: categoryHandler,
-		Import:   importHandler,
 	}, cfg, rdb)
 
 	addr := fmt.Sprintf(":%s", cfg.Server.Port)

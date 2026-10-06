@@ -47,10 +47,8 @@ type Repository interface {
 	List(ctx context.Context, filter ListFilter) ([]*domain.Expense, int64, error)
 	Update(ctx context.Context, expense *domain.Expense) error
 	Delete(ctx context.Context, id, userID uuid.UUID) error
-	DeleteByImportID(ctx context.Context, importID string) error
 	MonthlySummary(ctx context.Context, userID uuid.UUID, months int) ([]*MonthlySummary, error)
 	CategorySummary(ctx context.Context, userID uuid.UUID, start, end time.Time) ([]*CategorySummary, error)
-	CreateBatch(ctx context.Context, expenses []*domain.Expense) error
 }
 
 type postgresRepository struct {
@@ -161,13 +159,4 @@ func (r *postgresRepository) CategorySummary(ctx context.Context, userID uuid.UU
 		ORDER BY total DESC
 	`, userID, start, end).Scan(&results).Error
 	return results, err
-}
-
-func (r *postgresRepository) DeleteByImportID(ctx context.Context, importID string) error {
-	// import_id is stored as "csv-YYYYMMDD-N", we match the import UUID prefix
-	return r.db.WithContext(ctx).Where("import_id LIKE ?", importID+"%").Delete(&domain.Expense{}).Error
-}
-
-func (r *postgresRepository) CreateBatch(ctx context.Context, expenses []*domain.Expense) error {
-	return r.db.WithContext(ctx).CreateInBatches(expenses, 100).Error
 }

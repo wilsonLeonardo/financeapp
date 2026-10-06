@@ -31,7 +31,6 @@ export interface Expense {
   description: string
   date: string
   tags?: string
-  import_id?: string
   created_at: string
   updated_at: string
 }
@@ -54,19 +53,6 @@ export interface CategorySummary {
   category_name: string
   total: number
   count: number
-}
-
-export interface Import {
-  id: string
-  file_name: string
-  file_type: string
-  status: 'pending' | 'processing' | 'completed' | 'failed'
-  total_rows: number
-  imported: number
-  errors: number
-  error_log?: string
-  imported_at?: string
-  created_at: string
 }
 
 export interface CreateExpenseDTO {

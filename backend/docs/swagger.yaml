@@ -33,39 +33,10 @@ definitions:
         type: string
       id:
         type: string
-      import_id:
-        type: string
       tags:
         type: string
       type:
         $ref: '#/definitions/github_com_financeapp_backend_internal_domain.TransactionType'
-      updated_at:
-        type: string
-      user_id:
-        type: string
-    type: object
-  github_com_financeapp_backend_internal_domain.Import:
-    properties:
-      created_at:
-        type: string
-      error_log:
-        type: string
-      errors:
-        type: integer
-      file_name:
-        type: string
-      file_type:
-        type: string
-      id:
-        type: string
-      imported:
-        type: integer
-      imported_at:
-        type: string
-      status:
-        type: string
-      total_rows:
-        type: integer
       updated_at:
         type: string
       user_id:
@@ -225,8 +196,7 @@ definitions:
     type: object
 info:
   contact: {}
-  description: 'Personal finance tracker: transactions, categories and bank statement
-    imports.'
+  description: 'Personal finance tracker: transactions and categories.'
   title: FinanceApp API
   version: "1.0"
 paths:
@@ -586,85 +556,6 @@ paths:
       summary: Update a transaction
       tags:
       - expenses
-  /imports:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/github_com_financeapp_backend_internal_domain.Import'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_financeapp_backend_pkg_response.Body'
-      security:
-      - BearerAuth: []
-      summary: List past imports
-      tags:
-      - imports
-    post:
-      consumes:
-      - multipart/form-data
-      description: Accepts CSV and OFX/QFX. Returns the import job with its row counts.
-      parameters:
-      - description: Statement file
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_financeapp_backend_internal_domain.Import'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_financeapp_backend_pkg_response.Body'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/github_com_financeapp_backend_pkg_response.Body'
-      security:
-      - BearerAuth: []
-      summary: Import a bank statement
-      tags:
-      - imports
-  /imports/{id}:
-    delete:
-      description: Deletes the transactions created by the import, then the job itself.
-      parameters:
-      - description: Import ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_financeapp_backend_pkg_response.Body'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_financeapp_backend_pkg_response.Body'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/github_com_financeapp_backend_pkg_response.Body'
-      security:
-      - BearerAuth: []
-      summary: Revert an import
-      tags:
-      - imports
   /reports/categories:
     get:
       description: Defaults to the current month when no range is given.

@@ -578,132 +578,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/imports": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "imports"
-                ],
-                "summary": "List past imports",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/github_com_financeapp_backend_internal_domain.Import"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_financeapp_backend_pkg_response.Body"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Accepts CSV and OFX/QFX. Returns the import job with its row counts.",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "imports"
-                ],
-                "summary": "Import a bank statement",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "Statement file",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_financeapp_backend_internal_domain.Import"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_financeapp_backend_pkg_response.Body"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_financeapp_backend_pkg_response.Body"
-                        }
-                    }
-                }
-            }
-        },
-        "/imports/{id}": {
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Deletes the transactions created by the import, then the job itself.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "imports"
-                ],
-                "summary": "Revert an import",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Import ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_financeapp_backend_pkg_response.Body"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_financeapp_backend_pkg_response.Body"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_financeapp_backend_pkg_response.Body"
-                        }
-                    }
-                }
-            }
-        },
         "/reports/categories": {
             "get": {
                 "security": [
@@ -838,55 +712,11 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "import_id": {
-                    "type": "string"
-                },
                 "tags": {
                     "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/github_com_financeapp_backend_internal_domain.TransactionType"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_financeapp_backend_internal_domain.Import": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "error_log": {
-                    "type": "string"
-                },
-                "errors": {
-                    "type": "integer"
-                },
-                "file_name": {
-                    "type": "string"
-                },
-                "file_type": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "imported": {
-                    "type": "integer"
-                },
-                "imported_at": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "total_rows": {
-                    "type": "integer"
                 },
                 "updated_at": {
                     "type": "string"
@@ -1143,7 +973,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "FinanceApp API",
-	Description:      "Personal finance tracker: transactions, categories and bank statement imports.",
+	Description:      "Personal finance tracker: transactions and categories.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

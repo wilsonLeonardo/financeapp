@@ -4,7 +4,6 @@ import type {
   CategorySummary,
   CreateExpenseDTO,
   Expense,
-  Import,
   ListExpensesParams,
   MonthlySummary,
   PaginatedResponse,
@@ -61,15 +60,4 @@ export const reportService = {
     api
       .get<CategorySummary[]>('/reports/categories', { params: { start_date: start, end_date: end } })
       .then((r) => r.data),
-}
-
-// Imports
-export const importService = {
-  upload: (file: File) => {
-    const form = new FormData()
-    form.append('file', file)
-    return api.post<Import>('/imports', form, { headers: { 'Content-Type': 'multipart/form-data' } }).then((r) => r.data)
-  },
-  list: () => api.get<Import[]>('/imports').then((r) => r.data),
-  revert: (id: string) => api.delete(`/imports/${id}`),
 }

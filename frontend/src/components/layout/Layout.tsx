@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import {
-  LayoutDashboard, Receipt, Upload, Tag, LogOut, Menu, X, TrendingUp,
+  LayoutDashboard, Receipt, Tag, LogOut, Menu, X, TrendingUp,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
@@ -10,7 +10,6 @@ import { cn } from '@/utils'
 const NAV = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/expenses', icon: Receipt, label: 'Transações' },
-  { to: '/import', icon: Upload, label: 'Importar' },
   { to: '/categories', icon: Tag, label: 'Categorias' },
 ]
 

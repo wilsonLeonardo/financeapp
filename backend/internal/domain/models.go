@@ -47,26 +47,9 @@ type Expense struct {
 	Type        TransactionType `gorm:"type:varchar(10);not null" json:"type"`
 	Description string          `gorm:"not null" json:"description"`
 	Date        time.Time       `gorm:"not null;index" json:"date"`
-	ImportID    *string         `gorm:"index" json:"import_id,omitempty"`
 	Tags        string          `json:"tags"`
 	CreatedAt   time.Time       `json:"created_at"`
 	UpdatedAt   time.Time       `json:"updated_at"`
-}
-
-// Import represents a bank statement import job.
-type Import struct {
-	ID         uuid.UUID  `gorm:"type:uuid;primaryKey" json:"id"`
-	UserID     uuid.UUID  `gorm:"type:uuid;not null;index" json:"user_id"`
-	FileName   string     `gorm:"not null" json:"file_name"`
-	FileType   string     `gorm:"not null" json:"file_type"`
-	Status     string     `gorm:"not null;default:'pending'" json:"status"`
-	TotalRows  int        `json:"total_rows"`
-	Imported   int        `json:"imported"`
-	Errors     int        `json:"errors"`
-	ErrorLog   string     `gorm:"type:text" json:"error_log,omitempty"`
-	ImportedAt *time.Time `json:"imported_at,omitempty"`
-	CreatedAt  time.Time  `json:"created_at"`
-	UpdatedAt  time.Time  `json:"updated_at"`
 }
 
 // BeforeCreate hooks to set UUIDs before inserting.
@@ -87,13 +70,6 @@ func (c *Category) BeforeCreate(tx *gorm.DB) error {
 func (e *Expense) BeforeCreate(tx *gorm.DB) error {
 	if e.ID == uuid.Nil {
 		e.ID = uuid.New()
-	}
-	return nil
-}
-
-func (i *Import) BeforeCreate(tx *gorm.DB) error {
-	if i.ID == uuid.Nil {
-		i.ID = uuid.New()
 	}
 	return nil
 }

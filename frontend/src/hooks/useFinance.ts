@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { categoryService, expenseService, importService, reportService } from '@/services'
+import { categoryService, expenseService, reportService } from '@/services'
 import type { CreateExpenseDTO, ListExpensesParams } from '@/types'
 
 // Expenses
@@ -75,33 +75,4 @@ export function useMonthlyReport(months = 12) {
 
 export function useCategoryReport(start?: string, end?: string) {
   return useQuery({ queryKey: REPORT_KEYS.categories(start, end), queryFn: () => reportService.categories(start, end) })
-}
-
-// Imports
-export const IMPORT_KEYS = { all: ['imports'] as const }
-
-export function useImports() {
-  return useQuery({ queryKey: IMPORT_KEYS.all, queryFn: importService.list })
-}
-
-export function useUploadImport() {
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: (file: File) => importService.upload(file),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: IMPORT_KEYS.all })
-      qc.invalidateQueries({ queryKey: EXPENSE_KEYS.all })
-    },
-  })
-}
-
-export function useRevertImport() {
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: (id: string) => importService.revert(id),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: IMPORT_KEYS.all })
-      qc.invalidateQueries({ queryKey: EXPENSE_KEYS.all })
-    },
-  })
 }

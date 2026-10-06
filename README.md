@@ -1,7 +1,7 @@
 # FinanceApp
 
-Personal finance tracker: log income and expenses, organise them into categories,
-import bank statements, and see where the money went.
+Personal finance tracker: log income and expenses, organise them into categories
+and see where the money went.
 
 ## Stack
 
@@ -18,7 +18,6 @@ import bank statements, and see where the money went.
 - Filtering by date range, transaction type and category — including transactions
   with no category at all
 - Monthly summaries and per-category breakdowns, charted on the dashboard
-- Bank statement import from CSV and OFX/QFX, with a revert for a bad import
 
 ## Layout
 
@@ -28,9 +27,9 @@ backend/
 ├── docs/                # generated OpenAPI spec (make docs)
 ├── internal/
 │   ├── auth/            # one package per domain, each with
-│   ├── category/        #   handler.go   HTTP in, JSON out
-│   ├── expense/         #   service.go   business rules
-│   ├── importer/        #   repository.go persistence
+│   ├── category/        #   handler.go    HTTP in, JSON out
+│   ├── expense/         #   service.go    business rules
+│   │                    #   repository.go persistence
 │   ├── routes/          # the whole URL table in one place
 │   ├── domain/          # entities shared across domains
 │   ├── database/        # postgres and redis connections
@@ -99,8 +98,8 @@ real database credentials before running this anywhere but your own machine.
 
 ## API
 
-All routes live under `/api/v1`, grouped as `/auth`, `/expenses`, `/categories`,
-`/reports` and `/imports`. Everything except register and login needs an
+All routes live under `/api/v1`, grouped as `/auth`, `/expenses`, `/categories`
+and `/reports`. Everything except register and login needs an
 `Authorization: Bearer <token>` header.
 
 The full reference — every parameter, payload and response — is the OpenAPI
